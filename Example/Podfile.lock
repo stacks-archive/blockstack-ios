@@ -1,0 +1,25 @@
+PODS:
+  - Blockstack (0.1.0):
+    - secp256k1.swift (~> 0.1.1)
+  - Nimble (7.0.3)
+  - Quick (1.2.0)
+  - secp256k1.swift (0.1.1)
+
+DEPENDENCIES:
+  - Blockstack (from `../`)
+  - Nimble (~> 7.0.2)
+  - Quick (~> 1.2.0)
+
+EXTERNAL SOURCES:
+  Blockstack:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Blockstack: 7ba097f1d9dbf9a3bf9b0a11a9af7fbe3ea72d59
+  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
+  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+  secp256k1.swift: f2dd50b7909e7d3d7527502619d061b85bd1c294
+
+PODFILE CHECKSUM: f9a140e6bf0c2d675a6f051d33217b50a05b2862
+
+COCOAPODS: 1.4.0

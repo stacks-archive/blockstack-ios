@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Blockstack'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of Blockstack.'
+  s.summary          = 'The iOS SDK for Blockstack.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -21,22 +21,24 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/modastic/Blockstack'
+  s.homepage         = 'https://github.com/blockstack/blockstack-ios'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'modastic' => 'yukanliao@gmail.com' }
-  s.source           = { :git => 'https://github.com/modastic/Blockstack.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { 'yknl' => 'yukanliao@gmail.com' }
+  s.source           = { :git => 'https://github.com/blockstack/blockstack-ios.git', :tag => s.version.to_s }
+   s.social_media_url = 'https://twitter.com/blockstack'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '11.0'
 
   s.source_files = 'Blockstack/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'Blockstack' => ['Blockstack/Assets/*.png']
-  # }
+   s.resource_bundles = {
+       'Blockstack' => ['Javascript/*.js']
+#     'Blockstack' => ['Blockstack/Assets/*.png']
+   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'secp256k1.swift', '~> 0.1.1'
 end

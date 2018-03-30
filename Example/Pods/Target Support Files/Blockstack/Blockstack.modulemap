@@ -1,0 +1,6 @@
+framework module Blockstack {
+  umbrella header "Blockstack-umbrella.h"
+
+  export *
+  module * { export * }
+}

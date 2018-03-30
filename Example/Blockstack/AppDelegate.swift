@@ -2,8 +2,7 @@
 //  AppDelegate.swift
 //  Blockstack
 //
-//  Created by modastic on 03/27/2018.
-//  Copyright (c) 2018 modastic. All rights reserved.
+//  Created by Yukan Liao on 03/27/2018.
 //
 
 import UIKit
