@@ -12,10 +12,7 @@ open class Blockstack {
     private var authenticationModule: BlockstackAuthentication
     private var storageModule: BlockstackStorage
     
-    open static var shared: Blockstack = {
-        let blockstack = Blockstack()
-        return blockstack
-    }()
+    static var shared = Blockstack()
     
     init() {
         authenticationModule = BlockstackAuthentication()
