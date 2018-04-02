@@ -9,23 +9,24 @@ import Foundation
 
 open class Blockstack {
     
-    private var instance: BlockstackInstance?
+    private var authenticationModule: BlockstackAuthentication
+    private var storageModule: BlockstackStorage
     
-    private static var sharedBlockstack: Blockstack = {
-        let blockstack = Blockstack()
-        return blockstack
-    }()
+    static var shared = Blockstack()
     
-    open class func sharedInstance() -> BlockstackInstance {
-        return sharedBlockstack.getInstance()
+    init() {
+        authenticationModule = BlockstackAuthentication()
+        storageModule = BlockstackStorage()
     }
     
-    private init() {
-        instance = BlockstackInstance()
+    // MARK: Public API methods
+    
+    open func signIn(redirectURLScheme: String, manifestURI: URL, scopes: Array<String> = ["store_write"]) {
+        authenticationModule.signIn(redirectURLScheme: redirectURLScheme, manifestURI: manifestURI, scopes: scopes)
     }
     
-    private func getInstance() -> BlockstackInstance {
-        return instance!
+    open func store(string: String) {
+        storageModule.store(string: string)
     }
 }
 

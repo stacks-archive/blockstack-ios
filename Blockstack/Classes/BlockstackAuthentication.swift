@@ -10,20 +10,15 @@ import SafariServices
 import JavaScriptCore
 import secp256k1
 
-struct BlockstackConstants {
-    static let DefaultCoreAPIURL = "https://core.blockstack.org"
-    static let BrowserWebAppURL = "https://browser.blockstack.org"
-    static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
-    static let AuthProtocolVersion = "1.1.0"
-}
-
-open class BlockstackInstance {
-    open var coreAPIURL = BlockstackConstants.DefaultCoreAPIURL
+open class BlockstackAuthentication {
+    
+    typealias C = BlockstackConstants
+    
     var sfAuthSession : SFAuthenticationSession?
     
     open func signIn(redirectURLScheme: String, manifestURI: URL, scopes: Array<String> = ["store_write"]) {
         print("signing in")
-        print("using core api url: ", coreAPIURL)
+        print("using core api url: ", C.DefaultCoreAPIURL)
         
         guard let transitKey = Keys.generateTransitKey() else {
             print("Failed to generate transit key")
