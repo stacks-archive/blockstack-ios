@@ -18,18 +18,6 @@ enum secp256k1Curve {
     static let Gy = "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
 }
 
-extension Data {
-    struct HexEncodingOptions: OptionSet {
-        let rawValue: Int
-        static let upperCase = HexEncodingOptions(rawValue: 1 << 0)
-    }
-    
-    func hexEncodedString(options: HexEncodingOptions = []) -> String {
-        let format = options.contains(.upperCase) ? "%02hhX" : "%02hhx"
-        return map { String(format: format, $0) }.joined()
-    }
-}
-
 open class Keys {
     
     static func generateTransitKey() -> String? {
@@ -40,6 +28,7 @@ open class Keys {
      Generate an elliptic curve private key for secp256k1.
      */
     static func makeECPrivateKey() -> String? {
+        let keyLength = 32
         let n = secp256k1Curve.n
         let nBigInt = _BigInt<UInt>(n, radix: 16)
 //        print("n")
@@ -49,7 +38,7 @@ open class Keys {
         
         repeat {
             let randomBytes = generateRandomBytes()
-            print(randomBytes!)
+//            print(randomBytes!)
             d = _BigInt<UInt>(randomBytes!, radix: 16)
 //            print("d")
 //            print(d?.toString() as Any)
@@ -58,16 +47,16 @@ open class Keys {
             || d?._compare(to: nBigInt!) == .equal
             || d?._compare(to: nBigInt!) == .greaterThan)
         
-        return d?.toString(radix: 16, lowercase: true)
+        return d?.toString(radix: 16, lowercase: true).leftPadding(toLength: keyLength*2, withPad: "0")
     }
     
-    static func generateRandomBytes() -> String? {
-        var keyData = Data(count: 32)
-        let result = keyData.withUnsafeMutableBytes {
-            SecRandomCopyBytes(kSecRandomDefault, keyData.count, $0)
+    static func generateRandomBytes(bytes: Int = 32) -> String? {
+        var randomData = Data(count: bytes)
+        let result = randomData.withUnsafeMutableBytes {
+            SecRandomCopyBytes(kSecRandomDefault, randomData.count, $0)
         }
         if result == errSecSuccess {
-            return keyData.hexEncodedString()
+            return randomData.hexEncodedString()
         } else {
             print("Problem generating random bytes")
             return nil

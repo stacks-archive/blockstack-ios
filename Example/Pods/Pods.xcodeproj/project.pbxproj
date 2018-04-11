@@ -73,6 +73,9 @@
 		5F9AFDECC14365CD10F3D83D50020E32 /* CwlMachBadInstructionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B726E0D412D5B9585CD0C679C23B4 /* CwlMachBadInstructionHandler.m */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		6219423E207DC6E50057483C /* URL+QueryParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6219423D207DC6E50057483C /* URL+QueryParams.swift */; };
 		62A54B64207DD056000AD3C3 /* BigInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A54B63207DD056000AD3C3 /* BigInt.swift */; };
+		62A54B92207E8043000AD3C3 /* AuthResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A54B91207E8043000AD3C3 /* AuthResult.swift */; };
+		62A54B94207E88AA000AD3C3 /* Data+HexEncodedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A54B93207E88AA000AD3C3 /* Data+HexEncodedString.swift */; };
+		62A54B96207E8D9F000AD3C3 /* String+LeftPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A54B95207E8D9F000AD3C3 /* String+LeftPadding.swift */; };
 		62D26CE7BA3AEDB4E5E87218FDCBBA90 /* Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F13DD74CA7BC4706345A4C2B98BD4D /* Functional.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		62DC7727207C71B300BAAC35 /* KeysJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62DC7726207C71B300BAAC35 /* KeysJS.swift */; };
 		63220A313E6731F9E56C1E85FB309B20 /* field_5x52.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5C42A4F0F923E1764F39B88CF58FFE /* field_5x52.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -327,6 +330,9 @@
 		6219423D207DC6E50057483C /* URL+QueryParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "URL+QueryParams.swift"; path = "Blockstack/Classes/URL+QueryParams.swift"; sourceTree = "<group>"; };
 		627F5D094A0954F2A312CD2090114AA3 /* Blockstack-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Blockstack-dummy.m"; sourceTree = "<group>"; };
 		62A54B63207DD056000AD3C3 /* BigInt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BigInt.swift; path = Blockstack/Classes/BigInt.swift; sourceTree = "<group>"; };
+		62A54B91207E8043000AD3C3 /* AuthResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AuthResult.swift; path = Blockstack/Classes/AuthResult.swift; sourceTree = "<group>"; };
+		62A54B93207E88AA000AD3C3 /* Data+HexEncodedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Data+HexEncodedString.swift"; path = "Blockstack/Classes/Data+HexEncodedString.swift"; sourceTree = "<group>"; };
+		62A54B95207E8D9F000AD3C3 /* String+LeftPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+LeftPadding.swift"; path = "Blockstack/Classes/String+LeftPadding.swift"; sourceTree = "<group>"; };
 		62BDCE5D288C9EAD5B900D48DC734607 /* secp256k1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = secp256k1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62DC7726207C71B300BAAC35 /* KeysJS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeysJS.swift; path = Blockstack/Classes/KeysJS.swift; sourceTree = "<group>"; };
 		659C8264E6EC4D69FF9CB4F3AAB7A92A /* Pods-Blockstack_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Blockstack_Tests-dummy.m"; sourceTree = "<group>"; };
@@ -743,13 +749,16 @@
 			isa = PBXGroup;
 			children = (
 				3ADA6FF70437A1AE65C819A8F61B6145 /* Auth.swift */,
+				62A54B91207E8043000AD3C3 /* AuthResult.swift */,
 				422CEC7DBF06270E977B1AF3EA46D688 /* Blockstack.swift */,
 				5F34CA37686962D4B7C32D2A588C4BF9 /* BlockstackInstance.swift */,
 				F6D045F86FC76D7B24F7DD38DFC5FAB3 /* JSONTokens.swift */,
 				62DC7726207C71B300BAAC35 /* KeysJS.swift */,
 				A85A6C48E3AC4A8B6CD22EC7FE286A62 /* Keys.swift */,
 				62A54B63207DD056000AD3C3 /* BigInt.swift */,
+				62A54B93207E88AA000AD3C3 /* Data+HexEncodedString.swift */,
 				6219423D207DC6E50057483C /* URL+QueryParams.swift */,
+				62A54B95207E8D9F000AD3C3 /* String+LeftPadding.swift */,
 				4E1F71820B28B2D1F3A08A3369FADB43 /* Pod */,
 				E520CA9E71976BD6CF199AC9FCFBAB60 /* Resources */,
 				7BCEBFB8D038ED12C837ECF7B4BD2544 /* Support Files */,
@@ -1219,11 +1228,14 @@
 				426398E4DFEE1A421F7694E8C1213C96 /* Auth.swift in Sources */,
 				359C156499BDB62B01DDF2C4DAF11947 /* Blockstack-dummy.m in Sources */,
 				BD96A5B459BFA91CE9CA0F73024280EF /* Blockstack.swift in Sources */,
+				62A54B96207E8D9F000AD3C3 /* String+LeftPadding.swift in Sources */,
 				4478C9DA4D9D947E408FCC0913D86115 /* BlockstackInstance.swift in Sources */,
 				680D36802CED1AAED10B65D9B7BEFA61 /* JSONTokens.swift in Sources */,
 				97884790FE964C01504A9DF75BBBC55B /* Keys.swift in Sources */,
+				62A54B92207E8043000AD3C3 /* AuthResult.swift in Sources */,
 				6219423E207DC6E50057483C /* URL+QueryParams.swift in Sources */,
 				62DC7727207C71B300BAAC35 /* KeysJS.swift in Sources */,
+				62A54B94207E88AA000AD3C3 /* Data+HexEncodedString.swift in Sources */,
 				62A54B64207DD056000AD3C3 /* BigInt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

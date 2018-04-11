@@ -28,9 +28,18 @@ class ViewController: UIViewController {
     }
 
     @objc func signin() {
-        Blockstack.sharedInstance().signIn(redirectURLScheme: "bstackexample://",
-                                           manifestURI: URL(string: "http://localhost:8080/manifest.json")!) {
-            print("signed in")
+        Blockstack.sharedInstance().signIn(redirectURI: "bstackexample://",
+                                           appDomain: URL(string: "http://localhost:8080")!) { authResult in
+            switch authResult {
+                case .success:
+                    print("sign in success")
+                case .cancelled:
+                    print("sign in cancelled")
+                case .failed(let error):
+                    print("sign in failed")
+                    print(error!)
+            }
+            
         }
     }
 }

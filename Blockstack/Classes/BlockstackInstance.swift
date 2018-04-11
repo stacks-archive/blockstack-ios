@@ -10,7 +10,7 @@ import SafariServices
 import JavaScriptCore
 import secp256k1
 
-struct BlockstackConstants {
+public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
     static let BrowserWebAppAuthEndpoint = "http://localhost:3000/auth"
@@ -21,10 +21,11 @@ open class BlockstackInstance {
     open var coreAPIURL = BlockstackConstants.DefaultCoreAPIURL
     var sfAuthSession : SFAuthenticationSession?
     
-    open func signIn(redirectURLScheme: String,
-                     manifestURI: URL,
+    open func signIn(redirectURI: String,
+                     appDomain: URL,
+                     manifestURI: URL? = nil,
                      scopes: Array<String> = ["store_write"],
-                     completion: () -> Void) {
+                     completion: ((AuthResult) -> Void)?) {
         print("signing in")
         print("using core api url: ", coreAPIURL)
         
@@ -33,31 +34,31 @@ open class BlockstackInstance {
             return
         }
         
-        let appDomain = URL(string: "http://localhost:8080/")!
+        let _manifestURI = manifestURI ?? URL(string: "/manifest.json", relativeTo: appDomain)
         let appBundleID = "AppBundleID"
         
 //        print("transitKey", transitKey)
-//        print("redirectURLScheme", redirectURLScheme)
-//        print("manifestURI", manifestURI)
+//        print("redirectURLScheme", redirectURI)
+//        print("manifestURI", _manifestURI!.absoluteString)
 //        print("appDomain", appDomain)
 //        print("appBundleID", appBundleID)
         
         let authRequest: String = Auth.makeRequest(transitPrivateKey: transitKey,
-                                                   redirectURLScheme: redirectURLScheme,
-                                                   manifestURI: manifestURI,
+                                                   redirectURLScheme: redirectURI,
+                                                   manifestURI: _manifestURI!,
                                                    appDomain: appDomain,
                                                    appBundleID: appBundleID)
 
-        startSignIn(redirectURLScheme: redirectURLScheme, authRequest: authRequest) { (url, error) in
-            print("in sfauthsession call back")
+        startSignIn(redirectURLScheme: redirectURI, authRequest: authRequest) { (url, error) in
             guard error == nil else {
-                print("error")
+                completion?(AuthResult.failed(error))
                 return
             }
-            
+
             if let queryParams = url!.queryParameters {
                 let authResponse: String = queryParams["authResponse"]!
                 Auth.handleResponse(authResponse, transitPrivateKey: transitKey)
+                
             }
 
 //            print(url!.queryParameters)
