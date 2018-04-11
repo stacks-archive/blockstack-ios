@@ -28,8 +28,10 @@ class ViewController: UIViewController {
     }
 
     @objc func signin() {
-        Blockstack.sharedInstance().signIn(redirectURLScheme: "https://blockstack-todos.appartisan.com/",
-                                           manifestURI: URL(string: "https://blockstack-todos.appartisan.com/manifest.json")!)
+        Blockstack.sharedInstance().signIn(redirectURLScheme: "bstackexample://",
+                                           manifestURI: URL(string: "http://localhost:8080/manifest.json")!) {
+            print("signed in")
+        }
     }
 }
 

@@ -66,8 +66,18 @@ open class JSONTokens {
         
         context.evaluateScript("var tokenSigner = new jsontokens.TokenSigner('ES256K', '\(privateKey!)')")
         let token: JSValue = context.evaluateScript("tokenSigner.sign(jsonTokenPayload)")
-        print(token.toString())
+//        print(token.toString())
         return token.toString()
+    }
+    
+    public func decodeToken(token: String) -> [AnyHashable: Any]? {
+        guard let context = context else {
+            print("JSContext not found.")
+            return nil
+        }
+        
+        let decodedToken: JSValue = context.evaluateScript("jsontokens.decodeToken('\(token)')")
+        return decodedToken.toDictionary()
     }
     
 }

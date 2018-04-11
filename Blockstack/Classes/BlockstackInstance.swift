@@ -13,7 +13,7 @@ import secp256k1
 struct BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
-    static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
+    static let BrowserWebAppAuthEndpoint = "http://localhost:3000/auth"
     static let AuthProtocolVersion = "1.1.0"
 }
 
@@ -21,7 +21,10 @@ open class BlockstackInstance {
     open var coreAPIURL = BlockstackConstants.DefaultCoreAPIURL
     var sfAuthSession : SFAuthenticationSession?
     
-    open func signIn(redirectURLScheme: String, manifestURI: URL, scopes: Array<String> = ["store_write"]) {
+    open func signIn(redirectURLScheme: String,
+                     manifestURI: URL,
+                     scopes: Array<String> = ["store_write"],
+                     completion: () -> Void) {
         print("signing in")
         print("using core api url: ", coreAPIURL)
         
@@ -30,21 +33,21 @@ open class BlockstackInstance {
             return
         }
         
-        let appDomain = URL(string: "https://blockstack-todos.appartisan.com/")!
+        let appDomain = URL(string: "http://localhost:8080/")!
         let appBundleID = "AppBundleID"
         
-//        print(transitKey)
-//        print(redirectURLScheme)
-//        print(manifestURI)
-//        print(appDomain)
-//        print(appBundleID)
+//        print("transitKey", transitKey)
+//        print("redirectURLScheme", redirectURLScheme)
+//        print("manifestURI", manifestURI)
+//        print("appDomain", appDomain)
+//        print("appBundleID", appBundleID)
         
         let authRequest: String = Auth.makeRequest(transitPrivateKey: transitKey,
                                                    redirectURLScheme: redirectURLScheme,
                                                    manifestURI: manifestURI,
                                                    appDomain: appDomain,
                                                    appBundleID: appBundleID)
-        
+
         startSignIn(redirectURLScheme: redirectURLScheme, authRequest: authRequest) { (url, error) in
             print("in sfauthsession call back")
             guard error == nil else {
@@ -52,7 +55,12 @@ open class BlockstackInstance {
                 return
             }
             
-            print(url!)
+            if let queryParams = url!.queryParameters {
+                let authResponse: String = queryParams["authResponse"]!
+                Auth.handleResponse(authResponse, transitPrivateKey: transitKey)
+            }
+
+//            print(url!.queryParameters)
         }
     }
 
@@ -66,15 +74,7 @@ open class BlockstackInstance {
         
         print(url)
         
-//        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme, completionHandler: completion)
-        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: nil, completionHandler: { (url, error) in
-            print("in sfauthsession call back")
-            guard error == nil else {
-                print("error")
-                return
-            }
-            print(url!)
-        })
+        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme, completionHandler: completion)
         sfAuthSession?.start()
     }
     
