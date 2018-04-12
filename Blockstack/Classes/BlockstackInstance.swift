@@ -29,10 +29,14 @@ open class BlockstackInstance {
         print("signing in")
         print("using core api url: ", coreAPIURL)
         
+        print(Keys.retrieveTransitKey())
+        
         guard let transitKey = Keys.generateTransitKey() else {
             print("Failed to generate transit key")
             return
         }
+        
+        print(Keys.retrieveTransitKey())
         
         let _manifestURI = manifestURI ?? URL(string: "/manifest.json", relativeTo: appDomain)
         let appBundleID = "AppBundleID"

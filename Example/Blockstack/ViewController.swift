@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             switch authResult {
                 case .success(let userData):
                     print("sign in success")
-                    print(userData["profile"] as Any)
+//                    print(userData["profile"] as Any)
                 case .cancelled:
                     print("sign in cancelled")
                 case .failed(let error):

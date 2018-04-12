@@ -18,10 +18,64 @@ enum secp256k1Curve {
     static let Gy = "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
 }
 
+enum KeyLabel {
+    static let transitPrivateKey = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
+}
+
 open class Keys {
     
+    /**
+     Generate the transit private key
+     TODO - Use Keychain for secure key storage
+     */
     static func generateTransitKey() -> String? {
-        return makeECPrivateKey()
+        let transitKey = makeECPrivateKey()
+        
+        storeKey(keyData: transitKey!, label: KeyLabel.transitPrivateKey)
+        
+        return transitKey
+//        print("storing transit key")
+//        print(transitKey as Any)
+        
+//        let key = transitKey
+//        let tag = "org.test.keys.appKey".data(using: .utf8)!
+//        let addquery: [String: Any] = [kSecClass as String: kSecClassKey,
+//                                       kSecAttrApplicationTag as String: tag,
+//                                       kSecValueRef as String: key as Any]
+//        let status = SecItemAdd(addquery as CFDictionary, nil)
+//        guard status == errSecSuccess else {
+//            print("ERROR STORING KEY")
+//            print(status)
+//            return nil
+//        }
+    }
+    
+    static func retrieveTransitKey() -> String? {
+        return retrieveKey(label: KeyLabel.transitPrivateKey)
+        
+//        let tag = "org.test.keys.appKey".data(using: .utf8)!
+//        let getquery: [String: Any] = [kSecClass as String: kSecClassKey,
+//                                       kSecAttrApplicationTag as String: tag,
+//                                       kSecAttrKeyType as String: kSecAttrKeyTypeEC,
+//                                       kSecReturnRef as String: true]
+//
+//        var item: CFTypeRef?
+//        let status = SecItemCopyMatching(getquery as CFDictionary, &item)
+//        guard status == errSecSuccess else {
+//            print("ERROR RETRIEVING KEY")
+//            return
+//        }
+//        let key = item as! SecKey
+//        print("printing retrieved key")
+//        print(key)
+    }
+    
+    static func storeKey(keyData: String, label: String) {
+        UserDefaults.standard.set(keyData, forKey: label)
+    }
+    
+    static func retrieveKey(label: String) -> String? {
+        return UserDefaults.standard.string(forKey: label)
     }
     
     /**
