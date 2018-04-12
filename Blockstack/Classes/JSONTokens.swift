@@ -38,7 +38,7 @@ open class JSONTokens {
             print(exception!.toString())
         }
         
-        context?.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
+        _ = context?.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
         
         let consoleLog: @convention(block) (String) -> Void = { message in
             print("console.log: " + message)

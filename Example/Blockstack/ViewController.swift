@@ -31,8 +31,9 @@ class ViewController: UIViewController {
         Blockstack.sharedInstance().signIn(redirectURI: "bstackexample://",
                                            appDomain: URL(string: "http://localhost:8080")!) { authResult in
             switch authResult {
-                case .success:
+                case .success(let userData):
                     print("sign in success")
+                    print(userData["profile"] as Any)
                 case .cancelled:
                     print("sign in cancelled")
                 case .failed(let error):

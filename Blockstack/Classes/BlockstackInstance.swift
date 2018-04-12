@@ -54,14 +54,29 @@ open class BlockstackInstance {
                 completion?(AuthResult.failed(error))
                 return
             }
-
+            
             if let queryParams = url!.queryParameters {
                 let authResponse: String = queryParams["authResponse"]!
-                Auth.handleResponse(authResponse, transitPrivateKey: transitKey)
-                
-            }
+                let response = Auth.decodeResponse(authResponse, transitPrivateKey: transitKey)
+                if var payload: Dictionary = response["payload"] as? Dictionary<AnyHashable, Any> {
+                    guard let profile_url = payload["profile_url"] as? String else {
+                        completion?(AuthResult.success(userData: payload))
+                        return
+                    }
+                    
+                    Profile.fetchProfile(profileURL: URL(string: profile_url)!) { (profile, error) in
+                        guard error == nil else {
+                            completion?(AuthResult.success(userData: payload))
+                            return
+                        }
+                        payload["profile"] = profile
+                        completion?(AuthResult.success(userData: payload))
+                    }
+                } else {
+                    completion?(AuthResult.failed(AuthError.invalidResponse))
+                }
 
-//            print(url!.queryParameters)
+            }
         }
     }
 
@@ -73,7 +88,7 @@ open class BlockstackInstance {
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
         let url = urlComps.url!
         
-        print(url)
+//        print(url)
         
         sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme, completionHandler: completion)
         sfAuthSession?.start()
