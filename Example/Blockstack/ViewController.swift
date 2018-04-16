@@ -11,6 +11,7 @@ import Blockstack
 class ViewController: UIViewController {
 
     @IBOutlet var signInButton: UIButton?
+    @IBOutlet var nameLabel: UILabel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,7 @@ class ViewController: UIViewController {
             switch authResult {
                 case .success(let userData):
                     print("sign in success")
-//                    print(userData["profile"] as Any)
+                    self.handleSignInSuccess(userData: userData)
                 case .cancelled:
                     print("sign in cancelled")
                 case .failed(let error):
@@ -41,6 +42,31 @@ class ViewController: UIViewController {
                     print(error!)
             }
             
+        }
+    }
+    
+    func handleSignInSuccess(userData: UserData) {
+        print(userData.profile?.name as Any)
+        
+        let retrievedUserData = Blockstack.sharedInstance().loadUserData()
+        print(retrievedUserData?.profile?.name as Any)
+        
+        DispatchQueue.main.async {
+            let name: String? = retrievedUserData?.profile?.name
+            self.nameLabel?.text = "Hello, \(name!)"
+            self.signInButton?.isHidden = true
+        }
+        
+//        print("sign user out")
+//        Blockstack.sharedInstance().signOut()
+//        checkIfSignedIn()
+    }
+    
+    func checkIfSignedIn() {
+        if (Blockstack.sharedInstance().isSignedIn()) {
+            print("currently signed in")
+        } else {
+            print("not signed in")
         }
     }
 }

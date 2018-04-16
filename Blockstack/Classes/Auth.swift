@@ -42,9 +42,18 @@ open class Auth {
         return request
     }
     
-    static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> [AnyHashable: Any?] {
+    static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> Token? {
         let jsonTokens = JSONTokens(algorithm: "ES256K", privateKey: transitPrivateKey)
-        let decoded = jsonTokens.decodeToken(token: authResponse)
-        return decoded!
+        let decodedTokenJsonString = jsonTokens.decodeToken(token: authResponse)
+        var token: Token?
+        
+        do {
+            let jsonDecoder = JSONDecoder()
+            token = try jsonDecoder.decode(Token.self, from: decodedTokenJsonString!.data(using: .utf8)!)
+        } catch {
+            print("error")
+        }
+
+        return token
     }
 }

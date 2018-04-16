@@ -13,8 +13,10 @@ import secp256k1
 public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
-    static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
+    static let BrowserWebAppAuthEndpoint = "http://browser.blockstack.org/auth"
     static let AuthProtocolVersion = "1.1.0"
+    static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
+    static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
 }
 
 open class BlockstackInstance {
@@ -29,14 +31,10 @@ open class BlockstackInstance {
         print("signing in")
         print("using core api url: ", coreAPIURL)
         
-        print(Keys.retrieveTransitKey())
-        
         guard let transitKey = Keys.generateTransitKey() else {
             print("Failed to generate transit key")
             return
         }
-        
-        print(Keys.retrieveTransitKey())
         
         let _manifestURI = manifestURI ?? URL(string: "/manifest.json", relativeTo: appDomain)
         let appBundleID = "AppBundleID"
@@ -62,24 +60,26 @@ open class BlockstackInstance {
             if let queryParams = url!.queryParameters {
                 let authResponse: String = queryParams["authResponse"]!
                 let response = Auth.decodeResponse(authResponse, transitPrivateKey: transitKey)
-                if var payload: Dictionary = response["payload"] as? Dictionary<AnyHashable, Any> {
-                    guard let profile_url = payload["profile_url"] as? String else {
-                        completion?(AuthResult.success(userData: payload))
-                        return
-                    }
-                    
-                    Profile.fetchProfile(profileURL: URL(string: profile_url)!) { (profile, error) in
-                        guard error == nil else {
-                            completion?(AuthResult.success(userData: payload))
-                            return
+                
+                if var userData = response?.payload {
+                    if let profileURL = userData.profileURL {
+                        ProfileHelper.fetch(profileURL: URL(string: profileURL)!) { (profile, error) in
+                            guard error == nil else {
+                                ProfileHelper.storeProfile(profileData: userData)
+                                completion?(AuthResult.success(userData: userData))
+                                return
+                            }
+                            userData.profile = profile
+                            ProfileHelper.storeProfile(profileData: userData)
+                            completion?(AuthResult.success(userData: userData))
                         }
-                        payload["profile"] = profile
-                        completion?(AuthResult.success(userData: payload))
+                    } else {
+                        completion?(AuthResult.failed(AuthError.invalidResponse))
                     }
                 } else {
                     completion?(AuthResult.failed(AuthError.invalidResponse))
                 }
-
+                
             }
         }
     }
@@ -92,11 +92,34 @@ open class BlockstackInstance {
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
         let url = urlComps.url!
         
-//        print(url)
+        var responded = false
         
-        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme, completionHandler: completion)
+        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme) { (url, error) in
+            guard responded == false else {
+                return
+            }
+            
+            responded = true
+            completion(url, error)
+        }
         sfAuthSession?.start()
     }
     
+    public func loadUserData() -> UserData? {
+        return ProfileHelper.retrieveProfile()
+    }
+    
+    public func isSignedIn() -> Bool {
+        if (loadUserData() != nil) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    public func signOut() {
+        Keys.clearTransitKey()
+        ProfileHelper.clearProfile()
+    }
 }
 

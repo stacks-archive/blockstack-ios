@@ -18,10 +18,6 @@ enum secp256k1Curve {
     static let Gy = "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
 }
 
-enum KeyLabel {
-    static let transitPrivateKey = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
-}
-
 open class Keys {
     
     /**
@@ -31,7 +27,7 @@ open class Keys {
     static func generateTransitKey() -> String? {
         let transitKey = makeECPrivateKey()
         
-        storeKey(keyData: transitKey!, label: KeyLabel.transitPrivateKey)
+        storeKey(keyData: transitKey!, label: BlockstackConstants.TransitPrivateKeyUserDefaultLabel)
         
         return transitKey
 //        print("storing transit key")
@@ -51,7 +47,7 @@ open class Keys {
     }
     
     static func retrieveTransitKey() -> String? {
-        return retrieveKey(label: KeyLabel.transitPrivateKey)
+        return retrieveKey(label: BlockstackConstants.TransitPrivateKeyUserDefaultLabel)
         
 //        let tag = "org.test.keys.appKey".data(using: .utf8)!
 //        let getquery: [String: Any] = [kSecClass as String: kSecClassKey,
@@ -70,12 +66,20 @@ open class Keys {
 //        print(key)
     }
     
+    static func clearTransitKey() {
+        return clearKeys(label: BlockstackConstants.TransitPrivateKeyUserDefaultLabel)
+    }
+    
     static func storeKey(keyData: String, label: String) {
         UserDefaults.standard.set(keyData, forKey: label)
     }
     
     static func retrieveKey(label: String) -> String? {
         return UserDefaults.standard.string(forKey: label)
+    }
+    
+    static func clearKeys(label: String) {
+        UserDefaults.standard.set(nil, forKey: label)
     }
     
     /**

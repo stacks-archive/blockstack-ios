@@ -8,7 +8,7 @@
 import Foundation
 
 public enum AuthResult {
-    case success(userData: [AnyHashable: Any?])
+    case success(userData: UserData)
     case cancelled
     case failed(Error?)
 }

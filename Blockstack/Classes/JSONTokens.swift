@@ -61,23 +61,22 @@ open class JSONTokens {
         }
         
         context.setObject(payload, forKeyedSubscript: "jsonTokenPayload" as NSCopying & NSObjectProtocol)
-//        context?.evaluateScript("console.log(jsonTokenPayload.jti)")
-//        context?.evaluateScript("console.log(jsonTokenPayload.domain_name)")
-        
         context.evaluateScript("var tokenSigner = new jsontokens.TokenSigner('ES256K', '\(privateKey!)')")
         let token: JSValue = context.evaluateScript("tokenSigner.sign(jsonTokenPayload)")
-//        print(token.toString())
         return token.toString()
     }
     
-    public func decodeToken(token: String) -> [AnyHashable: Any]? {
+    public func decodeToken(token: String) -> String? {
         guard let context = context else {
             print("JSContext not found.")
             return nil
         }
         
-        let decodedToken: JSValue = context.evaluateScript("jsontokens.decodeToken('\(token)')")
-        return decodedToken.toDictionary()
+        context.evaluateScript("var decodedToken = jsontokens.decodeToken('\(token)')")
+        let decodedTokenJsonString: JSValue = context.evaluateScript("JSON.stringify(decodedToken)")
+        let jsonData = decodedTokenJsonString.toString()
+        
+        return jsonData
     }
     
 }
