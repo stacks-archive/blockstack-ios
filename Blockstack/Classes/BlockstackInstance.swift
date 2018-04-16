@@ -13,8 +13,9 @@ import secp256k1
 public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
-    static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
+    static let BrowserWebAppAuthEndpoint = "http://localhost:3000/auth"
     static let AuthProtocolVersion = "1.1.0"
+    static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
     static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
     static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
@@ -100,7 +101,7 @@ open class BlockstackInstance {
     }
     
     public func putFile(path: String, content: String) {
-        Gaia.getOrSetLocalGaiaHubConnection()
+        Gaia.getOrSetLocalHubConnection()
     }
 }
 
