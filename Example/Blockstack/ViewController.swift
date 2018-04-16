@@ -57,6 +57,8 @@ class ViewController: UIViewController {
             self.signInButton?.isHidden = true
         }
         
+        Blockstack.sharedInstance().putFile(path: "test", content: "test content")
+        
 //        print("sign user out")
 //        Blockstack.sharedInstance().signOut()
 //        checkIfSignedIn()

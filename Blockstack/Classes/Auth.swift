@@ -56,4 +56,30 @@ open class Auth {
 
         return token
     }
+    
+    static func handleAuthResponse(authResponse: String, transitPrivateKey: String, completion: ((AuthResult) -> Void)?) {
+        let response = Auth.decodeResponse(authResponse, transitPrivateKey: transitPrivateKey)
+        
+        if var userData = response?.payload {
+            
+            userData.privateKey = Encryption.decryptPrivateKey(privateKey: transitPrivateKey, hexedEncrypted: userData.privateKey!)
+            
+            if let profileURL = userData.profileURL {
+                ProfileHelper.fetch(profileURL: URL(string: profileURL)!) { (profile, error) in
+                    guard error == nil else {
+                        ProfileHelper.storeProfile(profileData: userData)
+                        completion?(AuthResult.success(userData: userData))
+                        return
+                    }
+                    userData.profile = profile
+                    ProfileHelper.storeProfile(profileData: userData)
+                    completion?(AuthResult.success(userData: userData))
+                }
+            } else {
+                completion?(AuthResult.failed(AuthError.invalidResponse))
+            }
+        } else {
+            completion?(AuthResult.failed(AuthError.invalidResponse))
+        }
+    }
 }

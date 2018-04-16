@@ -22,7 +22,8 @@ public struct Header: Codable {
 public struct Payload: Codable {
     public let jti: String?
     public let iat, exp: Int?
-    public let iss, privateKey: String?
+    public let iss: String?
+    public var privateKey: String?
     public let publicKeys: [String]?
     public let username, email, coreToken, profileURL, hubURL, version: String?
     public let claim: Profile?
