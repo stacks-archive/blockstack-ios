@@ -42,7 +42,15 @@ public class Gaia {
     
     static func connectToHub(hubURL: String, challengeSignerHex: String) {
         getHubInfo(hubURL: hubURL) { (hubInfo, error) in
-            
+            let bitcoinJS = BitcoinJS()
+            let signature = bitcoinJS.signChallenge(privateKey: challengeSignerHex, challengeText: hubInfo!.challengeText!)
+            let publicKey = Keys.getPublicKeyFromPrivate(challengeSignerHex)
+            let tokenObject = ["publicKey": publicKey, "signature": signature]
+            let tokenJsonString = dictionaryToJsonTokenString(tokenObject: tokenObject)
+            let token = tokenJsonString?.toBase64()
+            let address = Keys.getAddressFromPublicKey(publicKey!)
+            let gaiaConfig = GaiaConfig(URLPrefix: hubInfo?.readURLPrefix, address: address, token: token, server: hubURL)
+            storeConfig(gaiaConfig)
         }
     }
     
@@ -51,6 +59,7 @@ public class Gaia {
         let task = URLSession.shared.dataTask(with: hubInfoURL!) { data, response, error in
             guard let data = data, error == nil else {
                 print("Error connecting to Gaia hub")
+                completion(nil, error)
                 return
             }
             
@@ -79,4 +88,8 @@ public class Gaia {
         }
     }
     
+    static func dictionaryToJsonTokenString(tokenObject: [String: String?]) -> String? {
+        let tokenJsonData: Data? = try? JSONSerialization.data(withJSONObject: tokenObject, options: .prettyPrinted)
+        return String(data: tokenJsonData!, encoding: String.Encoding.utf8)
+    }
 }

@@ -12,6 +12,7 @@ public class ProfileHelper {
         let task = URLSession.shared.dataTask(with: profileURL) { data, response, error in
             guard let data = data, error == nil else {
                 print("Error fetching profile")
+                completion(nil, error)
                 return
             }
             
