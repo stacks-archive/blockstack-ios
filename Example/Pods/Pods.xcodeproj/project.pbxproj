@@ -85,6 +85,7 @@
 		5F9AFDECC14365CD10F3D83D50020E32 /* CwlMachBadInstructionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D7B726E0D412D5B9585CD0C679C23B4 /* CwlMachBadInstructionHandler.m */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		62D26CE7BA3AEDB4E5E87218FDCBBA90 /* Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F13DD74CA7BC4706345A4C2B98BD4D /* Functional.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		62FA0EAD208929D300A86DF2 /* String+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FA0EAC208929D300A86DF2 /* String+Base64.swift */; };
+		62FA0EAF2089360900A86DF2 /* GaiaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FA0EAE2089360900A86DF2 /* GaiaSession.swift */; };
 		645F65B822246A1C31EDC35B46A8D8D1 /* scalar_4x64_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A0194F80578EF6DB0FC0CE7EEDD2571 /* scalar_4x64_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6593C547A71CCEFC480CD578080A327F /* mach_excServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6D4DCB9F1194677A89763C0732167BCF /* mach_excServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		65985C142EE8A74E6E56D5E30A39C79C /* Expectation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817752E0F5CF8E8BC65A1BF51E7DBE59 /* Expectation.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
@@ -346,6 +347,7 @@
 		621EC2504208E1B555E4B8BCD332AD7F /* Data+HexEncodedString.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Data+HexEncodedString.swift"; path = "Blockstack/Classes/Data+HexEncodedString.swift"; sourceTree = "<group>"; };
 		62BDCE5D288C9EAD5B900D48DC734607 /* secp256k1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = secp256k1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62FA0EAC208929D300A86DF2 /* String+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "String+Base64.swift"; path = "Blockstack/Classes/String+Base64.swift"; sourceTree = "<group>"; };
+		62FA0EAE2089360900A86DF2 /* GaiaSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GaiaSession.swift; path = Blockstack/Classes/GaiaSession.swift; sourceTree = "<group>"; };
 		659C8264E6EC4D69FF9CB4F3AAB7A92A /* Pods-Blockstack_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Blockstack_Tests-dummy.m"; sourceTree = "<group>"; };
 		6696A2D12FCEC362DCD61DA1F0FC03AD /* util.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = util.h; path = secp256k1/Classes/secp256k1/src/util.h; sourceTree = "<group>"; };
 		6891060EF362864CBA02CD0E2AC0FF57 /* Errors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Errors.swift; path = Sources/Nimble/Utils/Errors.swift; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 				6EF294392535D883AA384FD17D432EAC /* EncryptionJS.swift */,
 				C566E592952055D0BD8EBA469C106E7B /* Errors.swift */,
 				F89AF7D9AC1D585B101FC60A3B84B03B /* Gaia.swift */,
+				62FA0EAE2089360900A86DF2 /* GaiaSession.swift */,
 				51E4D02FFDB2222EDD33CB1CFBD8F650 /* JSONTokens.swift */,
 				C5D14394C0FD50DA08411A0FACA8E614 /* Keys.swift */,
 				AE6F84BAC0702AF1B489EA23C4C33F85 /* KeysJS.swift */,
@@ -1267,6 +1270,7 @@
 				C17D267FE2CF76CD70B77653BF21B374 /* KeysJS.swift in Sources */,
 				834153C5300D36E52B79571D612CF8BD /* ProfileHelper.swift in Sources */,
 				4803470EC6948FA2DE2450F27EF8D607 /* String+LeftPadding.swift in Sources */,
+				62FA0EAF2089360900A86DF2 /* GaiaSession.swift in Sources */,
 				62FA0EAD208929D300A86DF2 /* String+Base64.swift in Sources */,
 				A8E34EE04AB04A3E805974A11BB6E255 /* Token.swift in Sources */,
 				D8FA6BB0224C068C6A322EB3B498F78D /* URL+QueryParams.swift in Sources */,

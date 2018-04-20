@@ -48,6 +48,7 @@ class ViewController: UIViewController {
     func handleSignInSuccess(userData: UserData) {
         print(userData.profile?.name as Any)
         
+        // Read user profile data
         let retrievedUserData = Blockstack.sharedInstance().loadUserData()
         print(retrievedUserData?.profile?.name as Any)
         
@@ -57,11 +58,32 @@ class ViewController: UIViewController {
             self.signInButton?.isHidden = true
         }
         
-        Blockstack.sharedInstance().putFile(path: "test", content: "test content")
+        // Store data on Gaia
+        let content: Dictionary<String, String> = ["property":"value"]
         
-//        print("sign user out")
-//        Blockstack.sharedInstance().signOut()
-//        checkIfSignedIn()
+        Blockstack.sharedInstance().putFile(path: "test.json", content: content) { (publicURL, error) in
+            if (error != nil) {
+                print("put file error")
+            } else {
+                print("put file success \(publicURL!)")
+                
+                // Read data from Gaia
+                Blockstack.sharedInstance().getFile(path: "test.json", completion: { (response, error) in
+                    if (error != nil) {
+                        print("get file error")
+                    } else {
+                        print("get file success")
+                        print(response as Any)
+                    }
+                })
+            }
+        }
+        
+        // Sign user out
+        // Blockstack.sharedInstance().signOut()
+        
+        // Check if signed in
+        // checkIfSignedIn()
     }
     
     func checkIfSignedIn() {

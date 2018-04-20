@@ -78,26 +78,6 @@ open class BitcoinJS {
         _ = context.evaluateScript("var digest = bitcoinjs.crypto.sha256('\(challengeText)')")
         let signature = context.evaluateScript("challengeSigner.sign(digest).toDER().toString('hex')")
         return signature?.toString()
-        
-//        _ = context.evaluateScript("var publickey = challengeSigner.getPublicKeyBuffer().toString('hex')")
-        
-//        _ = context.evaluateScript("console.log('challengeSigner public key')")
-//        _ = context.evaluateScript("console.log(publickey)")
-        
-//        let publicKey = Keys.getPublicKeyFromPrivate(privateKey)
-//        print("getPublicKeyFromPrivate")
-//        print(publicKey as Any)
-//        print(Keys.getAddressFromPublicKey(publicKey!) as Any)
-        
-//        return context.evaluateScript("JSON.stringify({ publickey, signature })").toString()
-    
-        
-//        _ = context.evaluateScript("var token = new Buffer(JSON.stringify({ publickey, signature })).toString('base64')")
-//
-//        _ = context.evaluateScript("console.log(signature)")
-//        _ = context.evaluateScript("console.log(publickey)")
-        
-//        return "test"
     }
     
     

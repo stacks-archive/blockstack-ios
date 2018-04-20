@@ -7,6 +7,14 @@
 
 import Foundation
 
-enum AuthError: Error {
+public enum AuthError: Error {
     case invalidResponse
 }
+
+public enum GaiaError: Error {
+    case requestError
+    case invalidResponse
+    case connectionError
+    case configurationError
+}
+

@@ -98,8 +98,30 @@ print(retrievedUserData?.profile?.name as Any)
 
 #### Storage
 
-Coming soon
+Store data as json on Gaia
 
+```swift
+Blockstack.sharedInstance().putFile(path: "myFile.json", content: content) { (publicURL, error) in
+    if (error != nil) {
+        print("put file error")
+    } else {
+        print("put file success \(publicURL!)")
+    }
+}
+```
+
+Read json data from Gaia
+
+```swift
+Blockstack.sharedInstance().getFile(path: "myFile.json", completion: { (response, error) in
+    if (error != nil) {
+        print("get file error")
+    } else {
+        print("get file success")
+        print(response as Any)
+    }
+})
+```
 
 ## Author
 
