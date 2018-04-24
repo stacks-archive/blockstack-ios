@@ -28,7 +28,7 @@ You'll need to choose a custom protocol handler that is unique to your app.
 This is so that your app's web-based authentication redirect endpoint can redirect the user
 back to your iOS app.
 
-In this example, we use `bstackexample://`.
+In this example, we use `myblockstackapp://`.
 
 Register your URL scheme in Xcode from the info tab of your project settings.
 
@@ -39,9 +39,11 @@ create an endpoint on the web version of your app that redirects users back
 to your mobile app.
 
 The endpoint will receive a get request with the query parameter `authResponse=XXXX`
-and should redirect the browser to `bstackexample://XXXX`.
+and should redirect the browser to `myblockstackapp://XXXX`.
 
-See the [example in the example web app in this repository](tools/blockstack-android-web-app/public/redirect.html).
+See the [example in the example web app in this repository](Tools/Blockstack-webapp/public/redirect.html).
+
+You can run the example webapp to test out redirects by running `npm install && npm start` from the webapp directory
 
 ## Usage
 
@@ -56,7 +58,7 @@ import Blockstack
 In this example, your web app would be located at `http://localhost:8080`
 
 ```swift
-Blockstack.sharedInstance().signIn(redirectURI: "bstackexample://",
+Blockstack.sharedInstance().signIn(redirectURI: "http://localhost:8080/redirect.html",
                                    appDomain: URL(string: "http://localhost:8080")!) { authResult in
     switch authResult {
         case .success(let userData):
