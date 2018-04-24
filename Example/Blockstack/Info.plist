@@ -24,10 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>blockstackExample</string>
+			<string>MyBlockstackApp</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>bstackexample</string>
+				<string>myblockstackapp</string>
 			</array>
 		</dict>
 	</array>

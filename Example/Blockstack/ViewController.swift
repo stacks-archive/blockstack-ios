@@ -29,7 +29,7 @@ class ViewController: UIViewController {
     }
 
     @objc func signin() {
-        Blockstack.sharedInstance().signIn(redirectURI: "bstackexample://",
+        Blockstack.sharedInstance().signIn(redirectURI: "http://localhost:8080/redirect.html",
                                            appDomain: URL(string: "http://localhost:8080")!) { authResult in
             switch authResult {
                 case .success(let userData):

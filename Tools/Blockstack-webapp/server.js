@@ -2,7 +2,7 @@ const express = require('express')
 const opn = require('opn')
 
 const app = express()
-const port = 8777
+const port = 8080
 
 function allowCrossDomain(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -23,5 +23,5 @@ app.listen(port, (err) => {
     return console.log('something bad happened', err)
   }
   console.log(`server is listening on ${port}`)
-  opn('http://localhost:5000')
+  opn('http://localhost:8080')
 })
