@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         print(retrievedUserData?.profile?.name as Any)
         
         DispatchQueue.main.async {
-            let name: String? = retrievedUserData?.profile?.name
+            let name: String? = retrievedUserData?.profile?.name ?? "Nameless Person"
             self.nameLabel?.text = "Hello, \(name!)"
             self.signInButton?.isHidden = true
         }
