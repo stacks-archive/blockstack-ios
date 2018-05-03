@@ -11,13 +11,13 @@ open class Blockstack {
     
     private var instance: BlockstackInstance?
     
-    private static var sharedBlockstack: Blockstack = {
+    private static var shared: Blockstack = {
         let blockstack = Blockstack()
         return blockstack
     }()
     
     open class func sharedInstance() -> BlockstackInstance {
-        return sharedBlockstack.getInstance()
+        return shared.getInstance()
     }
     
     private init() {

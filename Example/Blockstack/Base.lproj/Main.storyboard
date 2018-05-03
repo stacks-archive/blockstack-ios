@@ -24,20 +24,27 @@
                                 <rect key="frame" x="62" y="308" width="250" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="90d-Iu-zd1"/>
-                                    <constraint firstAttribute="width" constant="250" id="hjH-hF-Hg0"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="hjH-hF-Hg0"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R5R-d4-niU">
+                                <rect key="frame" x="187" y="293.5" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="R5R-d4-niU" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" constant="-40" id="DaR-Jt-xzs"/>
                             <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="ZEM-j7-yuY"/>
-                            <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="d9C-zb-7uP"/>
                             <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="dsO-Cl-91h"/>
-                            <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="t7h-Pm-9b7"/>
+                            <constraint firstItem="R5R-d4-niU" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="kme-Us-cI5"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="nameLabel" destination="R5R-d4-niU" id="Lnu-Mp-ycC"/>
                         <outlet property="signInButton" destination="Y3L-kz-GCX" id="y5J-64-ZZx"/>
                     </connections>
                 </viewController>

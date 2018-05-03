@@ -10,49 +10,59 @@ import SafariServices
 import JavaScriptCore
 import secp256k1
 
-struct BlockstackConstants {
+public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
     static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
     static let AuthProtocolVersion = "1.1.0"
+    static let DefaultGaiaHubURL = "https://hub.blockstack.org"
+    static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
+    static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
+    static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
 }
 
 open class BlockstackInstance {
-    open var coreAPIURL = BlockstackConstants.DefaultCoreAPIURL
     var sfAuthSession : SFAuthenticationSession?
     
-    open func signIn(redirectURLScheme: String, manifestURI: URL, scopes: Array<String> = ["store_write"]) {
+    open func signIn(redirectURI: String,
+                     appDomain: URL,
+                     manifestURI: URL? = nil,
+                     scopes: Array<String> = ["store_write"],
+                     completion: ((AuthResult) -> Void)?) {
         print("signing in")
-        print("using core api url: ", coreAPIURL)
         
         guard let transitKey = Keys.generateTransitKey() else {
             print("Failed to generate transit key")
             return
         }
         
-        let appDomain = URL(string: "https://blockstack-todos.appartisan.com/")!
+        let _manifestURI = manifestURI ?? URL(string: "/manifest.json", relativeTo: appDomain)
         let appBundleID = "AppBundleID"
         
-//        print(transitKey)
-//        print(redirectURLScheme)
-//        print(manifestURI)
-//        print(appDomain)
-//        print(appBundleID)
+//        print("transitKey", transitKey)
+//        print("redirectURLScheme", redirectURI)
+//        print("manifestURI", _manifestURI!.absoluteString)
+//        print("appDomain", appDomain)
+//        print("appBundleID", appBundleID)
         
         let authRequest: String = Auth.makeRequest(transitPrivateKey: transitKey,
-                                                   redirectURLScheme: redirectURLScheme,
-                                                   manifestURI: manifestURI,
+                                                   redirectURLScheme: redirectURI,
+                                                   manifestURI: _manifestURI!,
                                                    appDomain: appDomain,
                                                    appBundleID: appBundleID)
-        
-        startSignIn(redirectURLScheme: redirectURLScheme, authRequest: authRequest) { (url, error) in
-            print("in sfauthsession call back")
+
+        startSignIn(redirectURLScheme: redirectURI, authRequest: authRequest) { (url, error) in
             guard error == nil else {
-                print("error")
+                completion?(AuthResult.failed(error))
                 return
             }
             
-            print(url!)
+            if let queryParams = url!.queryParameters {
+                let authResponse: String = queryParams["authResponse"]!
+                Auth.handleAuthResponse(authResponse: authResponse,
+                                        transitPrivateKey: transitKey,
+                                        completion: completion)
+            }
         }
     }
 
@@ -64,19 +74,52 @@ open class BlockstackInstance {
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
         let url = urlComps.url!
         
-        print(url)
+        var responded = false
         
-//        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme, completionHandler: completion)
-        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: nil, completionHandler: { (url, error) in
-            print("in sfauthsession call back")
-            guard error == nil else {
-                print("error")
+        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme) { (url, error) in
+            guard responded == false else {
                 return
             }
-            print(url!)
-        })
+            
+            responded = true
+            completion(url, error)
+        }
         sfAuthSession?.start()
     }
     
+    public func loadUserData() -> UserData? {
+        return ProfileHelper.retrieveProfile()
+    }
+    
+    public func isSignedIn() -> Bool {
+        return (loadUserData() != nil)
+    }
+    
+    public func signOut() {
+        Keys.clearTransitKey()
+        ProfileHelper.clearProfile()
+    }
+    
+    public func putFile(path: String, content: Dictionary<String, String>, completion: @escaping (String?, GaiaError?) -> Void) {
+        Gaia.sharedSession().getOrSetLocalHubConnection { error in
+            guard error == nil else {
+                print("gaia connection error")
+                completion(nil, error)
+                return
+            }
+            Gaia.sharedSession().putFile(path: path, content: content, completion: completion)
+        }
+    }
+    
+    public func getFile(path: String, completion: @escaping (Any?, GaiaError?) -> Void) {
+        Gaia.sharedSession().getOrSetLocalHubConnection { error in
+            guard error == nil else {
+                print("gaia connection error")
+                completion(nil, error)
+                return
+            }
+            Gaia.sharedSession().getFile(path: path, completion: completion)
+        }
+    }
 }
 
