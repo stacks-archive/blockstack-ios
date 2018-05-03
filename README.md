@@ -58,7 +58,7 @@ import Blockstack
 In this example, your web app would be located at `http://localhost:8080`
 
 ```swift
-Blockstack.sharedInstance().signIn(redirectURI: "http://localhost:8080/redirect.html",
+Blockstack.shared.signIn(redirectURI: "http://localhost:8080/redirect.html",
                                    appDomain: URL(string: "http://localhost:8080")!) { authResult in
     switch authResult {
         case .success(let userData):
@@ -78,7 +78,7 @@ Blockstack.sharedInstance().signIn(redirectURI: "http://localhost:8080/redirect.
 
 
 ```swift
-if (Blockstack.sharedInstance().isSignedIn()) {
+if (Blockstack.shared.isSignedIn()) {
     print("currently signed in")
 } else {
     print("not signed in")
@@ -88,7 +88,7 @@ if (Blockstack.sharedInstance().isSignedIn()) {
 #### Sign out
 
 ```swift
-Blockstack.sharedInstance().signOut()
+Blockstack.shared.signOut()
 ```
 
 #### Retrieve user profile data
@@ -103,7 +103,7 @@ print(retrievedUserData?.profile?.name as Any)
 Store data as json on Gaia
 
 ```swift
-Blockstack.sharedInstance().putFile(path: "myFile.json", content: content) { (publicURL, error) in
+Blockstack.shared.putFile(path: "myFile.json", content: content) { (publicURL, error) in
     if (error != nil) {
         print("put file error")
     } else {
@@ -115,7 +115,7 @@ Blockstack.sharedInstance().putFile(path: "myFile.json", content: content) { (pu
 Read json data from Gaia
 
 ```swift
-Blockstack.sharedInstance().getFile(path: "myFile.json", completion: { (response, error) in
+Blockstack.shared.getFile(path: "myFile.json", completion: { (response, error) in
     if (error != nil) {
         print("get file error")
     } else {
