@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import secp256k1
 
 enum secp256k1Curve {
     static let p = "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f"
