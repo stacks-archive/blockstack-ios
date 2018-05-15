@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         let retrievedUserData = Blockstack.sharedInstance().loadUserData()
         print(retrievedUserData?.profile?.name as Any)
         
-        let name = retrievedUserData?.profile?.name
+        let name = retrievedUserData?.profile?.name ?? "Nameless Person"
         self.nameLabel?.text = "Hello, \(name!)"
         self.signInButton?.isHidden = true
         
