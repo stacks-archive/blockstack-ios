@@ -36,9 +36,11 @@ class ViewController: UIViewController {
         let retrievedUserData = Blockstack.sharedInstance().loadUserData()
         print(retrievedUserData?.profile?.name as Any)
         
-        let name = retrievedUserData?.profile?.name ?? "Nameless Person"
-        self.nameLabel?.text = "Hello, \(name!)"
-        self.signInButton?.isHidden = true
+        DispatchQueue.main.async {
+            let name: String? = retrievedUserData?.profile?.name ?? "Nameless Person"
+            self.nameLabel?.text = "Hello, \(name!)"
+            self.signInButton?.isHidden = true
+        }
         
         // Store data on Gaia
         let content: Dictionary<String, String> = ["property":"value"]
