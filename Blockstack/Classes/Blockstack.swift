@@ -9,24 +9,9 @@ import Foundation
 
 open class Blockstack {
     
-    private var instance: BlockstackInstance?
-    
-    private static var shared: Blockstack = {
-        let blockstack = Blockstack()
-        return blockstack
+    public static let shared: BlockstackInstance = {
+        return BlockstackInstance()
     }()
     
-    open class func sharedInstance() -> BlockstackInstance {
-        return shared.getInstance()
-    }
-    
-    private init() {
-        instance = BlockstackInstance()
-    }
-    
-    private func getInstance() -> BlockstackInstance {
-        return instance!
-    }
 }
-
 
