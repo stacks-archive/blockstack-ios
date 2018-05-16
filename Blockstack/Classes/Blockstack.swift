@@ -7,7 +7,7 @@
 
 import Foundation
 
-open class Blockstack {
+@objc open class Blockstack: NSObject {
     
     private var instance: BlockstackInstance?
     
@@ -16,11 +16,11 @@ open class Blockstack {
         return blockstack
     }()
     
-    open class func sharedInstance() -> BlockstackInstance {
+    @objc open class func sharedInstance() -> BlockstackInstance {
         return shared.getInstance()
     }
     
-    private init() {
+    override private init() {
         instance = BlockstackInstance()
     }
     
