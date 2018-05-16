@@ -89,11 +89,17 @@ public extension BlockstackInstance {
     }
     
     @objc public func putFile(path: String, content: Dictionary<String, String>, completion: @escaping (String?, Error?) -> Void) {
-        putFile(path: path, content: content, completion: completion)
+        let translatedCompletion: (String?, GaiaError?) -> Void = { string, error in
+            completion(string, error)
+        }
+        putFile(path: path, content: content, completion: translatedCompletion)
     }
     
     @objc public func getFile(path: String, completion: @escaping (Any?, Error?) -> Void) {
-        getFile(path: path, completion: completion)
+        let translatedCompletion: (Any?, GaiaError?) -> Void = { value, error in
+            completion(value, error)
+        }
+        getFile(path: path, completion: translatedCompletion)
     }
     
     @objc public func loadUserDataObject() -> UserDataObject? {
