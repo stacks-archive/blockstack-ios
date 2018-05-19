@@ -7,18 +7,17 @@
 
 import Foundation
 
-public class Encryption {
+@objc open class Encryption : NSObject {
     
-    static func decryptPrivateKey(privateKey: String, hexedEncrypted: String) -> String? {
+    @objc static open func decryptPrivateKey(privateKey: String, hexedEncrypted: String) -> String? {
         let encryptedData = Data(fromHexEncodedString: hexedEncrypted)
         let cipherObjectJSONString = String(data: encryptedData!, encoding: .utf8)
         let encryptionJS = EncryptionJS()
         return encryptionJS.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString!)
     }
 
-    static func encryptPrivateKey(publicKey: String, privateKey: String) -> String? {
+    @objc static open func encryptPrivateKey(publicKey: String, privateKey: String) -> String? {
         let encryptionJS = EncryptionJS()
         return encryptionJS.encryptECIES(publicKey: publicKey, content:privateKey)
     }
 }
-
