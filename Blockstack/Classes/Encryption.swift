@@ -15,6 +15,10 @@ public class Encryption {
         let encryptionJS = EncryptionJS()
         return encryptionJS.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString!)
     }
-    
+
+    static func encryptPrivateKey(publicKey: String, privateKey: String) -> String? {
+        let encryptionJS = EncryptionJS()
+        return encryptionJS.encryptECIES(publicKey: publicKey, content:privateKey)
+    }
 }
 

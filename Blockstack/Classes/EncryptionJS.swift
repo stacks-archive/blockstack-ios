@@ -62,4 +62,16 @@ open class EncryptionJS {
         return privateKey!.toString()
     }
 
+    public func encryptECIES(publicKey: String, content: String) -> String? {
+        guard let context = context else {
+            print("JSContext not found.")
+            return nil
+        }
+
+        context.evaluateScript("var cipherData = encryption.encryptECIES('\(publicKey)', '\(content)')")
+        let cipherObjectJSONString = context.evaluateScript("JSON.stringify(cipherData)")
+
+        return cipherObjectJSONString!.toString()
+    }
+
 }
