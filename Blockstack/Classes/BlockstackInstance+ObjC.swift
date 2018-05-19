@@ -110,25 +110,17 @@ public extension BlockstackInstance {
         }
     }
 
-    @objc public func decryptPrivateKey(privateKey: String, 
-                                        hexedEncrypted: String, 
+    @objc public func decryptPrivateKey(privateKey: String,
+                                        hexedEncrypted: String,
                                         completion: @escaping (String?, Error?) -> Void) {
-        do {
-            try let decryptedString = Encryption.decryptPrivateKey(privateKey: privateKey, hexedEncrypted: hexedEncrypted)
-            completion(decryptedString, nil)
-        } catch {
-            completion(nil, 'decryptPrivateKey failed.')
-        }
+        let decryptedString = Encryption.decryptPrivateKey(privateKey: privateKey, hexedEncrypted: hexedEncrypted)
+        completion(decryptedString, nil)
     }
-    
+
     @objc public func encryptPrivateKey(publicKey: String,
                                         privateKey: String,
                                         completion: @escaping (String?, Error?) -> Void) {
-        do {
-            try let encryptedCipherText = Encryption.encryptPrivateKey(publicKey, privateKey)
-            completion(encryptedCipherText, nil)
-        } catch {
-            completion(nil, 'encryptPrivateKey failed.')
-        }
+        let encryptedCipherText = Encryption.encryptPrivateKey(publicKey: publicKey, privateKey: privateKey)
+        completion(encryptedCipherText, nil)
     }
 }
