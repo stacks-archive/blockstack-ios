@@ -21,7 +21,7 @@ public enum BlockstackConstants {
     static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
 }
 
-open class BlockstackInstance {
+@objc open class BlockstackInstance: NSObject {
     var sfAuthSession : SFAuthenticationSession?
     
     open func signIn(redirectURI: String,
@@ -91,11 +91,11 @@ open class BlockstackInstance {
         return ProfileHelper.retrieveProfile()
     }
     
-    public func isSignedIn() -> Bool {
+    @objc public func isSignedIn() -> Bool {
         return (loadUserData() != nil)
     }
     
-    public func signOut() {
+    @objc public func signOut() {
         Keys.clearTransitKey()
         ProfileHelper.clearProfile()
     }
