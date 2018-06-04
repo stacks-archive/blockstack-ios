@@ -43,7 +43,9 @@ and should redirect the browser to `myblockstackapp://XXXX`.
 
 See the [example in the example web app in this repository](Tools/Blockstack-webapp/public/redirect.html).
 
-You can run the example webapp to test out redirects by running `npm install && npm start` from the webapp directory
+You can run the example webapp to test out redirects by running `npm install && npm start` from the webapp directory.
+
+*Note: in production make sure you're using https with cors enabled.*
 
 ## Usage
 
