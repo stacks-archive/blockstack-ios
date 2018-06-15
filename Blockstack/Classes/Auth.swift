@@ -7,6 +7,12 @@
 
 import Foundation
 
+public enum AuthResult {
+    case success(userData: UserData)
+    case cancelled
+    case failed(Error?)
+}
+
 open class Auth {
     static func makeRequest(transitPrivateKey: String,
                             redirectURLScheme: String,

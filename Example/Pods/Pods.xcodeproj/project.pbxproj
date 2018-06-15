@@ -14,7 +14,6 @@
 		09F844F8940C01D9E53A0204D180ED8C /* keys.js in Resources */ = {isa = PBXBuildFile; fileRef = 556FA4BBC0BA3F1C53E31C0DB9E5A9FA /* keys.js */; };
 		0A2CA8B0DD7E300ABFCF1956E6B58248 /* Nimble.h in Headers */ = {isa = PBXBuildFile; fileRef = B30AF97EB4FA2B63633887E934B4CC7A /* Nimble.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A8F528B510EB4BA3B7A613B062D1C9A /* hash_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 445AE4F9F06CD83657BD1AE3286ECDD0 /* hash_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		0DA9E017D1086178F43013EFCF781F60 /* AuthResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE538868075046FE9B514C653B0AFFA /* AuthResult.swift */; };
 		0F0C6E4213763B4980B4B2213A0B4D9D /* ecmult_gen_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 83671857965B16DD2F20268AED7D9441 /* ecmult_gen_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		104E7474069120F41BDCD27DEC198791 /* main_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F44D355DDB620EBB2FB61196D8F16F6 /* main_impl.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		1217A40339A2C13D0ACCA92B18AECB29 /* ecdsa_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = B39E6E6938162237D1146B7883C1CE74 /* ecdsa_impl.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -662,7 +661,6 @@
 			isa = PBXGroup;
 			children = (
 				39F6807DA8ACA55E301A4B21D081E4D3 /* Auth.swift */,
-				CBE538868075046FE9B514C653B0AFFA /* AuthResult.swift */,
 				FEC223BD19046870C4C3E3838585D6DE /* BigInt.swift */,
 				2FCF51CA79DEF96B928CA38BDBC691FF /* BitcoinJS.swift */,
 				5D391939EA6C9B3D5E0807EF32AB92CC /* Blockstack.swift */,
@@ -1392,7 +1390,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A637EC83F00336239D3717655D90CC4D /* Auth.swift in Sources */,
-				0DA9E017D1086178F43013EFCF781F60 /* AuthResult.swift in Sources */,
 				F2F9A3886D8950B238EA16405D5DFF4A /* BigInt.swift in Sources */,
 				68FD822F431DA9C6B6978F9980236190 /* BitcoinJS.swift in Sources */,
 				821170B880822C60D2F16C96EAA21E58 /* Blockstack-dummy.m in Sources */,
