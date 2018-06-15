@@ -150,7 +150,6 @@
 		B13B9E3B758DAB559F69E36EF3D0D93B /* hash.h in Headers */ = {isa = PBXBuildFile; fileRef = 9B39D9DD28FF737B10DA625FF9C2762E /* hash.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		B1CCB691B5185223202F7D70271DBB6E /* Pods-Blockstack_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 659C8264E6EC4D69FF9CB4F3AAB7A92A /* Pods-Blockstack_Tests-dummy.m */; };
 		B2C151B20635A480E1937E3D2B509BB4 /* Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B4B3568DC0E166DDBEBFF555C2866F /* Async.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
-		B5320FCD751976E3FDD4B62FAE26EBA5 /* BlockstackInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D832C97FB97ABC65571A9AB116ECDA /* BlockstackInstance.swift */; };
 		B60956A2B217C23A890441E6F1E6108A /* num.h in Headers */ = {isa = PBXBuildFile; fileRef = 8107999DCA565DEFF7143ADC484865A8 /* num.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		B6B4771B6E53D87415EB5235D02BA290 /* secp256k1.swift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B425EEA4EFF731299EC6F4574B1F4AB /* secp256k1.swift-dummy.m */; };
 		BC5FDD9D4ACADD62D71B1469139F95C5 /* Pods-Blockstack_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B635E4B87996BABBCAC1AFE4C1EA71EE /* Pods-Blockstack_Example-dummy.m */; };
@@ -664,7 +663,6 @@
 				FEC223BD19046870C4C3E3838585D6DE /* BigInt.swift */,
 				2FCF51CA79DEF96B928CA38BDBC691FF /* BitcoinJS.swift */,
 				5D391939EA6C9B3D5E0807EF32AB92CC /* Blockstack.swift */,
-				98D832C97FB97ABC65571A9AB116ECDA /* BlockstackInstance.swift */,
 				09587BCC4D799EE34CF1E25025A6B027 /* Data+HexEncodedString.swift */,
 				1C284894F2D099A1078AB1422883B9F6 /* Encryption.swift */,
 				4B5E8D66986F9F455CCADF30CDCD3DDE /* EncryptionJS.swift */,
@@ -1394,7 +1392,6 @@
 				68FD822F431DA9C6B6978F9980236190 /* BitcoinJS.swift in Sources */,
 				821170B880822C60D2F16C96EAA21E58 /* Blockstack-dummy.m in Sources */,
 				99EBA713CB560679D0606B5546058287 /* Blockstack.swift in Sources */,
-				B5320FCD751976E3FDD4B62FAE26EBA5 /* BlockstackInstance.swift in Sources */,
 				C99DB2B098E35D75CA7BB4E0F01C99B3 /* Data+HexEncodedString.swift in Sources */,
 				98E6C830C6541F86E353716BD53378DC /* Encryption.swift in Sources */,
 				7DF35E796667B727BB0D91E7B6A44E09 /* EncryptionJS.swift in Sources */,
