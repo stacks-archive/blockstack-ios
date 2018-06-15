@@ -158,7 +158,7 @@
 		BF3B7218901760A6226C7F6346BEF454 /* BeCloseTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A004F2E6260353130BFF6F7A9DB3490 /* BeCloseTo.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		BF4AD00F34861AF2137DEAF0470C09FB /* QuickConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 179682A2502A177F1D3F5EB4263215E6 /* QuickConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C06FA100C1BBEE34B863BCB8A65359C1 /* MatcherFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDECD77B3EF2AAA1FD3A87956B1102E /* MatcherFunc.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
-		C1B2E430A45EF8BE0EA9DC1DA4546A05 /* GaiaSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB88C2EB5AC0D65A747DCBFB1A2BDA55 /* GaiaSession.swift */; };
+		C1B2E430A45EF8BE0EA9DC1DA4546A05 /* GaiaHubSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB88C2EB5AC0D65A747DCBFB1A2BDA55 /* GaiaHubSession.swift */; };
 		C1D862177DC2999FAC710AC25F253BD0 /* BeAnInstanceOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A097534270EA2895856BD7E6B01C1AD /* BeAnInstanceOf.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		C2467221FCD579800B9CD8FBBDB10B4D /* CwlCatchBadInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EB47BE313C2E262F1F48D31A032E20 /* CwlCatchBadInstruction.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		C3F5D20A2CC4B9567566ED01644776F3 /* ecmult_const.h in Headers */ = {isa = PBXBuildFile; fileRef = 751E4F69C8D6C4D607CE20161E2F3131 /* ecmult_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -452,7 +452,7 @@
 		D5B417C6621DBCB654E20BCA7709F198 /* BeAKindOf.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BeAKindOf.swift; path = Sources/Nimble/Matchers/BeAKindOf.swift; sourceTree = "<group>"; };
 		D5FBD226A3833CF873A69DD50FD39684 /* Blockstack.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Blockstack.xcconfig; sourceTree = "<group>"; };
 		D70075098119037813E7DB1D012C38A7 /* Pods-Blockstack_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Blockstack_Example-resources.sh"; sourceTree = "<group>"; };
-		DB88C2EB5AC0D65A747DCBFB1A2BDA55 /* GaiaSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GaiaSession.swift; path = Blockstack/Classes/GaiaSession.swift; sourceTree = "<group>"; };
+		DB88C2EB5AC0D65A747DCBFB1A2BDA55 /* GaiaHubSession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GaiaHubSession.swift; path = Blockstack/Classes/GaiaHubSession.swift; sourceTree = "<group>"; };
 		DBEC75030BCA615A1680A95B66F47592 /* AssertionRecorder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssertionRecorder.swift; path = Sources/Nimble/Adapters/AssertionRecorder.swift; sourceTree = "<group>"; };
 		DD6E0B7880F3CB04C843528CF74EBFD4 /* Blockstack-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Blockstack-umbrella.h"; sourceTree = "<group>"; };
 		DD9629FDA521E1EC3DE7925EF7FBD694 /* ExampleGroup.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExampleGroup.swift; path = Sources/Quick/ExampleGroup.swift; sourceTree = "<group>"; };
@@ -662,7 +662,7 @@
 				4B5E8D66986F9F455CCADF30CDCD3DDE /* EncryptionJS.swift */,
 				CEBC1D3C30620C9597C4C3C02A4CA6D8 /* Errors.swift */,
 				E4B1A02F9FA7B52AAA348DD67EF99D2F /* Gaia.swift */,
-				DB88C2EB5AC0D65A747DCBFB1A2BDA55 /* GaiaSession.swift */,
+				DB88C2EB5AC0D65A747DCBFB1A2BDA55 /* GaiaHubSession.swift */,
 				E70604A8BABA4DED5F248B9789A60AFE /* JSONTokens.swift */,
 				B39FA6DF82DB4D2E75DFC6273792F2D0 /* Keys.swift */,
 				34FA79F52DE78D4E2A26CD17ACA5FC60 /* KeysJS.swift */,
@@ -1388,7 +1388,7 @@
 				7DF35E796667B727BB0D91E7B6A44E09 /* EncryptionJS.swift in Sources */,
 				61F86F6C5005C6534DF6FB4E6597EBA1 /* Errors.swift in Sources */,
 				1EAFB964BDB557CD5E431C48F13FD6F5 /* Gaia.swift in Sources */,
-				C1B2E430A45EF8BE0EA9DC1DA4546A05 /* GaiaSession.swift in Sources */,
+				C1B2E430A45EF8BE0EA9DC1DA4546A05 /* GaiaHubSession.swift in Sources */,
 				495F89B05C9848A085C0CB9FF917ECF4 /* JSONTokens.swift in Sources */,
 				388F1CD2849F57950F39E020AE6DE214 /* Keys.swift in Sources */,
 				D8E34F075CB55E97B3A93B8BFEF5CE66 /* KeysJS.swift in Sources */,

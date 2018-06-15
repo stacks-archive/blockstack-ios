@@ -104,24 +104,24 @@ open class Blockstack {
     }
     
     public func putFile(path: String, content: Dictionary<String, String>, completion: @escaping (String?, GaiaError?) -> Void) {
-        Gaia.sharedSession().getOrSetLocalHubConnection { error in
-            guard error == nil else {
+        Gaia.ensureHubSession { session, error in
+            guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            Gaia.sharedSession().putFile(path: path, content: content, completion: completion)
+            session.putFile(path: path, content: content, completion: completion)
         }
     }
     
     public func getFile(path: String, completion: @escaping (Any?, GaiaError?) -> Void) {
-        Gaia.sharedSession().getOrSetLocalHubConnection { error in
-            guard error == nil else {
+        Gaia.ensureHubSession { session, error in
+            guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            Gaia.sharedSession().getFile(path: path, completion: completion)
+            session.getFile(path: path, completion: completion)
         }
     }
 }
