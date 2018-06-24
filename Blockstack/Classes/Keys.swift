@@ -105,7 +105,7 @@ open class Keys {
             || d?._compare(to: nBigInt!) == .equal
             || d?._compare(to: nBigInt!) == .greaterThan)
         
-        return d?.toString(radix: 16, lowercase: true).leftPadding(toLength: keyLength*2, withPad: "0")
+        return d?.toString(radix: 16, lowercase: true).paddingLeft(to: keyLength * 2, with: "0")
     }
     
     static func generateRandomBytes(bytes: Int = 32) -> String? {

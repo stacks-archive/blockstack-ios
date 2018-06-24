@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ProfileHelper {    
+public class ProfileHelper {
     static func fetch(profileURL: URL, completion: @escaping (Profile?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: profileURL) { data, response, error in
             guard let data = data, error == nil else {
@@ -35,7 +35,7 @@ public class ProfileHelper {
     }
     
     static func retrieveProfile() -> UserData? {
-        if let data = UserDefaults.standard.value(forKey:BlockstackConstants.ProfileUserDefaultLabel) as? Data {
+        if let data = UserDefaults.standard.value(forKey: BlockstackConstants.ProfileUserDefaultLabel) as? Data {
             return try? PropertyListDecoder().decode(UserData.self, from: data)
         } else {
             return nil
