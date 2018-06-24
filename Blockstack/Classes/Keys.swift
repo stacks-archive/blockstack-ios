@@ -110,8 +110,9 @@ open class Keys {
     
     static func generateRandomBytes(bytes: Int = 32) -> String? {
         var randomData = Data(count: bytes)
+        let count = randomData.count
         let result = randomData.withUnsafeMutableBytes {
-            SecRandomCopyBytes(kSecRandomDefault, randomData.count, $0)
+            SecRandomCopyBytes(kSecRandomDefault, count, $0)
         }
         if result == errSecSuccess {
             return randomData.hexEncodedString()

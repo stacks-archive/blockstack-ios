@@ -59,7 +59,7 @@ open class BitcoinJS {
         }
         
         context?.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),
-                           forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)!)
+                           forKeyedSubscript: "_consoleLog" as NSCopying & NSObjectProtocol)
         
         return context
     }()
