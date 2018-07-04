@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet var signInButton: UIButton?
     @IBOutlet var nameLabel: UILabel?
 
-    @IBAction func signin() {
+    @IBAction func signIn() {
         Blockstack.shared.signIn(redirectURI: "http://localhost:8080/redirect.html",
                                  appDomain: URL(string: "http://localhost:8080")!) { authResult in
             switch authResult {
