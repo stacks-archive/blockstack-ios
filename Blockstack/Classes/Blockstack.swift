@@ -48,46 +48,33 @@ open class Blockstack {
         //        print("appDomain", appDomain)
         //        print("appBundleID", appBundleID)
         
-        let authRequest: String = Auth.makeRequest(transitPrivateKey: transitKey,
-                                                   redirectURLScheme: redirectURI,
-                                                   manifestURI: _manifestURI!,
-                                                   appDomain: appDomain,
-                                                   appBundleID: appBundleID)
-        
-        startSignIn(redirectURLScheme: redirectURI, authRequest: authRequest) { (url, error) in
-            guard error == nil else {
-                completion?(AuthResult.failed(error))
-                return
-            }
-            
-            if let queryParams = url!.queryParameters {
-                let authResponse: String = queryParams["authResponse"]!
-                Auth.handleAuthResponse(authResponse: authResponse,
-                                        transitPrivateKey: transitKey,
-                                        completion: completion)
-            }
-        }
-    }
-    
-    private func startSignIn(redirectURLScheme: String,
-                     authRequest: String,
-                     completion: @escaping SFAuthenticationSession.CompletionHandler) {
+        let authRequest = Auth.makeRequest(transitPrivateKey: transitKey,
+                                           redirectURLScheme: redirectURI,
+                                           manifestURI: _manifestURI!,
+                                           appDomain: appDomain,
+                                           appBundleID: appBundleID)
         
         var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
         let url = urlComps.url!
         
         var responded = false
-        
-        sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURLScheme) { (url, error) in
-            guard responded == false else {
+        self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI) { (url, error) in
+            guard !responded else {
                 return
             }
-            
             responded = true
-            completion(url, error)
+            
+            self.sfAuthSession = nil
+            guard error == nil, let queryParams = url?.queryParameters, let authResponse = queryParams["authResponse"] else {
+                completion?(AuthResult.failed(error))
+                return
+            }
+            Auth.handleAuthResponse(authResponse: authResponse,
+                                    transitPrivateKey: transitKey,
+                                    completion: completion)
         }
-        sfAuthSession?.start()
+        self.sfAuthSession?.start()
     }
     
     public func loadUserData() -> UserData? {
