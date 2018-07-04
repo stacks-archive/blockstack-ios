@@ -14,6 +14,7 @@ public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
     static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
+    static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
     static let AuthProtocolVersion = "1.1.0"
     static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
@@ -85,9 +86,19 @@ open class Blockstack {
         return (loadUserData() != nil)
     }
     
-    public func signOut() {
+    public func signOut(redirectURI: String, completion: @escaping (Error?) -> ()) {
         Keys.clearTransitKey()
         ProfileHelper.clearProfile()
+
+        // TODO: If this had a ViewController passed in we can present SFSafariViewController
+        // without any "sign in" dialog popping up. Alternatively, we can present from
+        // UIApplication.shared.keyWindow?.rootViewController after checking for
+        // UINavigationViewController and UITabViewController.
+        self.sfAuthSession = SFAuthenticationSession(url: URL(string: BlockstackConstants.BrowserWebClearAuthEndpoint)!, callbackURLScheme: redirectURI) { _, error in
+            self.sfAuthSession = nil
+            completion(error)
+        }
+        self.sfAuthSession?.start()
     }
     
     public func putFile(path: String, content: Dictionary<String, String>, completion: @escaping (String?, GaiaError?) -> Void) {

@@ -7,6 +7,7 @@
 
 import UIKit
 import Blockstack
+import SafariServices
 
 class ViewController: UIViewController {
 
@@ -23,8 +24,7 @@ class ViewController: UIViewController {
                 case .cancelled:
                     print("sign in cancelled")
                 case .failed(let error):
-                    print("sign in failed")
-                    print(error!)
+                    print("sign in failed, error: ", error ?? "n/a")
             }
         }
     }
@@ -63,11 +63,19 @@ class ViewController: UIViewController {
             }
         }
         
-        // Sign user out
-        // Blockstack.shared.signOut()
-        
         // Check if signed in
         // checkIfSignedIn()
+    }
+    
+    @IBAction func signOut(_ sender: Any) {
+        // Sign user out
+        Blockstack.shared.signOut(redirectURI: "http://localhost:8080/redirect.html") { error in
+            if let error = error {
+                print("sign out failed, error: \(error)")
+            } else {
+                print("sign out success")
+            }
+        }
     }
     
     func checkIfSignedIn() {
