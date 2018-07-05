@@ -59,6 +59,7 @@ open class Blockstack {
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
         let url = urlComps.url!
         
+        // TODO: Use ASWebAuthenticationSession for iOS 12
         var responded = false
         self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI) { (url, error) in
             guard !responded else {
@@ -86,15 +87,13 @@ open class Blockstack {
         return (loadUserData() != nil)
     }
     
+    /// The redirectURI should be a custom scheme registered in the app Info.plist, i.e. "myBlockstackApp"
     public func signOut(redirectURI: String, completion: @escaping (Error?) -> ()) {
         Keys.clearTransitKey()
         ProfileHelper.clearProfile()
-
-        // TODO: If this had a ViewController passed in we can present SFSafariViewController
-        // without any "sign in" dialog popping up. Alternatively, we can present from
-        // UIApplication.shared.keyWindow?.rootViewController after checking for
-        // UINavigationViewController and UITabViewController.
-        self.sfAuthSession = SFAuthenticationSession(url: URL(string: BlockstackConstants.BrowserWebClearAuthEndpoint)!, callbackURLScheme: redirectURI) { _, error in
+        
+        // TODO: Use ASWebAuthenticationSession for iOS 12
+        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)?redirect_uri=\(redirectURI)")!, callbackURLScheme: nil) { _, error in
             self.sfAuthSession = nil
             completion(error)
         }

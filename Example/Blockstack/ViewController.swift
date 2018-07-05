@@ -69,7 +69,7 @@ class ViewController: UIViewController {
     
     @IBAction func signOut(_ sender: Any) {
         // Sign user out
-        Blockstack.shared.signOut(redirectURI: "http://localhost:8080/redirect.html") { error in
+        Blockstack.shared.signOut(redirectURI: "myBlockstackApp") { error in
             if let error = error {
                 print("sign out failed, error: \(error)")
             } else {
