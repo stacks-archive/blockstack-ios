@@ -14,6 +14,7 @@ public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
     static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
+    static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
     static let AuthProtocolVersion = "1.1.0"
     static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
@@ -58,6 +59,7 @@ open class Blockstack {
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
         let url = urlComps.url!
         
+        // TODO: Use ASWebAuthenticationSession for iOS 12
         var responded = false
         self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI) { (url, error) in
             guard !responded else {
@@ -85,9 +87,17 @@ open class Blockstack {
         return (loadUserData() != nil)
     }
     
-    public func signOut() {
+    /// The redirectURI should be a custom scheme registered in the app Info.plist, i.e. "myBlockstackApp"
+    public func signOut(redirectURI: String, completion: @escaping (Error?) -> ()) {
         Keys.clearTransitKey()
         ProfileHelper.clearProfile()
+        
+        // TODO: Use ASWebAuthenticationSession for iOS 12
+        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)?redirect_uri=\(redirectURI)")!, callbackURLScheme: nil) { _, error in
+            self.sfAuthSession = nil
+            completion(error)
+        }
+        self.sfAuthSession?.start()
     }
     
     public func putFile(path: String, content: Dictionary<String, String>, completion: @escaping (String?, GaiaError?) -> Void) {
