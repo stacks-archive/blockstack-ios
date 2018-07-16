@@ -86,6 +86,7 @@ open class Keys {
      Generate an elliptic curve private key for secp256k1.
      */
     static func makeECPrivateKey() -> String? {
+
         let keyLength = 32
         let n = secp256k1Curve.n
         let nBigInt = _BigInt<UInt>(n, radix: 16)
@@ -131,5 +132,32 @@ open class Keys {
         let keysJS = KeysJS()
         return keysJS.getAddressFromPublicKey(publicKey)
     }
+    
+    static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) {
+        let keysJS = KeysJS()
+        keysJS.computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
+        
+        
 
+        //        let ephemeralSecretKeyBytes: [UInt8] = Array(ephemeralSecretKey.utf8)
+        
+        //let data = [UInt8]()
+        
+//        guard let ctx = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN)) else {
+//            return
+//        }
+//
+//        if let data = ephemeralSecretKey.data(using: String.Encoding.utf8) {
+//            data.withUnsafeBytes { (uint8Ptr: UnsafePointer<UInt8>) in
+//                var secp256k1PubKey = secp256k1_pubkey.init()
+//                let hoho = secp256k1_ec_pubkey_parse(ctx, &secp256k1PubKey, uint8Ptr, 64)
+//                print("VALID: \(hoho)")
+//                //`rawPtr` (and `uint8Ptr`) is guaranteed to be valid in this closure
+//                //...
+//                //You have no need manage `rawPtr`.
+//            }
+//        }
+//        print("yoho")
+        
+    }
 }

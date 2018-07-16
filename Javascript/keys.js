@@ -23682,6 +23682,7 @@ exports.getEntropy = getEntropy;
 exports.makeECPrivateKey = makeECPrivateKey;
 exports.publicKeyToAddress = publicKeyToAddress;
 exports.getPublicKeyFromPrivate = getPublicKeyFromPrivate;
+exports.computeSharedSecret = computeSharedSecret;
 
 var _crypto = require('crypto');
 
@@ -23709,6 +23710,10 @@ function publicKeyToAddress(publicKey) {
   var publicKeyHash160 = _bitcoinjsLib.crypto.hash160(publicKeyBuffer);
   var address = _bitcoinjsLib.address.toBase58Check(publicKeyHash160, 0x00);
   return address;
+}
+
+function computeSharedSecret(publicKey) {
+
 }
 
 function getPublicKeyFromPrivate(privateKey) {

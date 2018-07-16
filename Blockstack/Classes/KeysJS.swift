@@ -72,4 +72,14 @@ open class KeysJS {
         return address!.toString()
     }
     
+    public func computeSecret(privateKey: String, publicKey: String) -> String? {
+        guard let context = context else {
+            print("JSContext not found.")
+            return nil
+        }
+
+        let keyPair = context.evaluateScript("var sk = new KeyPair(ecurve, { priv:'\(privateKey)', privEnc:'hex'})")
+        return nil
+
+    }
 }

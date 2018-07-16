@@ -22659,14 +22659,20 @@ function getHexFromBN(bnInput) {
 function encryptECIES(publicKey, content) {
   var isString = typeof content === 'string';
   var plainText = Buffer.from(content); // always copy to buffer
-
+ 
+  // Get hex bob public key
   var ecPK = ecurve.keyFromPublic(publicKey, 'hex').getPublic();
+  // Generate message key
   var ephemeralSK = ecurve.genKeyPair();
+  // Get public version of message key
   var ephemeralPK = ephemeralSK.getPublic();
+  // Get shared message secret from messagekey and bob public key
   var sharedSecret = ephemeralSK.derive(ecPK);
 
+  // HEX the sharedsecret
   var sharedSecretHex = getHexFromBN(sharedSecret);
 
+  // Get sha512 hash of the sharedsecret and derive an "encryptionkey" and "hmac" key.
   var sharedKeys = sharedSecretToKeys(new Buffer(sharedSecretHex, 'hex'));
 
   var initializationVector = _crypto2.default.randomBytes(16);
