@@ -13676,6 +13676,7 @@ function KeyPair(ec, options) {
   if (options.pub)
     this._importPublic(options.pub, options.pubEnc);
 }
+
 module.exports = KeyPair;
 
 KeyPair.fromPublic = function fromPublic(ec, pub, enc) {
@@ -29845,3 +29846,5 @@ arguments[4][102][0].apply(exports,arguments)
 arguments[4][144][0].apply(exports,arguments)
 },{"buffer":48,"dup":144}]},{},[160])(160)
 });
+
+var something = keys.KeyPair()
