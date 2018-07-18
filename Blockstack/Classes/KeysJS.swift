@@ -52,10 +52,8 @@ open class KeysJS {
             print("JSContext not found.")
             return nil
         }
-        
         let publicKey = context.evaluateScript("keys.getPublicKeyFromPrivate('\(privateKey)')")
-        
-        return publicKey!.toString()
+        return publicKey?.toString()
     }
     
     public func getAddressFromPublicKey(_ publicKey: String) -> String? {
@@ -63,9 +61,7 @@ open class KeysJS {
             print("JSContext not found.")
             return nil
         }
-        
         let address = context.evaluateScript("keys.publicKeyToAddress('\(publicKey)')")
-        
-        return address!.toString()
+        return address?.toString()
     }
 }
