@@ -53,6 +53,7 @@
 		41C783192F7ECD485C8C6384D30CBF11 /* CwlDarwinDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB3B1910F887FC0F146F5FEB3257330 /* CwlDarwinDefinitions.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		42EAAE8CFB95F2352FCE036F263263E1 /* CwlCatchException.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC30D5458564E1407E6523D2D7947D1 /* CwlCatchException.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		45F183320C688F9978649F30ABE21D09 /* MatchError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DC43AD231D52E4E98CB34D7CBE57E6 /* MatchError.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
+		46B9AA0B20FED71600C457FA /* EllipticJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B9AA0A20FED71600C457FA /* EllipticJS.swift */; };
 		495F89B05C9848A085C0CB9FF917ECF4 /* JSONTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70604A8BABA4DED5F248B9789A60AFE /* JSONTokens.swift */; };
 		498877F91901D47E6D4470A4FDC6FF7E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A8E278B49CB1B362F9721A2E453961 /* Foundation.framework */; };
 		4B6B8C7EA02D12DA6AA5B1461A6377B5 /* group.h in Headers */ = {isa = PBXBuildFile; fileRef = C7C8C7535DA0F652C137FF9AB984E433 /* group.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -321,6 +322,7 @@
 		41C343DA0FA8D5CE40BCBD69763B485C /* num_gmp_impl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = num_gmp_impl.h; path = secp256k1/Classes/secp256k1/src/num_gmp_impl.h; sourceTree = "<group>"; };
 		445AE4F9F06CD83657BD1AE3286ECDD0 /* hash_impl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = hash_impl.h; path = secp256k1/Classes/secp256k1/src/hash_impl.h; sourceTree = "<group>"; };
 		44F98FF3F300A6DD36F27E5C142821CF /* AssertionDispatcher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AssertionDispatcher.swift; path = Sources/Nimble/Adapters/AssertionDispatcher.swift; sourceTree = "<group>"; };
+		46B9AA0A20FED71600C457FA /* EllipticJS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EllipticJS.swift; sourceTree = "<group>"; };
 		470DF2C290604AA14DCD8D112886C81A /* XCTestSuite+QuickTestSuiteBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "XCTestSuite+QuickTestSuiteBuilder.m"; path = "Sources/QuickObjectiveC/XCTestSuite+QuickTestSuiteBuilder.m"; sourceTree = "<group>"; };
 		475DEDE60E6C4F8F9C5B6049637103A2 /* Predicate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Predicate.swift; path = Sources/Nimble/Matchers/Predicate.swift; sourceTree = "<group>"; };
 		48BBDB156AEE0DBE716160B37AB8C43C /* jsontokens.js */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.javascript; name = jsontokens.js; path = Javascript/jsontokens.js; sourceTree = "<group>"; };
@@ -669,6 +671,7 @@
 				788A570CEC49865C2A265F490B78D697 /* ProfileHelper.swift */,
 				1BB9C1B1B18D06607A675ECBE56CC17E /* Extensions.swift */,
 				EBA9FCFA4A9EC94AD485AA5C1D8C9842 /* Token.swift */,
+				46B9AA0A20FED71600C457FA /* EllipticJS.swift */,
 				96D9D53F72433707991A73B6F3605417 /* Pod */,
 				419E1E669FAAE976112A7C3284FEC24F /* Resources */,
 				482CF805900E65206A8C5212565BFA8C /* Support Files */,
@@ -1387,6 +1390,7 @@
 				61F86F6C5005C6534DF6FB4E6597EBA1 /* Errors.swift in Sources */,
 				1EAFB964BDB557CD5E431C48F13FD6F5 /* Gaia.swift in Sources */,
 				C1B2E430A45EF8BE0EA9DC1DA4546A05 /* GaiaHubSession.swift in Sources */,
+				46B9AA0B20FED71600C457FA /* EllipticJS.swift in Sources */,
 				495F89B05C9848A085C0CB9FF917ECF4 /* JSONTokens.swift in Sources */,
 				388F1CD2849F57950F39E020AE6DE214 /* Keys.swift in Sources */,
 				D8E34F075CB55E97B3A93B8BFEF5CE66 /* KeysJS.swift in Sources */,

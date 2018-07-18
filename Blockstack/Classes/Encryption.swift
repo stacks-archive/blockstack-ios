@@ -16,10 +16,20 @@ public class Encryption {
         return encryptionJS.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString!)
     }
     
-    public static func encrypt(content: String, recipientPublicKey: String) {
-        let encryptionJS = EncryptionJS()
-        encryptionJS.encryptECIES(publicKey: recipientPublicKey, content: content)
+    public static func encryptECIES(content: String, recipientPublicKey: String) -> [String: String]? {
+        
+        guard let ephemeralSK = Keys.makeECPrivateKey(),
+            let ephemeralPK = Keys.getPublicKeyFromPrivate(ephemeralSK),
+            let sharedSecret = Keys.deriveSharedSecret(ephemeralSecretKey: ephemeralSK, recipientPublicKey: ephemeralPK) else {
+            return nil
+        }
+        
+        print(sharedSecret)
+        
+        
+        let encryptedContent = [String: String]()
+        // Populate encryptedContent
+        return encryptedContent
     }
-    
 }
 

@@ -62,7 +62,7 @@ class ViewController: UIViewController {
             return
         }
         
-        Encryption.encrypt(content: "hello", recipientPublicKey: key)
+        Encryption.encryptECIES(content: "hello", recipientPublicKey: key)
 //        Blockstack.shared.putFile(path: "test.json", content: content) { (publicURL, error) in
 //            if error != nil {
 //                print("put file error")

@@ -47,40 +47,6 @@ open class EncryptionJS {
         return context
     }()
     
-    public func encryptECIES(publicKey: String, content: String) -> [String: String]? {
-        guard let context = context else {
-            print("JSContext not found.")
-            return nil
-        }
-        
-        guard let ephemeralSK = Keys.makeECPrivateKey(), let ephemeralPK = Keys.getPublicKeyFromPrivate(ephemeralSK) else {
-            return nil
-        }
-        Keys.deriveSharedSecret(ephemeralSecretKey: ephemeralSK, recipientPublicKey: ephemeralPK)
-//        
-//        
-//        let getSharedSecretScript = """
-//            // Get hex bob public key
-//            var ecPK = ecurve.keyFromPublic(publicKey, 'hex').getPublic();
-//            // Generate message key
-//            var ephemeralSK = ecurve.genKeyPair();
-//            // Get public version of message key
-//            var ephemeralPK = ephemeralSK.getPublic();
-//            // Get shared message secret from messagekey and bob public key
-//            var sharedSecret = ephemeralSK.derive(ecPK);
-//
-//            // HEX the sharedsecret
-//            var sharedSecretHex = getHexFromBN(sharedSecret);
-//        """
-//       
-//        context.evaluateScript(getSharedSecretScript)
-//        context.evaluateScript("_consoleLog(sharedSecretHex)")
-
-        let encryptedContent = [String: String]()
-        // Populate encryptedContent
-        return encryptedContent
-    }
-    
     public func decryptECIES(privateKey: String, cipherObjectJSONString: String) -> String? {
         guard let context = context else {
             print("JSContext not found.")

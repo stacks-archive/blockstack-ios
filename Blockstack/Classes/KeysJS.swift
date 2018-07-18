@@ -30,27 +30,7 @@ open class KeysJS {
         } catch (let error) {
             print("Error while processing script file: \(error)")
         }
-        
-        
-        
-        guard let
-            ellipticJSPath = resourceBundle?.path(forResource: "elliptic", ofType: "js") else {
-                print(resourceBundle as Any)
-                print("Unable to read resource files.")
-                return nil
-        }
 
-        do {
-            let ellipticJS = try String(contentsOfFile: ellipticJSPath, encoding: String.Encoding.utf8)
-            _ = context?.evaluateScript(ellipticJS)
-
-        } catch (let error) {
-            print("Error while processing script file: \(error)")
-        }
-
-        
-        
-        
         context?.exceptionHandler = {(context: JSContext?, exception: JSValue?) -> Void in
             print(exception!.toString())
         }
@@ -66,9 +46,6 @@ open class KeysJS {
         
         return context
     }()
-    
-    init() {
-    }
     
     public func getPublicKeyFromPrivate(_ privateKey: String) -> String? {
         guard let context = context else {
@@ -90,18 +67,5 @@ open class KeysJS {
         let address = context.evaluateScript("keys.publicKeyToAddress('\(publicKey)')")
         
         return address!.toString()
-    }
-    
-    public func computeSecret(privateKey: String, publicKey: String) -> String? {
-        guard let context = context else {
-            print("JSContext not found.")
-            return nil
-        }
-        _ = context.evaluateScript("const curve = new ec('secp256k1')")
-        let keyPair = context.evaluateScript("const keypair = curve.keyFromPrivate('931cb15872843dbc6e60f1ec9ac7b540320289a3bb68af85e62127d95129d6b2', 'hex')")
-        _ = context.evaluateScript("console.log(keypair)")
-//        let keyPair = context.evaluateScript("var sk = new keys.KeyPair({hello:'test'}, { priv:'\(privateKey)', privEnc:'hex'})")
-        return nil
-
     }
 }
