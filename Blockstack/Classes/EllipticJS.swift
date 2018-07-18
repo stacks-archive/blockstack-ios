@@ -35,6 +35,16 @@ open class EllipticJS {
             print(exception!.toString())
         }
         
+        _ = context?.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
+        
+        let consoleLog: @convention(block) (String) -> Void = { message in
+            print("console.log: " + message)
+        }
+        
+        context?.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),
+                           forKeyedSubscript: "_consoleLog" as NSCopying & NSObjectProtocol)
+
+        
         return context
     }()
     
@@ -68,5 +78,21 @@ open class EllipticJS {
         let sharedSecretHex = context.evaluateScript("getHexFromBN(sharedSecretBN)")
         return sharedSecretHex?.toString()
     }
+    
+    public func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool) -> String? {
+        guard let context = context else {
+            print("JSContext not found.")
+            return nil
+        }
+        context.evaluateScript("""
+            const curve = new ec('secp256k1');
+            const publicKey = curve.keyFromPrivate('\(privateKey)', 'hex').getPublic();
+            """)
+        let publicKeyJS = compressed ?
+            context.evaluateScript("publicKey.encodeCompressed('hex')") :
+            context.evaluateScript("publicKey.encode('hex')")
+        return publicKeyJS?.toString()
+    }
+
 }
 

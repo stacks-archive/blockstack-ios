@@ -58,7 +58,7 @@ class ViewController: UIViewController {
         // Store data on Gaia
         let content: Dictionary<String, String> = ["property": "value"]
 
-        guard let key = Blockstack.shared.loadUserData()?.privateKey else {
+        guard let key = Blockstack.shared.loadUserData()?.publicKeys?.first else {
             return
         }
         

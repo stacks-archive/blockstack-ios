@@ -123,9 +123,10 @@ open class Keys {
         }
     }
     
-    static func getPublicKeyFromPrivate(_ privateKey: String) -> String? {
-        let keysJS = KeysJS()
-        return keysJS.getPublicKeyFromPrivate(privateKey)
+    static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
+        let ellipticJS = EllipticJS()
+        ellipticJS.getPublicKeyFromPrivate(privateKey, compressed: compressed)
+        return nil
     }
     
     static func getAddressFromPublicKey(_ publicKey: String) -> String? {
