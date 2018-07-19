@@ -123,19 +123,15 @@ open class Keys {
         }
     }
     
-    static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
-        let ellipticJS = EllipticJS()
-        ellipticJS.getPublicKeyFromPrivate(privateKey, compressed: compressed)
-        return nil
+    open static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
+        return EllipticJS().getPublicKeyFromPrivate(privateKey, compressed: compressed)
     }
     
     static func getAddressFromPublicKey(_ publicKey: String) -> String? {
-        let keysJS = KeysJS()
-        return keysJS.getAddressFromPublicKey(publicKey)
+        return KeysJS().getAddressFromPublicKey(publicKey)
     }
     
     static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) -> String? {
-        let ellipticJS = EllipticJS()
-        return ellipticJS.computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
+        return EllipticJS().computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
     }
 }

@@ -58,11 +58,21 @@ class ViewController: UIViewController {
         // Store data on Gaia
         let content: Dictionary<String, String> = ["property": "value"]
 
-        guard let key = Blockstack.shared.loadUserData()?.publicKeys?.first else {
-            return
+        guard let userData = Blockstack.shared.loadUserData(),
+            let privateKey = userData.privateKey,
+            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
+                return
         }
         
-        Encryption.encryptECIES(content: "hello", recipientPublicKey: key)
+        // Encrypt content
+        guard let cipherText = Encryption.encryptECIES(content: "hello", recipientPublicKey: publicKey) else {
+            return
+        }
+
+        // Now decrypt content
+        let plainText = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherText)
+        print(plainText)
+
 //        Blockstack.shared.putFile(path: "test.json", content: content) { (publicURL, error) in
 //            if error != nil {
 //                print("put file error")
