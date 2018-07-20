@@ -55,7 +55,6 @@ open class EncryptionJS {
         
         context.evaluateScript("var encryptedObj = JSON.parse('\(cipherObjectJSONString)')")
         let privateKey = context.evaluateScript("encryption.decryptECIES('\(privateKey)', encryptedObj)")
-        
         return privateKey!.toString()
     }
 

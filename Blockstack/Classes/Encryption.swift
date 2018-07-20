@@ -18,7 +18,7 @@ public class Encryption {
     }
     
     // TODO: Support content type Any
-    public static func encryptECIES(content: String, recipientPublicKey: String) -> String? {
+    public static func encryptECIES(content: String, recipientPublicKey: String, isString: Bool = false) -> String? {
         guard let ephemeralSK = Keys.makeECPrivateKey(),
             let sharedSecret = Keys.deriveSharedSecret(ephemeralSecretKey: ephemeralSK, recipientPublicKey: recipientPublicKey) else {
             return nil
@@ -42,7 +42,7 @@ public class Encryption {
                 "ephemeralPK": compressedEphemeralPKHex,
                 "cipherText": cipherText.toHexString(),
                 "mac": mac.toHexString(),
-                "wasString": content is String
+                "wasString": isString
             ]
             return cipherObject.toJsonString()
         } catch {
