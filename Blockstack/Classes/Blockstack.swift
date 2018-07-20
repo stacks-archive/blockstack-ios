@@ -12,9 +12,9 @@ import secp256k1
 
 public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
-    static let BrowserWebAppURL = "https://deploy-preview-1504--reporter-beaver-73821.netlify.com"
-    static let BrowserWebAppAuthEndpoint = "https://deploy-preview-1504--reporter-beaver-73821.netlify.com/auth"
-    static let BrowserWebClearAuthEndpoint = "https://deploy-preview-1504--reporter-beaver-73821.netlify.com/clear-auth"
+    static let BrowserWebAppURL = "https://browser.blockstack.org"
+    static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
+    static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
     static let AuthProtocolVersion = "1.1.0"
     static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
@@ -68,7 +68,7 @@ open class Blockstack {
             responded = true
             
             self.sfAuthSession = nil
-            guard error == nil, let authResponse = url?.absoluteString.replacingOccurrences(of: "myblockstackapp:", with: "") else {
+            guard error == nil, let queryParams = url?.queryParameters, let authResponse = queryParams["authResponse"] else {
                 completion?(AuthResult.failed(error))
                 return
             }
