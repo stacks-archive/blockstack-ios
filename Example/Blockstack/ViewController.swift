@@ -15,8 +15,9 @@ class ViewController: UIViewController {
     @IBOutlet var nameLabel: UILabel?
 
     @IBAction func signIn() {
-        Blockstack.shared.signIn(redirectURI: "http://localhost:8080/redirect.html",
-                                 appDomain: URL(string: "http://localhost:8080")!) { authResult in
+        // Address of deployed example web app
+        Blockstack.shared.signIn(redirectURI: "https://heuristic-brown-7a88f8.netlify.com/redirect.html",
+                                 appDomain: URL(string: "https://heuristic-brown-7a88f8.netlify.com")!) { authResult in
             switch authResult {
                 case .success(let userData):
                     print("sign in success")
