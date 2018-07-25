@@ -14,11 +14,11 @@ public class Encryption {
         let encryptedData = Data(fromHexEncodedString: hexedEncrypted)
         let cipherObjectJSONString = String(data: encryptedData!, encoding: .utf8)
         let encryptionJS = EncryptionJS()
-        return encryptionJS.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString!)
+        return encryptionJS.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString!)?.plainText
     }
     
     // TODO: Support content type Any
-    public static func encryptECIES(content: String, recipientPublicKey: String, isString: Bool = false) -> String? {
+    public static func encryptECIES(recipientPublicKey: String, content: Array<UInt8>, isString: Bool) -> String? {
         guard let ephemeralSK = Keys.makeECPrivateKey(),
             let sharedSecret = Keys.deriveSharedSecret(ephemeralSecretKey: ephemeralSK, recipientPublicKey: recipientPublicKey) else {
             return nil
@@ -30,7 +30,7 @@ public class Encryption {
         let initializationVector = AES.randomIV(16)
         do {
             let aes = try AES(key: encryptionKey, blockMode: CBC(iv: initializationVector))
-            let cipherText = try aes.encrypt(Array(content.utf8))
+            let cipherText = try aes.encrypt(content)
             guard let compressedEphemeralPKHex = Keys.getPublicKeyFromPrivate(ephemeralSK, compressed: true) else {
                 return nil
             }
@@ -51,7 +51,29 @@ public class Encryption {
         return nil
     }
     
-    public static func decryptECIES(privateKey: String, cipherObjectJSONString: String) -> String? {
+    public static func encryptECIES(recipientPublicKey: String, content: String) -> String? {
+        return self.encryptECIES(recipientPublicKey: recipientPublicKey, content: Array(content.utf8), isString: true)
+    }
+    
+    public static func decryptECIES(privateKey: String, cipherObjectJSONString: String) -> DecryptedValue? {
         return EncryptionJS().decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString)
+    }
+}
+
+public struct DecryptedValue {
+    public var isString: Bool {
+        return self.plainText != nil
+    }
+    public let plainText: String?
+    public let bytes: Array<UInt8>?
+    
+    init(text: String) {
+        self.plainText = text
+        self.bytes = nil
+    }
+    
+    init(bytes: Array<UInt8>) {
+        self.bytes = bytes
+        self.plainText = nil
     }
 }

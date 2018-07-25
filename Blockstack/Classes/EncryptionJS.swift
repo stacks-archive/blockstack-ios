@@ -9,7 +9,6 @@ import Foundation
 import JavaScriptCore
 
 open class EncryptionJS {
-    
     lazy var context: JSContext? = {
         let context = JSContext()
         
@@ -42,20 +41,31 @@ open class EncryptionJS {
         }
         
         context?.setObject(unsafeBitCast(consoleLog, to: AnyObject.self),
-                           forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)!)
+                           forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol)?)
         
         return context
     }()
     
-    public func decryptECIES(privateKey: String, cipherObjectJSONString: String) -> String? {
+    public func decryptECIES(privateKey: String, cipherObjectJSONString: String) -> DecryptedValue? {
         guard let context = context else {
             print("JSContext not found.")
             return nil
         }
         
         context.evaluateScript("var encryptedObj = JSON.parse('\(cipherObjectJSONString)')")
-        let privateKey = context.evaluateScript("encryption.decryptECIES('\(privateKey)', encryptedObj)")
-        return privateKey!.toString()
+        guard let plainText = context.evaluateScript("encryption.decryptECIES('\(privateKey)', encryptedObj)") else {
+            return nil
+        }
+        if plainText.isString {
+            return DecryptedValue(text: plainText.toString())
+        } else if let ptr = JSObjectGetTypedArrayBytesPtr(context.jsGlobalContextRef, plainText.jsValueRef, nil) {
+            let count = JSObjectGetTypedArrayByteLength(context.jsGlobalContextRef, plainText.jsValueRef, nil)
+            let typedPtr = ptr.bindMemory(to: UInt8.self, capacity: count)
+            let bufferPointer = UnsafeBufferPointer(start: typedPtr, count: count)
+            let bytes = Array<UInt8>(bufferPointer)
+            return DecryptedValue(bytes: bytes)
+        } else {
+            return nil
+        }
     }
-
 }

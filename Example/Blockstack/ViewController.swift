@@ -70,12 +70,12 @@ class ViewController: UIViewController {
         }
         
         // Encrypt content
-        guard let cipherText = Encryption.encryptECIES(content: jsonString, recipientPublicKey: publicKey) else {
+        guard let cipherText = Encryption.encryptECIES(recipientPublicKey: publicKey, content: jsonString) else {
             return
         }
 
         // Decrypt content
-        guard let plainTextJson = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherText),
+        guard let plainTextJson = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherText)?.plainText,
             let dataFromJson = plainTextJson.data(using: .utf8),
             let jsonObject = try? JSONSerialization.jsonObject(with: dataFromJson, options: []),
             let decryptedContent = jsonObject as? [String: String] else {
