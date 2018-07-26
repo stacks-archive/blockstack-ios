@@ -1,0 +1,8 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ios:0.1.3
+    steps:
+      - checkout
+      - run: echo "hello world"
