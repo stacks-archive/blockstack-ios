@@ -53,9 +53,10 @@ open class EncryptionJS {
         }
         
         context.evaluateScript("var encryptedObj = JSON.parse('\(cipherObjectJSONString)')")
-        guard let plainText = context.evaluateScript("encryption.decryptECIES('\(privateKey)', encryptedObj)") else {
+        guard let plainText = context.evaluateScript("encryption.decryptECIES('\(privateKey)', encryptedObj)"), !plainText.isUndefined else {
             return nil
         }
+        
         if plainText.isString {
             return DecryptedValue(text: plainText.toString())
         } else if let ptr = JSObjectGetTypedArrayBytesPtr(context.jsGlobalContextRef, plainText.jsValueRef, nil) {
