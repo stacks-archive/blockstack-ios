@@ -58,30 +58,40 @@ class EncryptionSpec : QuickSpec {
             }
             
             context("with bad HMAC") {
-                let goodContent = "all work and no play makes jack a dull boy"
-                let badContent = "some work and no play makes jack a dull boy"
+                var goodCipherObject: [String: Any] =
+                    ["iv": "62ebe31b41a5a79d7d80aec2ea8b5738",
+                     "ephemeralPK": "0292b08fad355531ab867632dfa688af47c77a94732869783a749bcd159dd8a7d1",
+                     "cipherText": "f5def102dae9d2b97d5230fb7ef77f1702ea69612e899cb238fdfc708a738aa7e4e40538558a859a89b80ba3188665e8",
+                     "mac": "c2cf1e8d2765bde5978de5d323f56f7d22dd2ade9528df9f67640bae9dfe62c5",
+                     "wasString": true]
                 
-                guard let goodCipher = Encryption.encryptECIES(recipientPublicKey: publicKey, content: goodContent),
-                    let badCipher = Encryption.encryptECIES(recipientPublicKey: publicKey, content: badContent) else {
-                        fail("Encryption failed")
-                        return
+                var evilCipherObject: [String: Any] =
+                    ["iv": "8bc9d481a9c81f9654d3daf5629db205",
+                     "ephemeralPK": "03a310890362fc143291a9b46eaa8ff77882441926de7e8ef5459654dd02b8654f",
+                     "cipherText": "a6791f244a6120a4ace2b8e5acd8fd75553cace042a2adadfcb3a20a95aae7b308174de017247ccf5eb4ae8e49bcb4e8",
+                     "mac": "99462eb405f8cc51886571b718acf5a914ac2832be5ba34569726ab720f8ea62",
+                     "wasString": true]
+
+                let canDecrypt: ([String: Any]) -> Bool = { cipherObject in
+                    guard let cipherData = try? JSONSerialization.data(withJSONObject: cipherObject, options: []),
+                        let cipherJSON = String(data: cipherData, encoding: String.Encoding.utf8),
+                        let _ = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherJSON)?.plainText else {
+                            return false
+                    }
+                    return true
                 }
                 
-                guard let goodData = goodCipher.data(using: .utf8),
-                    let goodCipherJSON = try? JSONSerialization.jsonObject(with: goodData, options: []),
-                    var goodCipherObject = goodCipherJSON as? [String: Any],
-                    let badData = badCipher.data(using: .utf8),
-                    let badCipherJSON = try? JSONSerialization.jsonObject(with: badData, options: []),
-                    let badCipherObject = badCipherJSON as? [String: Any] else {
-                        fail("Could not deserialize JSON cipher text")
-                        return
+                guard canDecrypt(goodCipherObject), canDecrypt(evilCipherObject) else {
+                    fail("Bad input cipher object")
+                    return
                 }
 
-                let badCipherText = badCipherObject["cipherText"] as? String
-                goodCipherObject["cipherText"] = badCipherText
+                // Replace cipherText, keep mac the same
+                goodCipherObject["cipherText"] = evilCipherObject["cipherText"]
+
                 guard let jsonData = try? JSONSerialization.data(withJSONObject: goodCipherObject, options: []),
                     let corruptedCipherContent = String(data: jsonData, encoding: String.Encoding.utf8) else {
-                    fail("Could not serialize cipher text to JSON")
+                    fail("Could not serialize manipulated cipher object to JSON")
                     return
                 }
                 
