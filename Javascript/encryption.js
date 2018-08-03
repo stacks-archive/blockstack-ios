@@ -22659,7 +22659,7 @@ function getHexFromBN(bnInput) {
 function encryptECIES(publicKey, content) {
   var isString = typeof content === 'string';
   var plainText = Buffer.from(content); // always copy to buffer
-
+ 
   var ecPK = ecurve.keyFromPublic(publicKey, 'hex').getPublic();
   var ephemeralSK = ecurve.genKeyPair();
   var ephemeralPK = ephemeralSK.getPublic();
