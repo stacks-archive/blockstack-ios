@@ -50,6 +50,7 @@ class ViewController: UIViewController {
             if let error = error {
                 print("sign out failed, error: \(error)")
             } else {
+                self.updateUI()
                 print("sign out success")
             }
         }
