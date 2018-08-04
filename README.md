@@ -60,8 +60,8 @@ import Blockstack
 In this example, your web app would be located at `http://localhost:8080`
 
 ```swift
-Blockstack.shared.signIn(redirectURI: "http://localhost:8080/redirect.html",
-                                   appDomain: URL(string: "http://localhost:8080")!) { authResult in
+Blockstack.shared.signIn(redirectURI: "[yourWebAppAddress]/redirect.html",
+                                   appDomain: URL(string: "[yourWebAppAddress]")!) { authResult in
     switch authResult {
         case .success(let userData):
             print("sign in success")
