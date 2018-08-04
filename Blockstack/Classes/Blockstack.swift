@@ -121,6 +121,3 @@ open class Blockstack {
         }
     }
 }
-
-
-
