@@ -26,9 +26,6 @@
     ]
   },
   "dependencies": {
-    "secp256k1.swift": [
-      "~> 0.1.1"
-    ],
     "CryptoSwift": [
 
     ]

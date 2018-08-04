@@ -8,7 +8,6 @@
 import Foundation
 import SafariServices
 import JavaScriptCore
-import secp256k1
 
 public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
