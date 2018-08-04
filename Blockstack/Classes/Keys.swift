@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import secp256k1
 
 enum secp256k1Curve {
     static let p = "fffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f"
@@ -86,6 +85,7 @@ open class Keys {
      Generate an elliptic curve private key for secp256k1.
      */
     static func makeECPrivateKey() -> String? {
+
         let keyLength = 32
         let n = secp256k1Curve.n
         let nBigInt = _BigInt<UInt>(n, radix: 16)
@@ -122,14 +122,15 @@ open class Keys {
         }
     }
     
-    static func getPublicKeyFromPrivate(_ privateKey: String) -> String? {
-        let keysJS = KeysJS()
-        return keysJS.getPublicKeyFromPrivate(privateKey)
+    open static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
+        return EllipticJS().getPublicKeyFromPrivate(privateKey, compressed: compressed)
     }
     
     static func getAddressFromPublicKey(_ publicKey: String) -> String? {
-        let keysJS = KeysJS()
-        return keysJS.getAddressFromPublicKey(publicKey)
+        return KeysJS().getAddressFromPublicKey(publicKey)
     }
-
+    
+    static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) -> String? {
+        return EllipticJS().computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
+    }
 }

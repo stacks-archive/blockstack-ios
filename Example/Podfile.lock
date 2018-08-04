@@ -1,9 +1,9 @@
 PODS:
-  - Blockstack (0.1.3):
-    - secp256k1.swift (~> 0.1.1)
+  - Blockstack (0.2.0):
+    - CryptoSwift
+  - CryptoSwift (0.11.0)
   - Nimble (7.0.3)
   - Quick (1.2.0)
-  - secp256k1.swift (0.1.4)
 
 DEPENDENCIES:
   - Blockstack (from `../`)
@@ -12,20 +12,20 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - CryptoSwift
     - Nimble
     - Quick
-    - secp256k1.swift
 
 EXTERNAL SOURCES:
   Blockstack:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Blockstack: b359d05fde930cbb7cfa87b5d8cf738af8f9a564
+  Blockstack: 4e5625eb73bc0e209e05073db54f1a03fb0c92ce
+  CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
-  secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
 
-PODFILE CHECKSUM: f9a140e6bf0c2d675a6f051d33217b50a05b2862
+PODFILE CHECKSUM: b46471d1864d80f75f391af86c98e8de3f106bd0
 
 COCOAPODS: 1.5.3

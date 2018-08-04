@@ -1,8 +1,40 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: circleci/ios:0.1.3
+
+    # Specify the Xcode version to use
+    macos:
+      xcode: "9.4.1"
+
     steps:
       - checkout
-      - run: echo "hello world"
+
+      # Install CocoaPods
+      - run:
+          name: Install CocoaPods
+          command: pod install
+          working_directory: Example
+
+      # Build the app and run tests
+      - run:
+          name: Build and run tests
+          command: fastlane scan
+          working_directory: Example
+          environment:
+            SCAN_DEVICE: iPhone 6
+            SCAN_SCHEME: Blockstack-Example
+            SCAN_OUTPUT_DIRECTORY: ./test_output
+            SCAN_OUTPUT_TYPES: junit
+            SCAN_OUTPUT_FILES: report.xml
+
+      # Collect XML test results data to show in the UI,
+      # and save the same XML files under test-results folder
+      # in the Artifacts tab
+      - store_test_results:
+          path: "./Example/test_output"
+      - store_artifacts:
+          path: "./Example/test_output"
+          destination: scan-test-results
+      - store_artifacts:
+          path: ~/Library/Logs/scan
+          destination: scan-logs

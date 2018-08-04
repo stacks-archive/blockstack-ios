@@ -30,7 +30,7 @@ open class KeysJS {
         } catch (let error) {
             print("Error while processing script file: \(error)")
         }
-        
+
         context?.exceptionHandler = {(context: JSContext?, exception: JSValue?) -> Void in
             print(exception!.toString())
         }
@@ -47,18 +47,13 @@ open class KeysJS {
         return context
     }()
     
-    init() {
-    }
-    
     public func getPublicKeyFromPrivate(_ privateKey: String) -> String? {
         guard let context = context else {
             print("JSContext not found.")
             return nil
         }
-        
         let publicKey = context.evaluateScript("keys.getPublicKeyFromPrivate('\(privateKey)')")
-        
-        return publicKey!.toString()
+        return publicKey?.toString()
     }
     
     public func getAddressFromPublicKey(_ publicKey: String) -> String? {
@@ -66,10 +61,7 @@ open class KeysJS {
             print("JSContext not found.")
             return nil
         }
-        
         let address = context.evaluateScript("keys.publicKeyToAddress('\(publicKey)')")
-        
-        return address!.toString()
+        return address?.toString()
     }
-    
 }

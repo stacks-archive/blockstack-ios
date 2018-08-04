@@ -7,15 +7,22 @@
 
 import UIKit
 import Blockstack
+import SafariServices
 
 class ViewController: UIViewController {
 
     @IBOutlet var signInButton: UIButton?
     @IBOutlet var nameLabel: UILabel?
-
-    @IBAction func signin() {
-        Blockstack.shared.signIn(redirectURI: "http://localhost:8080/redirect.html",
-                                 appDomain: URL(string: "http://localhost:8080")!) { authResult in
+    @IBOutlet weak var putFileButton: UIButton!
+    
+    override func viewDidLoad() {
+        self.updateUI()
+    }
+    
+    @IBAction func signIn() {
+        // Address of deployed example web app
+        Blockstack.shared.signIn(redirectURI: "https://heuristic-brown-7a88f8.netlify.com/redirect.html",
+                                 appDomain: URL(string: "https://heuristic-brown-7a88f8.netlify.com")!) { authResult in
             switch authResult {
                 case .success(let userData):
                     print("sign in success")
@@ -23,8 +30,7 @@ class ViewController: UIViewController {
                 case .cancelled:
                     print("sign in cancelled")
                 case .failed(let error):
-                    print("sign in failed")
-                    print(error!)
+                    print("sign in failed, error: ", error ?? "n/a")
             }
         }
     }
@@ -32,25 +38,58 @@ class ViewController: UIViewController {
     func handleSignInSuccess(userData: UserData) {
         print(userData.profile?.name as Any)
         
-        // Read user profile data
-        let retrievedUserData = Blockstack.shared.loadUserData()
-        print(retrievedUserData?.profile?.name as Any)
+        self.updateUI()
         
-        DispatchQueue.main.async {
-            let name: String? = retrievedUserData?.profile?.name ?? "Nameless Person"
-            self.nameLabel?.text = "Hello, \(name!)"
-            self.signInButton?.isHidden = true
+        // Check if signed in
+        // checkIfSignedIn()
+    }
+    
+    @IBAction func signOut(_ sender: Any) {
+        // Sign user out
+        Blockstack.shared.signOut(redirectURI: "myBlockstackApp") { error in
+            if let error = error {
+                print("sign out failed, error: \(error)")
+            } else {
+                self.updateUI()
+                print("sign out success")
+            }
+        }
+    }
+    
+    @IBAction func putFileTapped(_ sender: Any) {
+        guard let userData = Blockstack.shared.loadUserData(),
+            let privateKey = userData.privateKey,
+            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
+                return
+        }
+
+        // Store data on Gaia
+        let content: Dictionary<String, String> = ["property1": "value", "property2": "hello"]
+        guard let data = try? JSONSerialization.data(withJSONObject: content, options: []),
+            let jsonString = String(data: data, encoding: .utf8) else {
+                return
         }
         
-        // Store data on Gaia
-        let content: Dictionary<String, String> = ["property": "value"]
+        // Encrypt content
+        guard let cipherText = Encryption.encryptECIES(recipientPublicKey: publicKey, content: jsonString) else {
+            return
+        }
+
+        // Decrypt content
+        guard let plainTextJson = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherText)?.plainText,
+            let dataFromJson = plainTextJson.data(using: .utf8),
+            let jsonObject = try? JSONSerialization.jsonObject(with: dataFromJson, options: []),
+            let decryptedContent = jsonObject as? [String: String] else {
+                return
+        }
         
-        Blockstack.shared.putFile(path: "test.json", content: content) { (publicURL, error) in
+        // Put file example
+        Blockstack.shared.putFile(path: "test.json", content: decryptedContent) { (publicURL, error) in
             if error != nil {
                 print("put file error")
             } else {
                 print("put file success \(publicURL!)")
-                
+
                 // Read data from Gaia
                 Blockstack.shared.getFile(path: "test.json", completion: { (response, error) in
                     if error != nil {
@@ -62,12 +101,25 @@ class ViewController: UIViewController {
                 })
             }
         }
-        
-        // Sign user out
-        // Blockstack.shared.signOut()
-        
-        // Check if signed in
-        // checkIfSignedIn()
+    }
+    
+    private func updateUI() {
+        DispatchQueue.main.async {
+            if Blockstack.shared.isSignedIn() {
+                // Read user profile data
+                let retrievedUserData = Blockstack.shared.loadUserData()
+                print(retrievedUserData?.profile?.name as Any)
+                let name = retrievedUserData?.profile?.name ?? "Nameless Person"
+                self.nameLabel?.text = "Hello, \(name)"
+                self.nameLabel?.isHidden = false
+                self.signInButton?.isHidden = true
+                self.putFileButton.isHidden = false
+            } else {
+                self.nameLabel?.isHidden = true
+                self.signInButton?.isHidden = false
+                self.putFileButton.isHidden = true
+            }
+        }
     }
     
     func checkIfSignedIn() {
