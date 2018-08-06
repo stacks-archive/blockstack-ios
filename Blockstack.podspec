@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'Blockstack'
   s.version          = '0.2.0'
-  s.summary          = 'The Blockstack iOS library for authentication, encryption, and storage.'
+  s.summary          = 'The Blockstack iOS SDK'
   s.swift_version    = '4.0'
 
 # This description is used to generate tags and improve search results.
