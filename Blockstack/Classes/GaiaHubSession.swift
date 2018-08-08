@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CryptoSwift
 
 public class GaiaHubSession {
     let config: GaiaConfig
@@ -14,7 +15,7 @@ public class GaiaHubSession {
         self.config = config
     }
 
-    func getFile(path: String, completion: @escaping (Any?, GaiaError?) -> Void) {
+    func getFile(at path: String, decrypt: Bool = false, completion: @escaping (Any?, GaiaError?) -> Void) {
         let fullReadURLString = "\(self.config.URLPrefix!)\(self.config.address!)/\(path)"
         let fullReadURL = URL(string: fullReadURLString)
         
@@ -25,41 +26,96 @@ public class GaiaHubSession {
                 return
             }
             
-            do {
-                guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-                    completion(nil, GaiaError.invalidResponse)
+            let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
+            if contentType == "application/octet-stream" && !decrypt {
+                completion(data.bytes, nil)
+            } else {
+                // Handle text/plain and application/json content types
+                guard let text = String(data: data, encoding: .utf8) else {
                     return
                 }
-                completion(json, nil)
-            } catch {
-                completion(nil, GaiaError.invalidResponse)
+                if decrypt {
+                    guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
+                        completion(nil, nil)
+                        return
+                    }
+                    let decryptedValue = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: text)
+                    completion(decryptedValue, nil)
+                } else {
+                    completion(text, nil)
+                }
             }
         }
         task.resume()
     }
-
-    func putFile(path: String, content: Dictionary<String, Any?>, completion: @escaping (String?, GaiaError?) -> Void) {
-        let contentType = "application/json"
-        let stringContent = content.toJsonString()!
-
-        print(stringContent as Any)
-        
-        self.upload(path: path,
-                    content: stringContent,
-                    contentType: contentType,
-                    completion: completion)
+    
+    func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> ()) {
+        if encrypt {
+            guard let data = self.encrypt(content: .bytes(content)) else {
+                // TODO: Error for invalid app public key?
+                completion(nil, nil)
+                return
+            }
+            self.upload(path: path, contentType: "application/json", data: data, completion: completion)
+        } else {
+            self.upload(path: path, contentType: "application/octet-stream", data: Data(bytes: content), completion: completion)
+        }
     }
-
+    
+    func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> ()) {
+        if encrypt {
+            guard let data = self.encrypt(content: .text(content)) else {
+                // TODO: Error for invalid app public key?
+                completion(nil, nil)
+                return
+            }
+            self.upload(path: path, contentType: "application/json", data: data, completion: completion)
+        } else {
+            guard let data = content.data(using: .utf8) else {
+                completion(nil, nil)
+                return
+            }
+            self.upload(path: path, contentType: "text/plain", data: data, completion: completion)
+        }
+    }
+    
     // MARK: - Private
+    
+    private enum Content {
+        case text(String)
+        case bytes(Bytes)
+    }
+    
+    private func encrypt(content: Content) -> Data? {
+        // Encrypt to Gaia using the app public key
+        guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey,
+            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
+                return nil
+        }
 
-    private func upload(path: String, content: String, contentType: String, completion: @escaping (String?, GaiaError?) -> Void) {
+        // Encrypt and serialize to JSON
+        var cipherObjectJSON: String?
+        switch content {
+        case let .bytes(bytes):
+            cipherObjectJSON = Encryption.encryptECIES(recipientPublicKey: publicKey, content: bytes, isString: false)
+        case let .text(text):
+            cipherObjectJSON = Encryption.encryptECIES(recipientPublicKey: publicKey, content: text)
+        }
+        
+        guard let cipher = cipherObjectJSON else {
+            return nil
+        }
+        return cipher.data(using: .utf8)
+    }
+    
+    private func upload(path: String, contentType: String, data: Data, completion: @escaping (String?, GaiaError?) -> ()) {
         let putURL = URL(string:"\(self.config.server!)/store/\(self.config.address!)/\(path)")
         var request = URLRequest(url: putURL!)
         request.httpMethod = "POST"
         request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         request.setValue("bearer \(self.config.token!)", forHTTPHeaderField: "Authorization")
-        request.httpBody = content.data(using: .utf8)
-
+        request.httpBody = data
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 print("Gaia hub store request error")

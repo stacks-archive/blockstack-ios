@@ -24,7 +24,7 @@ public enum BlockstackConstants {
 }
 
 open class Blockstack {
-    
+
     public static let shared = Blockstack()
     
     var sfAuthSession : SFAuthenticationSession?
@@ -101,25 +101,36 @@ open class Blockstack {
         self.sfAuthSession?.start()
     }
     
-    public func putFile(path: String, content: Dictionary<String, String>, completion: @escaping (String?, GaiaError?) -> Void) {
+    public func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> Void) {
         Gaia.ensureHubSession { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            session.putFile(path: path, content: content, completion: completion)
+            session.putFile(to: path, content: content, encrypt: encrypt, completion: completion)
         }
     }
     
-    public func getFile(path: String, completion: @escaping (Any?, GaiaError?) -> Void) {
+    public func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> Void) {
         Gaia.ensureHubSession { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            session.getFile(path: path, completion: completion)
+            session.putFile(to: path, content: content, encrypt: encrypt, completion: completion)
+        }
+    }
+    
+    public func getFile(at path: String, decrypt: Bool = false, completion: @escaping (Any?, GaiaError?) -> Void) {
+        Gaia.ensureHubSession { session, error in
+            guard let session = session, error == nil else {
+                print("gaia connection error")
+                completion(nil, error)
+                return
+            }
+            session.getFile(at: path, decrypt: decrypt, completion: completion)
         }
     }
 }

@@ -57,41 +57,15 @@ class ViewController: UIViewController {
     }
     
     @IBAction func putFileTapped(_ sender: Any) {
-        guard let userData = Blockstack.shared.loadUserData(),
-            let privateKey = userData.privateKey,
-            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
-                return
-        }
-
-        // Store data on Gaia
-        let content: Dictionary<String, String> = ["property1": "value", "property2": "hello"]
-        guard let data = try? JSONSerialization.data(withJSONObject: content, options: []),
-            let jsonString = String(data: data, encoding: .utf8) else {
-                return
-        }
-        
-        // Encrypt content
-        guard let cipherText = Encryption.encryptECIES(recipientPublicKey: publicKey, content: jsonString) else {
-            return
-        }
-
-        // Decrypt content
-        guard let plainTextJson = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherText)?.plainText,
-            let dataFromJson = plainTextJson.data(using: .utf8),
-            let jsonObject = try? JSONSerialization.jsonObject(with: dataFromJson, options: []),
-            let decryptedContent = jsonObject as? [String: String] else {
-                return
-        }
-        
         // Put file example
-        Blockstack.shared.putFile(path: "test.json", content: decryptedContent) { (publicURL, error) in
+        Blockstack.shared.putFile(to: "test.json", content: "Hello World", encrypt: true) { (publicURL, error) in
             if error != nil {
                 print("put file error")
             } else {
                 print("put file success \(publicURL!)")
 
                 // Read data from Gaia
-                Blockstack.shared.getFile(path: "test.json", completion: { (response, error) in
+                Blockstack.shared.getFile(at: "test.json", decrypt: true, completion: { (response, error) in
                     if error != nil {
                         print("get file error")
                     } else {
