@@ -63,7 +63,7 @@ open class EncryptionJS {
             let count = JSObjectGetTypedArrayByteLength(context.jsGlobalContextRef, plainText.jsValueRef, nil)
             let typedPtr = ptr.bindMemory(to: UInt8.self, capacity: count)
             let bufferPointer = UnsafeBufferPointer(start: typedPtr, count: count)
-            let bytes = Array<UInt8>(bufferPointer)
+            let bytes = Bytes(bufferPointer)
             return DecryptedValue(bytes: bytes)
         } else {
             return nil

@@ -9,6 +9,8 @@ import Foundation
 import SafariServices
 import JavaScriptCore
 
+public typealias Bytes = Array<UInt8>
+
 public enum BlockstackConstants {
     static let DefaultCoreAPIURL = "https://core.blockstack.org"
     static let BrowserWebAppURL = "https://browser.blockstack.org"
