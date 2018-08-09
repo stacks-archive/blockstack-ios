@@ -7,9 +7,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     event.preventDefault()
     blockstack.signUserOut(window.location.href)
   })
-  document.getElementById('putfile-button').addEventListener('click', function(event) {
+  document.getElementById('putencyptedfile-button').addEventListener('click', function(event) {
     event.preventDefault()
-    blockstack.putFile("test.json", "hello", { encrypt: true })
+    blockstack.putFile("encryptedFile.json", "Encrypted hello", { encrypt: true })
+  })
+  document.getElementById('putplaintextfile-button').addEventListener('click', function(event) {
+    event.preventDefault()
+    blockstack.putFile("plainTextFile.txt", "Plain Text Hello", { encrypt: false })
   })
   function showProfile(profile) {
     var person = new blockstack.Person(profile)
