@@ -7,7 +7,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     event.preventDefault()
     blockstack.signUserOut(window.location.href)
   })
-
+  document.getElementById('putfile-button').addEventListener('click', function(event) {
+    event.preventDefault()
+    blockstack.putFile("test.json", "hello", { encrypt: true })
+  })
   function showProfile(profile) {
     var person = new blockstack.Person(profile)
     document.getElementById('heading-name').innerHTML = person.name() ? person.name() : "Nameless Person"
