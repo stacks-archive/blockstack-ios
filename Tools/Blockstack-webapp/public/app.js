@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     event.preventDefault()
     blockstack.signUserOut(window.location.href)
   })
-  document.getElementById('putencyptedfile-button').addEventListener('click', function(event) {
+  document.getElementById('putencryptedfile-button').addEventListener('click', function(event) {
     event.preventDefault()
     blockstack.putFile("encryptedFile.json", "Encrypted hello", { encrypt: true })
   })
