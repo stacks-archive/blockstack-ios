@@ -2,13 +2,13 @@ PODS:
   - Blockstack (0.2.0):
     - CryptoSwift
   - CryptoSwift (0.11.0)
-  - Nimble (7.0.3)
-  - Quick (1.2.0)
+  - Nimble (7.1.3)
+  - Quick (1.3.1)
 
 DEPENDENCIES:
   - Blockstack (from `../`)
-  - Nimble (~> 7.0.2)
-  - Quick (~> 1.2.0)
+  - Nimble
+  - Quick
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -21,11 +21,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Blockstack: 4e5625eb73bc0e209e05073db54f1a03fb0c92ce
+  Blockstack: 7fb14ea7a55e481dd360d2af92ef66c7304d6145
   CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
-  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
-  Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
+  Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
+  Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
 
-PODFILE CHECKSUM: b46471d1864d80f75f391af86c98e8de3f106bd0
+PODFILE CHECKSUM: 6ba8a47a79a7bc3d2f4566ad9b7946295d68a2ac
 
 COCOAPODS: 1.5.3

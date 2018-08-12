@@ -1,8 +1,9 @@
 {
   "name": "Blockstack",
   "version": "0.2.0",
-  "summary": "The Blockstack iOS library for authentication, encryption, and storage.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "The Blockstack iOS SDK",
+  "swift_version": "4.0",
+  "description": "The Blockstack iOS library for authentication, encryption, and storage.",
   "homepage": "https://github.com/blockstack/blockstack-ios",
   "license": {
     "type": "MIT",
