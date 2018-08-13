@@ -12,15 +12,15 @@ import JavaScriptCore
 public typealias Bytes = Array<UInt8>
 
 public enum BlockstackConstants {
-    static let DefaultCoreAPIURL = "https://core.blockstack.org"
-    static let BrowserWebAppURL = "https://browser.blockstack.org"
-    static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
-    static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
-    static let AuthProtocolVersion = "1.1.0"
-    static let DefaultGaiaHubURL = "https://hub.blockstack.org"
-    static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
-    static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
-    static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
+    public static let DefaultCoreAPIURL = "https://core.blockstack.org"
+    public static let BrowserWebAppURL = "https://browser.blockstack.org"
+    public static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
+    public static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
+    public static let AuthProtocolVersion = "1.1.0"
+    public static let DefaultGaiaHubURL = "https://hub.blockstack.org"
+    public static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
+    public static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
+    public static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
 }
 
 open class Blockstack {
