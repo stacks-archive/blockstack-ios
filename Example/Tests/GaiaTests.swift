@@ -27,11 +27,20 @@ class GaiaSpec: QuickSpec {
 
             // Ensure signed in
             expect(Blockstack.shared.isSignedIn()).to(beTrue())
+    
+            let fileName = "testFile"
+            // Clear file before each test
+            beforeEach {
+                waitUntil(timeout: 10) { done in
+                    self.testUpload(fileName: fileName, content: .text(""), encrypt: false) { _ in
+                        done()
+                    }
+                }
+            }
             
             context("without encryption") {
                 context("for text content") {
                     let textContent = "Testing123"
-                    let fileName = "textTest"
                     var wasUploaded = false
                     var result: String?
                     // Gaia__without_encryption__for_text_content__can_upload_and_retrieve
@@ -48,7 +57,6 @@ class GaiaSpec: QuickSpec {
                 }
                 context("for bytes content") {
                     let bytesContent = "Testing123".bytes
-                    let fileName = "bytesTest"
                     var wasUploaded = false
                     var result: Bytes?
                     // Gaia__without_encryption__for_bytes_content__can_upload_and_retrieve
@@ -68,7 +76,6 @@ class GaiaSpec: QuickSpec {
                 // Gaia__with_encryption__can_upload_and_retrieve
                 it("can upload and retrieve") {
                     let content = "Encrypted Testing Pass"
-                    let fileName = "encryptedPassTest"
                     var result: String?
                     self.testUpload(fileName: fileName, content: .text(content), encrypt: true) { _ in
                         self.testRetrieve(from: fileName, decrypt: true) { content in
@@ -81,7 +88,6 @@ class GaiaSpec: QuickSpec {
                 // Gaia__with_encryption__fails_retrieve_without_decrypt
                 it("fails retrieve without decrypt") {
                     let content = "Encrypted Testing Fail"
-                    let fileName = "encryptedFailTest"
                     waitUntil(timeout: 10) { done in
                         self.testUpload(fileName: fileName, content: .text(content), encrypt: true) { url in
                             self.testRetrieve(from: url, decrypt: false) { response in
