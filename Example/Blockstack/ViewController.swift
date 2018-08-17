@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet var nameLabel: UILabel?
     @IBOutlet weak var getFileButton: UIButton!
     @IBOutlet weak var putFileButton: UIButton!
+    @IBOutlet weak var signOutButton: UIButton!
     
     override func viewDidLoad() {
         self.updateUI()
@@ -111,6 +112,7 @@ class ViewController: UIViewController {
                 self.signInButton?.isHidden = false
                 self.putFileButton.isHidden = true
                 self.getFileButton.isHidden = true
+                self.signOutButton.isHidden = true
             }
         }
     }

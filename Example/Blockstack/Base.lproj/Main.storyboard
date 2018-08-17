@@ -102,6 +102,7 @@
                         <outlet property="nameLabel" destination="R5R-d4-niU" id="Lnu-Mp-ycC"/>
                         <outlet property="putFileButton" destination="aDb-e5-ocJ" id="k2z-js-K62"/>
                         <outlet property="signInButton" destination="Y3L-kz-GCX" id="ino-R6-Kp8"/>
+                        <outlet property="signOutButton" destination="QD4-AR-3t7" id="Qeu-b4-DM9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
