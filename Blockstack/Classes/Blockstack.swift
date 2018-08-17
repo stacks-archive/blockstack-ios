@@ -101,7 +101,16 @@ open class Blockstack {
         self.sfAuthSession?.start()
     }
     
-    public func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> Void) {
+    /**
+     Stores the data provided in the app's data store to to the file specified.
+     - parameter to: The path to store the data in
+     - parameter content: The String data to store in the file
+     - parameter encrypt: The data with the app private key
+     - parameter completion: Callback with the public url and any error
+     - parameter publicURL: The publicly accessible url of the file
+     - parameter error: Error returned by Gaia
+     */
+    public func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: GaiaError?) -> Void) {
         Gaia.ensureHubSession { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
@@ -112,7 +121,16 @@ open class Blockstack {
         }
     }
     
-    public func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> Void) {
+    /**
+     Stores the data provided in the app's data store to to the file specified.
+     - parameter to: The path to store the data in
+     - parameter content: The Bytes data to store in the file
+     - parameter encrypt: The data with the app private key
+     - parameter completion: Callback with the public url and any error
+     - parameter publicURL: The publicly accessible url of the file
+     - parameter error: Error returned by Gaia
+    */
+    public func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: GaiaError?) -> Void) {
         Gaia.ensureHubSession { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
@@ -123,7 +141,15 @@ open class Blockstack {
         }
     }
     
-    public func getFile(at path: String, decrypt: Bool = false, completion: @escaping (Any?, GaiaError?) -> Void) {
+    /**
+     Retrieves the specified file from the app's data store.
+     - parameter path: The path to the file to read
+     - parameter decrypt: Try to decrypt the data with the app private key
+     - parameter completion: Callback with retrieved content and any error
+     - parameter content: The retrieved content as either Bytes, String, or DecryptedContent
+     - parameter error: Error returned by Gaia
+    */
+    public func getFile(at path: String, decrypt: Bool = false, completion: @escaping (_ content: Any?, _ error: GaiaError?) -> Void) {
         Gaia.ensureHubSession { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
