@@ -13,7 +13,9 @@ class ViewController: UIViewController {
 
     @IBOutlet var signInButton: UIButton?
     @IBOutlet var nameLabel: UILabel?
+    @IBOutlet weak var getFileButton: UIButton!
     @IBOutlet weak var putFileButton: UIButton!
+    @IBOutlet weak var signOutButton: UIButton!
     
     override func viewDidLoad() {
         self.updateUI()
@@ -21,8 +23,8 @@ class ViewController: UIViewController {
     
     @IBAction func signIn() {
         // Address of deployed example web app
-        Blockstack.shared.signIn(redirectURI: "https://heuristic-brown-7a88f8.netlify.com/redirect.html",
-                                 appDomain: URL(string: "https://heuristic-brown-7a88f8.netlify.com")!) { authResult in
+        Blockstack.shared.signIn(redirectURI: "https://pedantic-mahavira-f15d04.netlify.com/redirect.html",
+                                 appDomain: URL(string: "https://pedantic-mahavira-f15d04.netlify.com")!) { authResult in
             switch authResult {
                 case .success(let userData):
                     print("sign in success")
@@ -57,48 +59,38 @@ class ViewController: UIViewController {
     }
     
     @IBAction func putFileTapped(_ sender: Any) {
-        guard let userData = Blockstack.shared.loadUserData(),
-            let privateKey = userData.privateKey,
-            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
-                return
-        }
-
-        // Store data on Gaia
-        let content: Dictionary<String, String> = ["property1": "value", "property2": "hello"]
-        guard let data = try? JSONSerialization.data(withJSONObject: content, options: []),
-            let jsonString = String(data: data, encoding: .utf8) else {
-                return
-        }
-        
-        // Encrypt content
-        guard let cipherText = Encryption.encryptECIES(recipientPublicKey: publicKey, content: jsonString) else {
-            return
-        }
-
-        // Decrypt content
-        guard let plainTextJson = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherText)?.plainText,
-            let dataFromJson = plainTextJson.data(using: .utf8),
-            let jsonObject = try? JSONSerialization.jsonObject(with: dataFromJson, options: []),
-            let decryptedContent = jsonObject as? [String: String] else {
-                return
-        }
-        
         // Put file example
-        Blockstack.shared.putFile(path: "test.json", content: decryptedContent) { (publicURL, error) in
+        let alert = UIAlertController(title: "Put File", message: "Type a message to put in the file:", preferredStyle: .alert)
+        alert.addTextField { field in
+            field.placeholder = "Hello world!"
+        }
+        self.present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+            let text = alert.textFields?.first?.text ?? "Default Text"
+            Blockstack.shared.putFile(to: "testFile", content: text, encrypt: true) { (publicURL, error) in
+                if error != nil {
+                    print("put file error")
+                } else {
+                    print("put file success \(publicURL!)")
+                }
+            }
+        })
+    }
+    
+    @IBAction func getFileTapped(_ sender: Any) {
+        // Read data from Gaia
+        Blockstack.shared.getFile(at: "testFile", decrypt: true) { response, error in
             if error != nil {
-                print("put file error")
+                print("get file error")
             } else {
-                print("put file success \(publicURL!)")
-
-                // Read data from Gaia
-                Blockstack.shared.getFile(path: "test.json", completion: { (response, error) in
-                    if error != nil {
-                        print("get file error")
-                    } else {
-                        print("get file success")
-                        print(response as Any)
-                    }
-                })
+                print("get file success")
+                print(response as Any)
+                let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
+                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
@@ -114,10 +106,14 @@ class ViewController: UIViewController {
                 self.nameLabel?.isHidden = false
                 self.signInButton?.isHidden = true
                 self.putFileButton.isHidden = false
+                self.getFileButton.isHidden = false
+                self.signOutButton.isHidden = false
             } else {
                 self.nameLabel?.isHidden = true
                 self.signInButton?.isHidden = false
                 self.putFileButton.isHidden = true
+                self.getFileButton.isHidden = true
+                self.signOutButton.isHidden = true
             }
         }
     }

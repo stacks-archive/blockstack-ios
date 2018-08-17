@@ -53,7 +53,7 @@ public class Gaia {
             
             let bitcoinJS = BitcoinJS()
             let signature = bitcoinJS.signChallenge(privateKey: challengeSignerHex, challengeText: hubInfo!.challengeText!)
-            let publicKey = Keys.getPublicKeyFromPrivate(challengeSignerHex)
+            let publicKey = Keys.getPublicKeyFromPrivate(challengeSignerHex, compressed: true)
             let tokenObject: [String: Any?] = ["publickey": publicKey, "signature": signature]
             let token = tokenObject.toJsonString()?.encodingToBase64()
             let address = Keys.getAddressFromPublicKey(publicKey!)

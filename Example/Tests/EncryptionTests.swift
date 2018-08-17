@@ -11,6 +11,7 @@ import Nimble
 import Blockstack
 
 class EncryptionSpec : QuickSpec {
+    
     override func spec() {
         describe("Encryption") {
             // secp256k1 key pair
