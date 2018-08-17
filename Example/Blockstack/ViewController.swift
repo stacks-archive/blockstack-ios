@@ -107,6 +107,7 @@ class ViewController: UIViewController {
                 self.signInButton?.isHidden = true
                 self.putFileButton.isHidden = false
                 self.getFileButton.isHidden = false
+                self.signOutButton.isHidden = false
             } else {
                 self.nameLabel?.isHidden = true
                 self.signInButton?.isHidden = false
