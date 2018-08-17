@@ -68,6 +68,20 @@
                                     <action selector="signOut:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gyq-pj-pFQ"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3J-mW-eSa">
+                                <rect key="frame" x="62" y="414.5" width="250" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="X4b-Jx-l5D"/>
+                                    <constraint firstAttribute="height" constant="50" id="cot-VE-G6Z"/>
+                                </constraints>
+                                <state key="normal" title="Get File">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="getFileTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="F5I-5U-qLc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -75,13 +89,16 @@
                             <constraint firstItem="QD4-AR-3t7" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Lkf-4Z-xAl"/>
                             <constraint firstItem="aDb-e5-ocJ" firstAttribute="top" secondItem="Y3L-kz-GCX" secondAttribute="bottom" constant="40" id="YnU-vf-UMb"/>
                             <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="ZEM-j7-yuY"/>
+                            <constraint firstItem="B3J-mW-eSa" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="c3B-92-EHH"/>
                             <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" constant="-50" id="dsO-Cl-91h"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="QD4-AR-3t7" secondAttribute="bottom" constant="40" id="j8h-of-tmt"/>
                             <constraint firstItem="R5R-d4-niU" firstAttribute="centerX" secondItem="Y3L-kz-GCX" secondAttribute="centerX" id="qUc-g4-bPB"/>
                             <constraint firstItem="aDb-e5-ocJ" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="yvv-QU-Cwc"/>
+                            <constraint firstItem="B3J-mW-eSa" firstAttribute="top" secondItem="aDb-e5-ocJ" secondAttribute="bottom" constant="16" id="zUM-uu-dbk"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="getFileButton" destination="B3J-mW-eSa" id="nTg-Cx-3PL"/>
                         <outlet property="nameLabel" destination="R5R-d4-niU" id="Lnu-Mp-ycC"/>
                         <outlet property="putFileButton" destination="aDb-e5-ocJ" id="k2z-js-K62"/>
                         <outlet property="signInButton" destination="Y3L-kz-GCX" id="ino-R6-Kp8"/>

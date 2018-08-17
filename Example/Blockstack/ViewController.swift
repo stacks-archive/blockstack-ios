@@ -13,6 +13,7 @@ class ViewController: UIViewController {
 
     @IBOutlet var signInButton: UIButton?
     @IBOutlet var nameLabel: UILabel?
+    @IBOutlet weak var getFileButton: UIButton!
     @IBOutlet weak var putFileButton: UIButton!
     
     override func viewDidLoad() {
@@ -58,21 +59,37 @@ class ViewController: UIViewController {
     
     @IBAction func putFileTapped(_ sender: Any) {
         // Put file example
-        Blockstack.shared.putFile(to: "test.json", content: "Hello World", encrypt: true) { (publicURL, error) in
+        let alert = UIAlertController(title: "Put File", message: "Type a message to put in the file:", preferredStyle: .alert)
+        alert.addTextField { field in
+            field.placeholder = "Hello world!"
+        }
+        self.present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+            let text = alert.textFields?.first?.text ?? "Default Text"
+            Blockstack.shared.putFile(to: "testFile", content: text, encrypt: true) { (publicURL, error) in
+                if error != nil {
+                    print("put file error")
+                } else {
+                    print("put file success \(publicURL!)")
+                }
+            }
+        })
+    }
+    
+    @IBAction func getFileTapped(_ sender: Any) {
+        // Read data from Gaia
+        Blockstack.shared.getFile(at: "testFile", decrypt: true) { response, error in
             if error != nil {
-                print("put file error")
+                print("get file error")
             } else {
-                print("put file success \(publicURL!)")
-
-                // Read data from Gaia
-                Blockstack.shared.getFile(at: "test.json", decrypt: true, completion: { (response, error) in
-                    if error != nil {
-                        print("get file error")
-                    } else {
-                        print("get file success")
-                        print(response as Any)
-                    }
-                })
+                print("get file success")
+                print(response as Any)
+                let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
+                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         }
     }
@@ -88,10 +105,12 @@ class ViewController: UIViewController {
                 self.nameLabel?.isHidden = false
                 self.signInButton?.isHidden = true
                 self.putFileButton.isHidden = false
+                self.getFileButton.isHidden = false
             } else {
                 self.nameLabel?.isHidden = true
                 self.signInButton?.isHidden = false
                 self.putFileButton.isHidden = true
+                self.getFileButton.isHidden = true
             }
         }
     }
