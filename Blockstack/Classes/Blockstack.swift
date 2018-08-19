@@ -52,7 +52,8 @@ open class Blockstack {
                                            redirectURLScheme: redirectURI,
                                            manifestURI: _manifestURI!,
                                            appDomain: appDomain,
-                                           appBundleID: appBundleID)
+                                           appBundleID: appBundleID,
+                                           scopes: scopes)
         
         var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
