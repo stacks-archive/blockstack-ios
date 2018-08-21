@@ -47,11 +47,12 @@ public struct Profile: Codable {
     public let context: String?
     public let name: String?
     public let description: String?
+    public let apps: [String: String]?
     
     enum CodingKeys: String, CodingKey {
         case type = "@type"
         case context = "@context"
-        case name, description
+        case name, description, apps
     }
 }
 

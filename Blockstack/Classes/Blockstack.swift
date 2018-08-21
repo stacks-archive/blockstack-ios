@@ -16,6 +16,7 @@ public enum BlockstackConstants {
     public static let BrowserWebAppURL = "https://browser.blockstack.org"
     public static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
     public static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
+    public static let NameLookupEndpoint = "https://core.blockstack.org/v1/names/"
     public static let AuthProtocolVersion = "1.1.0"
     public static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     public static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
@@ -28,6 +29,8 @@ open class Blockstack {
     public static let shared = Blockstack()
     
     var sfAuthSession : SFAuthenticationSession?
+
+    // - MARK: Authentication
     
     open func signIn(redirectURI: String,
                      appDomain: URL,
@@ -100,6 +103,54 @@ open class Blockstack {
         }
         self.sfAuthSession?.start()
     }
+    
+    // - MARK: Profiles
+
+    /**
+     Look up a user profile by Blockstack ID.
+     - parameter username: The Blockstack ID of the profile to look up
+     - parameter zoneFileLookupURL: The URL to use for zonefile lookup
+     - parameter completion: Callback containing a Profile object, if one was found.
+     */
+    public func lookupProfile(username: String, zoneFileLookupURL: URL = URL(string: BlockstackConstants.NameLookupEndpoint)!, completion: @escaping (Profile?, GaiaError?) -> ()) {
+        let task = URLSession.shared.dataTask(with: zoneFileLookupURL.appendingPathComponent(username)) {
+            data, response, error in
+            guard let data = data, error == nil else {
+                completion(nil, GaiaError.requestError)
+                return
+            }
+            guard let nameInfo = try? JSONDecoder().decode(NameInfo.self, from: data) else {
+                completion(nil, GaiaError.invalidResponse)
+                return
+            }
+            self.resolveZoneFileToProfile(zoneFile: nameInfo.zonefile, publicKeyOrAddress: nameInfo.address) {
+                profile in
+                // TODO: Return proper errors from resolveZoneFileToProfile
+                guard let profile = profile else {
+                    completion(nil, GaiaError.invalidResponse)
+                    return
+                }
+                completion(profile, nil)
+            }
+        }
+        task.resume()
+    }
+    
+    // TODO: Return errors in completion handler
+    private func resolveZoneFileToProfile(zoneFile: String, publicKeyOrAddress: String, completion: @escaping (Profile?) -> ()) {
+    }
+    
+    public struct NameInfo: Codable {
+        var address: String
+        var blockchain: String
+        var expire_block: Int
+        var last_txid: String
+        var status: String
+        var zonefile: String
+        var zonefile_hash: String
+    }
+
+    // - MARK: Storage
     
     /**
      Stores the data provided in the app's data store to to the file specified.
