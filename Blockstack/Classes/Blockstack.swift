@@ -32,7 +32,7 @@ open class Blockstack {
 
     // - MARK: Authentication
     
-    open func signIn(redirectURI: String,
+    public func signIn(redirectURI: String,
                      appDomain: URL,
                      manifestURI: URL? = nil,
                      scopes: Array<String> = ["store_write"],
@@ -145,43 +145,6 @@ open class Blockstack {
         task.resume()
     }
     
-    // TODO: Return errors in completion handler
-    private func resolveZoneFileToProfile(zoneFile: String, publicKeyOrAddress: String, completion: @escaping (Profile?) -> ()) {
-        guard let zoneFile = BlockstackJS().parseZoneFile(zoneFile: zoneFile),
-            var tokenFileUrl = zoneFile.uri.first?["target"] as? String else {
-                completion(nil)
-                return
-        }
-        
-        // Fix url
-        if !tokenFileUrl.starts(with: "http") {
-            tokenFileUrl = "https://\(tokenFileUrl)"
-        }
-        
-        guard let url = URL(string: tokenFileUrl) else {
-            completion(nil)
-            return
-        }
-        
-        ProfileHelper.fetch(profileURL: url) { profile, error in
-            guard let profile = profile, error == nil else {
-                completion(nil)
-                return
-            }
-            completion(profile)
-        }
-    }
-    
-    public struct NameInfo: Codable {
-        var address: String
-        var blockchain: String
-        var expire_block: Int
-        var last_txid: String
-        var status: String
-        var zonefile: String
-        var zonefile_hash: String
-    }
-
     // - MARK: Storage
     
     /**
@@ -276,6 +239,35 @@ open class Blockstack {
                     app: app,
                     zoneFileLookupURL: zoneFileLookupURL),
                 completion: completion)
+        }
+    }
+
+    // MARK: - Private
+    
+    // TODO: Return errors in completion handler
+    private func resolveZoneFileToProfile(zoneFile: String, publicKeyOrAddress: String, completion: @escaping (Profile?) -> ()) {
+        guard let zoneFile = BlockstackJS().parseZoneFile(zoneFile: zoneFile),
+            var tokenFileUrl = zoneFile.uri.first?["target"] as? String else {
+                completion(nil)
+                return
+        }
+        
+        // Fix url
+        if !tokenFileUrl.starts(with: "http") {
+            tokenFileUrl = "https://\(tokenFileUrl)"
+        }
+        
+        guard let url = URL(string: tokenFileUrl) else {
+            completion(nil)
+            return
+        }
+        
+        ProfileHelper.fetch(profileURL: url) { profile, error in
+            guard let profile = profile, error == nil else {
+                completion(nil)
+                return
+            }
+            completion(profile)
         }
     }
 }

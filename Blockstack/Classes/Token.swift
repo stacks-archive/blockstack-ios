@@ -71,6 +71,16 @@ public struct ProfileTokenPayload: Codable {
     let claim: Profile?
 }
 
+public struct NameInfo: Codable {
+    var address: String
+    var blockchain: String
+    var expire_block: Int?
+    var last_txid: String
+    var status: String
+    var zonefile: String
+    var zonefile_hash: String
+}
+
 extension Encodable {
     func toDictionary() throws -> [String: Any] {
         let data = try JSONEncoder().encode(self)
