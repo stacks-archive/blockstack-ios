@@ -10,7 +10,7 @@ import Foundation
 public class Gaia {
 
     // TODO: Utilize promise pattern/other way of preventing simultaneous requests
-    static func ensureHubSession(callback: @escaping (GaiaHubSession?, GaiaError?) -> Void) {
+    static func getOrSetLocalHubConnection(callback: @escaping (GaiaHubSession?, GaiaError?) -> Void) {
         if let session = self.session {
             callback(session, nil)
         } else if let config = Gaia.retrieveConfig() {

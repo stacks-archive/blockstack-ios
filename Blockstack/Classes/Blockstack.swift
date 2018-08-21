@@ -185,7 +185,7 @@ open class Blockstack {
      - parameter error: Error returned by Gaia
      */
     public func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: GaiaError?) -> Void) {
-        Gaia.ensureHubSession { session, error in
+        Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
@@ -203,9 +203,9 @@ open class Blockstack {
      - parameter completion: Callback with the public url and any error
      - parameter publicURL: The publicly accessible url of the file
      - parameter error: Error returned by Gaia
-    */
+     */
     public func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: GaiaError?) -> Void) {
-        Gaia.ensureHubSession { session, error in
+        Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
@@ -222,9 +222,9 @@ open class Blockstack {
      - parameter completion: Callback with retrieved content and any error
      - parameter content: The retrieved content as either Bytes, String, or DecryptedContent
      - parameter error: Error returned by Gaia
-    */
+     */
     public func getFile(at path: String, decrypt: Bool = false, completion: @escaping (_ content: Any?, _ error: GaiaError?) -> Void) {
-        Gaia.ensureHubSession { session, error in
+        Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
