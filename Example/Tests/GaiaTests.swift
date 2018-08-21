@@ -106,7 +106,7 @@ class GaiaSpec: QuickSpec {
                         self.signIn(mary)
                         // Retrieve Bob's file
                         Blockstack.shared.getFile(at: fileName, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com", zoneFileLookupURL: nil) {
-                            response, error in
+                            response, _ in
                             result = response as? String
                         }
                     }
