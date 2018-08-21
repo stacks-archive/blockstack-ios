@@ -11,26 +11,22 @@ import Nimble
 import Blockstack
 
 class GaiaSpec: QuickSpec {
-
-    override func spec() {
-        describe("Gaia") {
-            let privateKey = "a25629673b468789f8cbf84e24a6b9d97a97c5e12cf3796001dde2927021cdaf"
-
-            // TODO: Better way of getting an authenticated user context
-            guard let jsonData = try? JSONEncoder().encode(["private_key": privateKey]),
-                let userData = try? JSONDecoder().decode(Payload.self, from: jsonData),
-                let propertyEncodedData = try? PropertyListEncoder().encode(userData) else {
-                    fail("Could not set up user account")
-                    return
-            }
-            UserDefaults.standard.set(propertyEncodedData, forKey: BlockstackConstants.ProfileUserDefaultLabel)
-
-            // Ensure signed in
-            expect(Blockstack.shared.isSignedIn()).to(beTrue())
     
-            let fileName = "testFile"
+    struct User {
+        var userID: String
+        var privateKey: String
+    }
+    
+    override func spec() {
+        let bob = User(userID: "testing1234.id.blockstack", privateKey: "4c86d2821d7fc08d39035fd54d2a9849e59de826f44b528e6802c119d5c0a3e6")
+        let mary = User(userID: "testing5678.id.blockstack", privateKey: "73d79d4833606b173ad44a6634fd07e621cfdd1ce9f30021c7536b13910edc18")
+
+        describe("Gaia") {
+            let fileName = "testFiles"
             // Clear file before each test
             beforeEach {
+                Blockstack.shared.signOut()
+                self.signIn(bob)
                 waitUntil(timeout: 10) { done in
                     self.testUpload(fileName: fileName, content: .text(""), encrypt: false) { _ in
                         done()
@@ -43,7 +39,7 @@ class GaiaSpec: QuickSpec {
                     let textContent = "Testing123"
                     var wasUploaded = false
                     var result: String?
-                    // Gaia__without_encryption__for_text_content__can_upload_and_retrieve
+                    // MARK: - Gaia__without_encryption__for_text_content__can_upload_and_retrieve
                     it("can upload and retrieve") {
                         self.testUpload(fileName: fileName, content: .text(textContent), encrypt: false) { _ in
                             wasUploaded = true
@@ -59,7 +55,7 @@ class GaiaSpec: QuickSpec {
                     let bytesContent = "Testing123".bytes
                     var wasUploaded = false
                     var result: Bytes?
-                    // Gaia__without_encryption__for_bytes_content__can_upload_and_retrieve
+                    // MARK: - Gaia__without_encryption__for_bytes_content__can_upload_and_retrieve
                     it("can upload and retrieve") {
                         self.testUpload(fileName: fileName, content: .bytes(bytesContent), encrypt: false) { _ in
                             wasUploaded = true
@@ -73,7 +69,7 @@ class GaiaSpec: QuickSpec {
                 }
             }
             context("with encryption") {
-                // Gaia__with_encryption__can_upload_and_retrieve
+                // MARK: - Gaia__with_encryption__can_upload_and_retrieve
                 it("can upload and retrieve") {
                     let content = "Encrypted Testing Pass"
                     var result: String?
@@ -84,8 +80,8 @@ class GaiaSpec: QuickSpec {
                     }
                     expect(result).toEventually(equal(content), timeout: 10, pollInterval: 1)
                 }
-                
-                // Gaia__with_encryption__fails_retrieve_without_decrypt
+
+                // MARK: - Gaia__with_encryption__fails_retrieve_without_decrypt
                 it("fails retrieve without decrypt") {
                     let content = "Encrypted Testing Fail"
                     waitUntil(timeout: 10) { done in
@@ -98,7 +94,42 @@ class GaiaSpec: QuickSpec {
                     }
                 }
             }
+            context("multiplayer") {
+                // MARK: - Gaia__multiplayer__can_retrieve
+                it ("can retrieve") {
+                    let content = "Multiplayer Hello World"
+                    var result: String?
+                    self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { url in
+                        print("Uploaded URL: \(url)")
+                        Blockstack.shared.signOut()
+                        // Switch users
+                        self.signIn(mary)
+                        // Retrieve Bob's file
+                        Blockstack.shared.getFile(at: fileName, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com", zoneFileLookupURL: nil) {
+                            response, error in
+                            result = response as? String
+                        }
+                    }
+                    expect(result).toEventually(equal(content), timeout: 10, pollInterval: 1)
+                }
+            }
         }
+    }
+    
+    //  MARK: - Private
+    
+    private func signIn(_ user: User) {
+        // TODO: Better way of getting an authenticated user context
+        guard let jsonData = try? JSONEncoder().encode(["private_key": user.privateKey]),
+            let userData = try? JSONDecoder().decode(Payload.self, from: jsonData),
+            let propertyEncodedData = try? PropertyListEncoder().encode(userData) else {
+                fail("Could not set up user account")
+                return
+        }
+        UserDefaults.standard.set(propertyEncodedData, forKey: BlockstackConstants.ProfileUserDefaultLabel)
+        
+        // Ensure signed in
+        expect(Blockstack.shared.isSignedIn()).to(beTrue())
     }
     
     enum Content {
