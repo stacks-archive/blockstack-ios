@@ -11,10 +11,11 @@ import SafariServices
 
 class ViewController: UIViewController {
 
-    @IBOutlet var signInButton: UIButton!
-    @IBOutlet weak var optionsContainerView: UIView!
     @IBOutlet var nameLabel: UILabel!
-    
+    @IBOutlet weak var optionsContainerView: UIView!
+    @IBOutlet weak var resetKeychainButton: UIButton!
+    @IBOutlet var signInButton: UIButton!
+
     override func viewDidLoad() {
         self.updateUI()
     }
@@ -46,11 +47,15 @@ class ViewController: UIViewController {
     
     @IBAction func signOut(_ sender: Any) {
         // Sign user out
-        Blockstack.shared.signOut(redirectURI: "myBlockstackApp") { error in
+        Blockstack.shared.signOut()
+        self.updateUI()
+    }
+    
+    @IBAction func resetDeviceKeychain(_ sender: Any) {
+        Blockstack.shared.promptClearDeviceKeychain(redirectUri: "myBlockstackApp") { error in
             if let error = error {
                 print("sign out failed, error: \(error)")
             } else {
-                self.updateUI()
                 print("sign out success")
             }
         }
@@ -131,11 +136,13 @@ class ViewController: UIViewController {
                 print(retrievedUserData?.profile?.name as Any)
                 self.nameLabel.text =
                     retrievedUserData?.profile?.name ?? "Nameless User"
-                self.signInButton.isHidden = true
                 self.optionsContainerView.isHidden = false
+                self.signInButton.isHidden = true
+                self.resetKeychainButton.isHidden = true
             } else {
                 self.optionsContainerView.isHidden = true
                 self.signInButton.isHidden = false
+                self.resetKeychainButton.isHidden = false
             }
         }
     }

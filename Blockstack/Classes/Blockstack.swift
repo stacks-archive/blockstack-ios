@@ -92,13 +92,20 @@ open class Blockstack {
         return (loadUserData() != nil)
     }
     
-    /// The redirectURI should be a custom scheme registered in the app Info.plist, i.e. "myBlockstackApp"
-    public func signOut(redirectURI: String, completion: @escaping (Error?) -> ()) {
+    public func signOut() {
         Keys.clearTransitKey()
         ProfileHelper.clearProfile()
-        
+    }
+    
+    /**
+     Clear the keychain and all settings for this device.
+     WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
+     - parameter redirectURI: A custom scheme registered in the app Info.plist, i.e. "myBlockstackApp"
+     - parameter completion: Callback indicating success or failure.
+     */
+    public func promptClearDeviceKeychain(redirectUri: String, completion: @escaping (Error?) -> ()) {
         // TODO: Use ASWebAuthenticationSession for iOS 12
-        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)?redirect_uri=\(redirectURI)")!, callbackURLScheme: nil) { _, error in
+        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)?redirect_uri=\(redirectUri)")!, callbackURLScheme: nil) { _, error in
             self.sfAuthSession = nil
             completion(error)
         }

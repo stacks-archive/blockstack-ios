@@ -34,6 +34,20 @@
                                     <action selector="signIn" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ukG-2W-XhB"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47Y-au-RuJ">
+                                <rect key="frame" x="62" y="585" width="250" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="PfD-sa-e0w"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="Qvx-Qk-D8l"/>
+                                </constraints>
+                                <state key="normal" title="Reset Device Keychian">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetDeviceKeychain:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="YEC-Kg-qoQ"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QtW-dX-Fcd">
                                 <rect key="frame" x="38" y="168" width="300" height="331.5"/>
                                 <subviews>
@@ -122,15 +136,18 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="47Y-au-RuJ" secondAttribute="bottom" constant="32" id="1oS-Mw-CVe"/>
                             <constraint firstItem="QtW-dX-Fcd" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Cuy-NE-4Ej"/>
                             <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="ZEM-j7-yuY"/>
                             <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="dsO-Cl-91h"/>
                             <constraint firstItem="QtW-dX-Fcd" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="ecx-1T-01t"/>
+                            <constraint firstItem="47Y-au-RuJ" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="qc1-R5-5YI"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="nameLabel" destination="CJE-Pd-RdB" id="NoJ-Kn-VOx"/>
                         <outlet property="optionsContainerView" destination="QtW-dX-Fcd" id="6Q0-sB-MK8"/>
+                        <outlet property="resetKeychainButton" destination="47Y-au-RuJ" id="Rsw-ak-sAp"/>
                         <outlet property="signInButton" destination="Y3L-kz-GCX" id="ino-R6-Kp8"/>
                     </connections>
                 </viewController>
