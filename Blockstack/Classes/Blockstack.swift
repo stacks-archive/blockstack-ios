@@ -32,6 +32,16 @@ open class Blockstack {
 
     // - MARK: Authentication
     
+    /**
+     Generates an authentication request and redirects the user to the Blockstack
+     browser to approve the sign in request.
+     
+     - parameter redirectURI: The location to which the identity provider will redirect the user after the user approves sign in.
+     - parameter appDomain: The app origin.
+     - parameter manifestURI: Location of the manifest file; defaults to '[appDomain]/manifest.json'.
+     - parameter scopes: An array of strings indicating which permissions this app is requesting; defaults to requesting write access to this app's data store ("store_write")/
+     - parameter completion: Callback with an AuthResult object.
+     */
     public func signIn(redirectURI: String,
                      appDomain: URL,
                      manifestURI: URL? = nil,
