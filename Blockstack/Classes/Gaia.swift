@@ -31,6 +31,9 @@ public class Gaia {
         }
     }
     
+    static func getUserAppFileURL(at path: String, username: String, appOrigin: String, zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!, completion: @escaping (URL?) -> ()) {
+    }
+
     // MARK: - Private
 
     // TODO: Add support for multiple sessions
@@ -61,7 +64,7 @@ public class Gaia {
             completion(GaiaHubSession(with: config), nil)
         }
     }
-    
+
     private static func getHubInfo(for hubURL: String, completion: @escaping (GaiaHubInfo?, Error?) -> Void) {
         guard let hubInfoURL = URL(string: "\(hubURL)/hub_info") else {
             completion(nil, nil)

@@ -15,38 +15,48 @@ public class GaiaHubSession {
         self.config = config
     }
 
-    func getFile(at path: String, decrypt: Bool = false, completion: @escaping (Any?, GaiaError?) -> Void) {
-        let fullReadURLString = "\(self.config.URLPrefix!)\(self.config.address!)/\(path)"
-        let fullReadURL = URL(string: fullReadURLString)
-        
-        let task = URLSession.shared.dataTask(with: fullReadURL!) { data, response, error in
-            guard let data = data, error == nil else {
-                print("Gaia hub store request error")
-                completion(nil, GaiaError.requestError)
+    func getFile(at path: String, decrypt: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
+        let fetch: (URL?) -> () = { fullReadURL in
+            guard let url = fullReadURL else {
+                completion(nil, GaiaError.configurationError)
                 return
             }
             
-            let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
-            if contentType == "application/octet-stream" && !decrypt {
-                completion(data.bytes, nil)
-            } else {
-                // Handle text/plain and application/json content types
-                guard let text = String(data: data, encoding: .utf8) else {
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data, error == nil else {
+                    print("Gaia hub store request error")
+                    completion(nil, GaiaError.requestError)
                     return
                 }
-                if decrypt {
-                    guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
-                        completion(nil, nil)
+                let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
+                if contentType == "application/octet-stream" && !decrypt {
+                    completion(data.bytes, nil)
+                } else {
+                    // Handle text/plain and application/json content types
+                    guard let text = String(data: data, encoding: .utf8) else {
                         return
                     }
-                    let decryptedValue = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: text)
-                    completion(decryptedValue, nil)
-                } else {
-                    completion(text, nil)
+                    if decrypt {
+                        guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
+                            completion(nil, nil)
+                            return
+                        }
+                        let decryptedValue = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: text)
+                        completion(decryptedValue, nil)
+                    } else {
+                        completion(text, nil)
+                    }
                 }
             }
+            task.resume()
         }
-        task.resume()
+        if let options = multiplayerOptions {
+            Gaia.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) { url in
+                fetch(url?.appendingPathComponent(path))
+            }
+        } else {
+            fetch(URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)"))
+        }
     }
     
     func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> ()) {
@@ -134,11 +144,10 @@ public class GaiaHubSession {
     }
 }
 
-public struct GetFileOptions {
-    let decrypt: Bool?
-    let username: String?
-    let app: String?
-    let zoneFileLookupURL: URL?
+public struct MultiplayerOptions {
+    let username: String
+    let app: String
+    let zoneFileLookupURL: URL
 }
 
 public struct PutFileResponse: Codable {
