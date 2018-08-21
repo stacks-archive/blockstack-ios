@@ -19,7 +19,7 @@ open class Auth {
                             manifestURI: URL,
                             appDomain: URL,
                             appBundleID: String,
-                            scopes: Array<String> = ["store_write"],
+                            scopes: Array<String>,
                             expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String {
         var request: String
         
