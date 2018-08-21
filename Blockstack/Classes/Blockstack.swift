@@ -233,4 +233,40 @@ open class Blockstack {
             session.getFile(at: path, decrypt: decrypt, completion: completion)
         }
     }
+    
+    /**
+     Retrieves the specified file from the app's data store.
+     - parameter path: The path to the file to read
+     - parameter decrypt: Try to decrypt the data with the app private key
+     - parameter username: The Blockstack ID to lookup for multi-player storage
+     - parameter app: The app to lookup for multi-player storage. Defaults to current origin.
+     - parameter zoneFileLookupURL: The Blockstack core endpoint URL to use for zonefile lookup, defaults to "https://core.blockstack.org/v1/names/"
+     - parameter completion: Callback with retrieved content and any error
+     - parameter content: The retrieved content as either Bytes, String, or DecryptedContent
+     - parameter error: Error returned by Gaia
+     */
+    public func getFile(at path: String,
+                        decrypt: Bool = false,
+                        username: String,
+                        app: String,
+                        zoneFileLookupURL: URL?,
+                        completion: @escaping (_ content: Any?, _ error: GaiaError?) -> Void) {
+        // TODO: Support defaulting to current app origin
+        let zoneFileLookupURL = zoneFileLookupURL ?? URL(string: BlockstackConstants.NameLookupEndpoint)!
+        Gaia.getOrSetLocalHubConnection { session, error in
+            guard let session = session, error == nil else {
+                print("gaia connection error")
+                completion(nil, error)
+                return
+            }
+            session.getFile(
+                at: path,
+                decrypt: decrypt,
+                multiplayerOptions: MultiplayerOptions(
+                    username: username,
+                    app: app,
+                    zoneFileLookupURL: zoneFileLookupURL),
+                completion: completion)
+        }
+    }
 }
