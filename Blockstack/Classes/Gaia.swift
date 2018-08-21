@@ -31,6 +31,14 @@ public class Gaia {
         }
     }
     
+    /**
+     Fetch the public read URL of a user file for the specified app.
+     - parameter path: The path to the file to read
+     - parameter username: The Blockstack ID of the user to look up
+     - parameter appOrigin: The app origin
+     - parameter zoneFileLookupURL: The URL to use for zonefile lookup. Defaults to 'http://localhost:6270/v1/names/'.
+     - parameter completion: Callback with public read URL of the file, if one was found.
+     */
     static func getUserAppFileURL(at path: String, username: String, appOrigin: String, zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!, completion: @escaping (URL?) -> ()) {
         // TODO: Return errors in completion handler
         Blockstack.shared.lookupProfile(username: username, zoneFileLookupURL: zoneFileLookupURL) { profile, error in
