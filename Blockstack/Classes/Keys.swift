@@ -78,7 +78,7 @@ open class Keys {
     }
     
     static func clearKeys(label: String) {
-        UserDefaults.standard.set(nil, forKey: label)
+        UserDefaults.standard.removeObject(forKey: label)
     }
     
     /**

@@ -111,13 +111,14 @@ public class Gaia {
     }
 
     private static func saveConfig(_ config: GaiaConfig) {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(config),
-                                  forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+        self.resetConfig()
+        if let config = try? PropertyListEncoder().encode(config) {
+            UserDefaults.standard.set(config, forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+        }
     }
     
     static func resetConfig() {
-        UserDefaults.standard.set(nil,
-                                  forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+        UserDefaults.standard.removeObject(forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
     }
     
     private static func retrieveConfig() -> GaiaConfig? {

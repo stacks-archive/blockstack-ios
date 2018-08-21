@@ -30,8 +30,10 @@ public class ProfileHelper {
     }
     
     static func storeProfile(profileData: UserData) {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(profileData),
-                                  forKey: BlockstackConstants.ProfileUserDefaultLabel)
+        self.clearProfile()
+        if let profile = try? PropertyListEncoder().encode(profileData) {
+            UserDefaults.standard.set(profile, forKey: BlockstackConstants.ProfileUserDefaultLabel)
+        }
     }
     
     static func retrieveProfile() -> UserData? {
@@ -43,6 +45,6 @@ public class ProfileHelper {
     }
     
     static func clearProfile() {
-        UserDefaults.standard.set(nil, forKey: BlockstackConstants.ProfileUserDefaultLabel)
+        UserDefaults.standard.removeObject(forKey: BlockstackConstants.ProfileUserDefaultLabel)
     }
 }
