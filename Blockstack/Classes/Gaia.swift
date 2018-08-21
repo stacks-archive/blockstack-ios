@@ -53,6 +53,10 @@ public class Gaia {
         }
     }
 
+    static func clearSession() {
+        self.session = nil
+    }
+    
     // MARK: - Private
 
     // TODO: Add support for multiple sessions
@@ -111,7 +115,7 @@ public class Gaia {
                                   forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
     }
     
-    private static func resetConfig() {
+    static func resetConfig() {
         UserDefaults.standard.set(nil,
                                   forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
     }

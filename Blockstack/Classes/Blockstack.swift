@@ -89,12 +89,13 @@ open class Blockstack {
     }
     
     public func isSignedIn() -> Bool {
-        return (loadUserData() != nil)
+        return self.loadUserData() != nil
     }
     
     public func signOut() {
         Keys.clearTransitKey()
         ProfileHelper.clearProfile()
+        Gaia.clearSession()
     }
     
     /**
