@@ -72,7 +72,7 @@
 		442F136F23EFE21E3975E58EB88FEA2C /* BeLessThan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138C8FEF89A8D8A29352A1B8F679E9E2 /* BeLessThan.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		44B5C5D451E86F04D22C0E2132D0424D /* DSL.m in Sources */ = {isa = PBXBuildFile; fileRef = F04D78B6DC1C9F6B8B8BDFB0DCA73FD0 /* DSL.m */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		450F455A54A642076AD80DFCECC8629D /* Collection+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95690A0BF0C0206166DA60C061204142 /* Collection+Extension.swift */; };
-		462D41C221289C8800A2D253 /* BlockstackJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 462D41C121289C8800A2D253 /* BlockstackJS.swift */; };
+		461ADA15212CEA980049D74D /* BlockstackJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461ADA14212CEA980049D74D /* BlockstackJS.swift */; };
 		4A829DC29EC5600B259E1CA203C7131D /* AssertionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33225545C543AE0C9ECA570523ACBC66 /* AssertionRecorder.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		4ABAEAFCE8EB455BB79C200AAD79B17B /* elliptic.js in Resources */ = {isa = PBXBuildFile; fileRef = 9FFC233361FC1EC565BA77079F9185BB /* elliptic.js */; };
 		4B3023C8B818F53F59316503EA79812C /* SatisfyAllOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DA74209831F8BC2D2ED41611931724D /* SatisfyAllOf.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
@@ -354,7 +354,7 @@
 		40C65715AF4FD8667905BF5E834D0831 /* Pods-Blockstack_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Blockstack_Example.modulemap"; sourceTree = "<group>"; };
 		41F7B2287E6301D854A39E06B1CF2306 /* CTR.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CTR.swift; path = Sources/CryptoSwift/BlockMode/CTR.swift; sourceTree = "<group>"; };
 		444DA2D7471C41442903CA7F88F8D25C /* ExampleHooks.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExampleHooks.swift; path = Sources/Quick/Hooks/ExampleHooks.swift; sourceTree = "<group>"; };
-		462D41C121289C8800A2D253 /* BlockstackJS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstackJS.swift; sourceTree = "<group>"; };
+		461ADA14212CEA980049D74D /* BlockstackJS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockstackJS.swift; path = Blockstack/Classes/BlockstackJS.swift; sourceTree = "<group>"; };
 		464459854F26FA13AFB30FF4F0532B2B /* Operators.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Operators.swift; path = Sources/CryptoSwift/Operators.swift; sourceTree = "<group>"; };
 		47016AF6E4612FB84C2C3D2262BD64DF /* BlockModeOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BlockModeOptions.swift; path = Sources/CryptoSwift/BlockMode/BlockModeOptions.swift; sourceTree = "<group>"; };
 		483B783AB00CA37CC57BE9B9D4DE7598 /* UInt32+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UInt32+Extension.swift"; path = "Sources/CryptoSwift/UInt32+Extension.swift"; sourceTree = "<group>"; };
@@ -607,7 +607,7 @@
 				88BA9FB19CE9018F8782F5D5F396395F /* BigInt.swift */,
 				629A18A0801D13588BD70FC88D94D848 /* BitcoinJS.swift */,
 				199069D49134501126A6E20E0B453B82 /* Blockstack.swift */,
-				462D41C121289C8800A2D253 /* BlockstackJS.swift */,
+				461ADA14212CEA980049D74D /* BlockstackJS.swift */,
 				08ACAF7148FCFBA868DBA1F596B23532 /* EllipticJS.swift */,
 				D756800BFE5EB0EDCE59818F3CF8F4FE /* Encryption.swift */,
 				FB5FFD08FA5DF8A0739A7777CA973CB9 /* EncryptionJS.swift */,
@@ -1377,7 +1377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				269F1758E69B7F6B00F7CE021E0CC035 /* Auth.swift in Sources */,
-				462D41C221289C8800A2D253 /* BlockstackJS.swift in Sources */,
+				461ADA15212CEA980049D74D /* BlockstackJS.swift in Sources */,
 				06B028215F40680FBE3D394D70D4DCA4 /* BigInt.swift in Sources */,
 				11E7F873E10A93DEE0240BB5EBA426E8 /* BitcoinJS.swift in Sources */,
 				A155C8C83FCD3D047525583FE0CB13BB /* Blockstack-dummy.m in Sources */,

@@ -8,7 +8,7 @@
 import Foundation
 import JavaScriptCore
 
-open class BlockstackJS {
+class BlockstackJS {
     
     lazy var context: JSContext? = {
         let context = JSContext()
