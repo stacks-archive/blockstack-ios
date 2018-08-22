@@ -47,8 +47,8 @@ class GaiaSpec: QuickSpec {
                                 result = content as? String
                             }
                         }
-                        expect(wasUploaded).toEventually(beTrue(), timeout: 5, pollInterval: 1)
-                        expect(result).toEventually(equal(textContent), timeout: 10, pollInterval: 1)
+                        expect(wasUploaded).toEventually(beTrue(), timeout: 10, pollInterval: 1)
+                        expect(result).toEventually(equal(textContent), timeout: 20, pollInterval: 1)
                     }
                 }
                 context("for bytes content") {
@@ -63,8 +63,8 @@ class GaiaSpec: QuickSpec {
                                 result = content as? Bytes
                             }
                         }
-                        expect(wasUploaded).toEventually(beTrue(), timeout: 5, pollInterval: 1)
-                        expect(result).toEventually(equal(bytesContent), timeout: 10, pollInterval: 1)
+                        expect(wasUploaded).toEventually(beTrue(), timeout: 10, pollInterval: 1)
+                        expect(result).toEventually(equal(bytesContent), timeout: 20, pollInterval: 1)
                     }
                 }
             }
@@ -110,7 +110,7 @@ class GaiaSpec: QuickSpec {
                             result = response as? String
                         }
                     }
-                    expect(result).toEventually(equal(content), timeout: 10, pollInterval: 1)
+                    expect(result).toEventually(equal(content), timeout: 20, pollInterval: 1)
                 }
             }
         }
