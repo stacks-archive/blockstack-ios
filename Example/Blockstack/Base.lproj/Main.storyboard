@@ -41,7 +41,7 @@
                                     <constraint firstAttribute="height" constant="50" id="PfD-sa-e0w"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="Qvx-Qk-D8l"/>
                                 </constraints>
-                                <state key="normal" title="Reset Device Keychian">
+                                <state key="normal" title="Reset Device Keychain">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
