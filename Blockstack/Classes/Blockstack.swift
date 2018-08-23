@@ -260,6 +260,7 @@ open class Blockstack {
     
     // TODO: Return errors in completion handler
     private func resolveZoneFileToProfile(zoneFile: String, publicKeyOrAddress: String, completion: @escaping (Profile?) -> ()) {
+        // TODO: Support legacy zone files
         guard let zoneFile = BlockstackJS().parseZoneFile(zoneFile: zoneFile),
             var tokenFileUrl = zoneFile.uri.first?["target"] as? String else {
                 completion(nil)
