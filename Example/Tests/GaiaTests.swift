@@ -22,7 +22,7 @@ class GaiaSpec: QuickSpec {
         let mary = User(userID: "testing5678.id.blockstack", privateKey: "73d79d4833606b173ad44a6634fd07e621cfdd1ce9f30021c7536b13910edc18")
 
         describe("Gaia") {
-            let fileName = "testFiles"
+            let fileName = "testFile"
             // Clear file before each test
             beforeEach {
                 Blockstack.shared.signOut()
@@ -105,7 +105,7 @@ class GaiaSpec: QuickSpec {
                         // Switch users
                         self.signIn(mary)
                         // Retrieve Bob's file
-                        Blockstack.shared.getFile(at: fileName, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com", zoneFileLookupURL: nil) {
+                        Blockstack.shared.getFile(at: fileName, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
                             response, _ in
                             result = response as? String
                         }

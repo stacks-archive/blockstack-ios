@@ -112,7 +112,7 @@ class ViewController: UIViewController {
                 return
             }
             // Read data from Gaia
-            Blockstack.shared.getFile(at: "testFile", username: userID, app: "https://pedantic-mahavira-f15d04.netlify.com", zoneFileLookupURL: nil) { response, error in
+            Blockstack.shared.getFile(at: "testFile", username: userID) { response, error in
                 if error != nil {
                     print("get file error")
                 } else {

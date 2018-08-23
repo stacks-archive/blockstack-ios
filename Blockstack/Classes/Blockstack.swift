@@ -22,6 +22,7 @@ public enum BlockstackConstants {
     public static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
     public static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
     public static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
+    public static let AppOriginUserDefaultLabel = "BLOCKSTACK_APP_ORIGIN"
 }
 
 open class Blockstack {
@@ -57,12 +58,6 @@ open class Blockstack {
         let _manifestURI = manifestURI ?? URL(string: "/manifest.json", relativeTo: appDomain)
         let appBundleID = "AppBundleID"
         
-        //        print("transitKey", transitKey)
-        //        print("redirectURLScheme", redirectURI)
-        //        print("manifestURI", _manifestURI!.absoluteString)
-        //        print("appDomain", appDomain)
-        //        print("appBundleID", appBundleID)
-        
         let authRequest = Auth.makeRequest(transitPrivateKey: transitKey,
                                            redirectURLScheme: redirectURI,
                                            manifestURI: _manifestURI!,
@@ -87,6 +82,10 @@ open class Blockstack {
                 completion?(AuthResult.failed(error))
                 return
             }
+            
+            // Cache app origin
+            UserDefaults.standard.setValue(appDomain.absoluteString, forKey: BlockstackConstants.AppOriginUserDefaultLabel)
+            
             Auth.handleAuthResponse(authResponse: authResponse,
                                     transitPrivateKey: transitKey,
                                     completion: completion)
@@ -230,10 +229,15 @@ open class Blockstack {
     public func getFile(at path: String,
                         decrypt: Bool = false,
                         username: String,
-                        app: String,
-                        zoneFileLookupURL: URL?,
+                        app: String? = nil,
+                        zoneFileLookupURL: URL? = nil,
                         completion: @escaping (_ content: Any?, _ error: GaiaError?) -> Void) {
-        // TODO: Support defaulting to current app origin
+        
+        guard let appOrigin = app ?? UserDefaults.standard.string(forKey: BlockstackConstants.AppOriginUserDefaultLabel) else {
+            completion(nil, GaiaError.configurationError)
+            return
+        }
+        
         let zoneFileLookupURL = zoneFileLookupURL ?? URL(string: BlockstackConstants.NameLookupEndpoint)!
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
@@ -246,7 +250,7 @@ open class Blockstack {
                 decrypt: decrypt,
                 multiplayerOptions: MultiplayerOptions(
                     username: username,
-                    app: app,
+                    app: appOrigin,
                     zoneFileLookupURL: zoneFileLookupURL),
                 completion: completion)
         }
