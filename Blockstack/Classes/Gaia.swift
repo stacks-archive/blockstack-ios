@@ -10,7 +10,7 @@ import Foundation
 public class Gaia {
 
     // TODO: Utilize promise pattern/other way of preventing simultaneous requests
-    static func ensureHubSession(callback: @escaping (GaiaHubSession?, GaiaError?) -> Void) {
+    static func getOrSetLocalHubConnection(callback: @escaping (GaiaHubSession?, GaiaError?) -> Void) {
         if let session = self.session {
             callback(session, nil)
         } else if let config = Gaia.retrieveConfig() {
@@ -29,6 +29,32 @@ public class Gaia {
                 callback(session, error)
             }
         }
+    }
+    
+    /**
+     Fetch the public read URL of a user file for the specified app.
+     - parameter path: The path to the file to read
+     - parameter username: The Blockstack ID of the user to look up
+     - parameter appOrigin: The app origin
+     - parameter zoneFileLookupURL: The URL to use for zonefile lookup. Defaults to 'http://localhost:6270/v1/names/'.
+     - parameter completion: Callback with public read URL of the file, if one was found.
+     */
+    static func getUserAppFileURL(at path: String, username: String, appOrigin: String, zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!, completion: @escaping (URL?) -> ()) {
+        // TODO: Return errors in completion handler
+        Blockstack.shared.lookupProfile(username: username, zoneFileLookupURL: zoneFileLookupURL) { profile, error in
+            guard error == nil,
+                let profile = profile,
+                let bucketUrl = profile.apps?[appOrigin],
+                let url = URL(string: bucketUrl) else {
+                    completion(nil)
+                    return
+            }
+            completion(url)
+        }
+    }
+
+    static func clearSession() {
+        self.session = nil
     }
     
     // MARK: - Private
@@ -61,7 +87,7 @@ public class Gaia {
             completion(GaiaHubSession(with: config), nil)
         }
     }
-    
+
     private static func getHubInfo(for hubURL: String, completion: @escaping (GaiaHubInfo?, Error?) -> Void) {
         guard let hubInfoURL = URL(string: "\(hubURL)/hub_info") else {
             completion(nil, nil)
@@ -85,13 +111,14 @@ public class Gaia {
     }
 
     private static func saveConfig(_ config: GaiaConfig) {
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(config),
-                                  forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+        self.resetConfig()
+        if let config = try? PropertyListEncoder().encode(config) {
+            UserDefaults.standard.set(config, forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+        }
     }
     
-    private static func resetConfig() {
-        UserDefaults.standard.set(nil,
-                                  forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+    static func resetConfig() {
+        UserDefaults.standard.removeObject(forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
     }
     
     private static func retrieveConfig() -> GaiaConfig? {

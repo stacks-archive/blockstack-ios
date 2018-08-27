@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3L-kz-GCX">
-                                <rect key="frame" x="62" y="258.5" width="250" height="50"/>
+                                <rect key="frame" x="62" y="308.5" width="250" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="90d-Iu-zd1"/>
@@ -34,79 +34,126 @@
                                     <action selector="signIn" destination="vXZ-lx-hvc" eventType="touchUpInside" id="ukG-2W-XhB"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R5R-d4-niU">
-                                <rect key="frame" x="187" y="283.5" width="0.0" height="0.0"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aDb-e5-ocJ">
-                                <rect key="frame" x="62" y="348.5" width="250" height="50"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47Y-au-RuJ">
+                                <rect key="frame" x="62" y="585" width="250" height="50"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="Sny-k5-Gnr"/>
-                                    <constraint firstAttribute="height" constant="50" id="YDf-Ko-TeY"/>
+                                    <constraint firstAttribute="height" constant="50" id="PfD-sa-e0w"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="Qvx-Qk-D8l"/>
                                 </constraints>
-                                <state key="normal" title="Put File">
+                                <state key="normal" title="Reset Device Keychain">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="putFileTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="dxf-F4-kHG"/>
+                                    <action selector="resetDeviceKeychain:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="YEC-Kg-qoQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QD4-AR-3t7">
-                                <rect key="frame" x="62" y="577" width="250" height="50"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QtW-dX-Fcd">
+                                <rect key="frame" x="38" y="168" width="300" height="331.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--------" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CJE-Pd-RdB">
+                                        <rect key="frame" x="111" y="14" width="78.5" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="jXo-5P-Ku7"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZYF-Sd-cpA">
+                                        <rect key="frame" x="25" y="68" width="250" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="bHx-L6-40f"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="m6j-1k-kEf"/>
+                                        </constraints>
+                                        <state key="normal" title="Put File">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="putFileTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Tbi-Q5-cqF"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3BJ-ch-gWF">
+                                        <rect key="frame" x="25" y="134" width="250" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="4h8-x9-gIN"/>
+                                            <constraint firstAttribute="height" constant="50" id="gEI-x6-rBz"/>
+                                        </constraints>
+                                        <state key="normal" title="Get File">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="getFileTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="FC0-FM-JKK"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0e7-3j-xJv">
+                                        <rect key="frame" x="25" y="197.5" width="250" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="xoW-xr-frP"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="ytD-az-IOH"/>
+                                        </constraints>
+                                        <state key="normal" title="Multiplayer Get File">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="multiplayerGetFileTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="S8d-95-zfZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1eN-B6-qel">
+                                        <rect key="frame" x="24.5" y="261.5" width="250" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="250" id="N1s-5s-Zr4"/>
+                                            <constraint firstAttribute="height" constant="50" id="wUx-10-6PS"/>
+                                        </constraints>
+                                        <state key="normal" title="Sign Out">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="signOut:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="h2X-2s-eZ0"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="AHs-Wr-ygm"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="mEl-lT-YBL"/>
+                                    <constraint firstAttribute="bottom" secondItem="1eN-B6-qel" secondAttribute="bottom" constant="20" id="5P4-cT-H9G"/>
+                                    <constraint firstItem="3BJ-ch-gWF" firstAttribute="top" secondItem="ZYF-Sd-cpA" secondAttribute="bottom" constant="16" id="6e5-6l-f0j"/>
+                                    <constraint firstItem="0e7-3j-xJv" firstAttribute="top" secondItem="3BJ-ch-gWF" secondAttribute="bottom" constant="13.5" id="8pb-JZ-taV"/>
+                                    <constraint firstItem="ZYF-Sd-cpA" firstAttribute="top" secondItem="CJE-Pd-RdB" secondAttribute="bottom" constant="14" id="DAh-VV-tti"/>
+                                    <constraint firstItem="0e7-3j-xJv" firstAttribute="centerX" secondItem="QtW-dX-Fcd" secondAttribute="centerX" id="Obf-Vl-TV3"/>
+                                    <constraint firstItem="1eN-B6-qel" firstAttribute="centerX" secondItem="QtW-dX-Fcd" secondAttribute="centerX" id="S0W-cM-Ha8"/>
+                                    <constraint firstItem="1eN-B6-qel" firstAttribute="top" secondItem="0e7-3j-xJv" secondAttribute="bottom" constant="14" id="ZvA-bJ-mtA"/>
+                                    <constraint firstItem="3BJ-ch-gWF" firstAttribute="centerX" secondItem="QtW-dX-Fcd" secondAttribute="centerX" id="gLW-At-05P"/>
+                                    <constraint firstItem="CJE-Pd-RdB" firstAttribute="centerX" secondItem="QtW-dX-Fcd" secondAttribute="centerX" id="jcb-re-JgL"/>
+                                    <constraint firstItem="CJE-Pd-RdB" firstAttribute="top" secondItem="QtW-dX-Fcd" secondAttribute="top" constant="14" id="qd5-Xy-Fq0"/>
+                                    <constraint firstItem="ZYF-Sd-cpA" firstAttribute="centerX" secondItem="QtW-dX-Fcd" secondAttribute="centerX" id="rHd-jI-oXG"/>
+                                    <constraint firstAttribute="width" constant="300" id="tVL-zi-bfz"/>
                                 </constraints>
-                                <state key="normal" title="Sign Out">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="signOut:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="gyq-pj-pFQ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B3J-mW-eSa">
-                                <rect key="frame" x="62" y="414.5" width="250" height="50"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="X4b-Jx-l5D"/>
-                                    <constraint firstAttribute="height" constant="50" id="cot-VE-G6Z"/>
-                                </constraints>
-                                <state key="normal" title="Get File">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="getFileTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="F5I-5U-qLc"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="R5R-d4-niU" firstAttribute="centerY" secondItem="Y3L-kz-GCX" secondAttribute="centerY" id="GBZ-7H-1QI"/>
-                            <constraint firstItem="QD4-AR-3t7" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Lkf-4Z-xAl"/>
-                            <constraint firstItem="aDb-e5-ocJ" firstAttribute="top" secondItem="Y3L-kz-GCX" secondAttribute="bottom" constant="40" id="YnU-vf-UMb"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="47Y-au-RuJ" secondAttribute="bottom" constant="32" id="1oS-Mw-CVe"/>
+                            <constraint firstItem="QtW-dX-Fcd" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="Cuy-NE-4Ej"/>
                             <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="ZEM-j7-yuY"/>
-                            <constraint firstItem="B3J-mW-eSa" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="c3B-92-EHH"/>
-                            <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" constant="-50" id="dsO-Cl-91h"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="QD4-AR-3t7" secondAttribute="bottom" constant="40" id="j8h-of-tmt"/>
-                            <constraint firstItem="R5R-d4-niU" firstAttribute="centerX" secondItem="Y3L-kz-GCX" secondAttribute="centerX" id="qUc-g4-bPB"/>
-                            <constraint firstItem="aDb-e5-ocJ" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="yvv-QU-Cwc"/>
-                            <constraint firstItem="B3J-mW-eSa" firstAttribute="top" secondItem="aDb-e5-ocJ" secondAttribute="bottom" constant="16" id="zUM-uu-dbk"/>
+                            <constraint firstItem="Y3L-kz-GCX" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="dsO-Cl-91h"/>
+                            <constraint firstItem="QtW-dX-Fcd" firstAttribute="centerY" secondItem="kh9-bI-dsS" secondAttribute="centerY" id="ecx-1T-01t"/>
+                            <constraint firstItem="47Y-au-RuJ" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="qc1-R5-5YI"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="getFileButton" destination="B3J-mW-eSa" id="nTg-Cx-3PL"/>
-                        <outlet property="nameLabel" destination="R5R-d4-niU" id="Lnu-Mp-ycC"/>
-                        <outlet property="putFileButton" destination="aDb-e5-ocJ" id="k2z-js-K62"/>
+                        <outlet property="nameLabel" destination="CJE-Pd-RdB" id="NoJ-Kn-VOx"/>
+                        <outlet property="optionsContainerView" destination="QtW-dX-Fcd" id="6Q0-sB-MK8"/>
+                        <outlet property="resetKeychainButton" destination="47Y-au-RuJ" id="Rsw-ak-sAp"/>
                         <outlet property="signInButton" destination="Y3L-kz-GCX" id="ino-R6-Kp8"/>
-                        <outlet property="signOutButton" destination="QD4-AR-3t7" id="Qeu-b4-DM9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="77.599999999999994" y="32.833583208395808"/>
         </scene>
     </scenes>
 </document>

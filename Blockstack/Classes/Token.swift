@@ -47,11 +47,12 @@ public struct Profile: Codable {
     public let context: String?
     public let name: String?
     public let description: String?
+    public let apps: [String: String]?
     
     enum CodingKeys: String, CodingKey {
         case type = "@type"
         case context = "@context"
-        case name, description
+        case name, description, apps
     }
 }
 
@@ -68,6 +69,16 @@ public struct ProfileToken: Codable {
 
 public struct ProfileTokenPayload: Codable {
     let claim: Profile?
+}
+
+public struct NameInfo: Codable {
+    var address: String
+    var blockchain: String
+    var expire_block: Int?
+    var last_txid: String
+    var status: String
+    var zonefile: String
+    var zonefile_hash: String
 }
 
 extension Encodable {
