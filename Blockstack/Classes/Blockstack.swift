@@ -66,7 +66,7 @@ open class Blockstack {
                                            scopes: scopes)
         
         var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
-        urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
+        urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest), URLQueryItem(name: "client", value: "ios_secure")]
         let url = urlComps.url!
         
         // TODO: Use ASWebAuthenticationSession for iOS 12
