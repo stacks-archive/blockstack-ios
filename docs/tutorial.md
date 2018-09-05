@@ -539,12 +539,29 @@ Rather than have you build up your own UI, this section has you copy and paste a
                     <action selector="signIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nV7-rt-euZ"/>
                 </connections>
             </button>
+            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k0H-mY-bo5">
+                <rect key="frame" x="100" y="382" width="175" height="40"/>
+                <color key="backgroundColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstAttribute="height" constant="40" id="lI1-yb-ABZ"/>
+                </constraints>
+                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                <state key="normal" title="Sign out">
+                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </state>
+                <connections>
+                    <action selector="signOut:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hJe-os-Oph"/>
+                </connections>
+            </button>
         </subviews>
         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         <constraints>
             <constraint firstItem="9eE-ZS-LU9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="2ZP-tU-h9Y"/>
+            <constraint firstItem="k0H-mY-bo5" firstAttribute="centerY" secondItem="Lfp-KX-BDb" secondAttribute="centerY" id="3fo-sm-8bL"/>
+            <constraint firstItem="k0H-mY-bo5" firstAttribute="width" secondItem="Lfp-KX-BDb" secondAttribute="width" id="ChB-0E-BpP"/>
             <constraint firstItem="9eE-ZS-LU9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="81" id="DBh-q0-pAV"/>
             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Lfp-KX-BDb" secondAttribute="trailing" constant="100" id="MHO-ew-4Bd"/>
+            <constraint firstItem="k0H-mY-bo5" firstAttribute="centerX" secondItem="Lfp-KX-BDb" secondAttribute="centerX" id="Rlk-ua-puu"/>
             <constraint firstItem="Lfp-KX-BDb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="100" id="Rsm-LP-ya7"/>
             <constraint firstItem="Lfp-KX-BDb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="362" id="chE-B7-ya6"/>
             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9eE-ZS-LU9" secondAttribute="trailing" id="j0x-8j-04u"/>
@@ -571,7 +588,7 @@ In this section, you edit the `ViewController.swift` file using the storyboard a
 
    ![](images/add-action.gif)
 
-6. Repeat this process with the storyboard's purple **hello-blockstack-ios** label.
+6. Repeat this process with the storyboard's purple **hello-blockstack-ios** label, and the **Sign out** button.
 
     When you are done, your ViewController file contains the following variables:
 
@@ -580,6 +597,7 @@ In this section, you edit the `ViewController.swift` file using the storyboard a
 
     @IBOutlet var nameLabel: UILabel!
     @IBOutlet var signInButton: UIButton!
+    @IBOutlet var signOutButton: UIButton!
     ```
 
     And XCode has added two outlines to the `Main.storyboard` source.
@@ -588,6 +606,7 @@ In this section, you edit the `ViewController.swift` file using the storyboard a
     <connections>
     <outlet property="nameLabel" destination="9eE-ZS-LU9" id="Ahv-Te-ZZo"/>
     <outlet property="signInButton" destination="Lfp-KX-BDb" id="yef-Jj-uPt"/>
+    <outlet property="signOutButton" destination="k0H-mY-bo5" id="Y47-Za-lSc"/>
     </connections>
     ```
 
@@ -629,11 +648,14 @@ this application in your mobile add for now. In XCode, do the following;
     			let retrievedUserData = Blockstack.shared.loadUserData()
     			print(retrievedUserData?.profile?.name as Any)
     			let name = retrievedUserData?.profile?.name ?? "Nameless Person"
-    			self.nameLabel?.text = "Hello, \(name)"
-    			self.nameLabel?.isHidden = false
-    			self.signInButton?.setTitle("Sign Out", for: .normal)
+    			self.nameLabel.text = "Hello, \(name)"
+    			self.nameLabel.isHidden = false
+            self.signInButton.isHidden = true
+            self.signOutButton.isHidden = false
     		} else {
-    			self.signInButton?.setTitle("Sign into Blockstack", for: .normal)
+            self.signInButton.isHidden = false
+            self.signOutButton.isHidden = true
+            self.nameLabel.isHidden = true
     		}
     	}
     }
@@ -660,20 +682,14 @@ this application in your mobile add for now. In XCode, do the following;
 	 }
    ```
 
-7. Add a `signOut()` function to handle signOut
+7. Add a `signOut()` action to handle signOut
 
    ```
-   @IBAction func signOut(_ sender: Any) {
-     // Sign user out
-     Blockstack.shared.signOut(redirectURI: "myBlockstackApp") { error in
-       if let error = error {
-         print("sign out failed, error: \(error)")
-       } else {
-         self.updateUI()
-         print("sign out success")
-       }
-      }
-		}
+    @IBAction func signOut(_ sender: Any) {
+        // Sign user out
+        Blockstack.shared.signOut()
+        self.updateUI()
+    }
     ```
 
 8. Add a function to check if a user is signed in
@@ -684,7 +700,7 @@ this application in your mobile add for now. In XCode, do the following;
 	 }
 	 ```
 
-9. Put it all together with a signin buttonType
+9. Put it all together with a `signIn` action
 
    ```swift
 	 @IBAction func signIn(_ sender: UIButton) {
