@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2018-08-27
+
+### Added
+- `Blockstack.getFile` with parameters username, app, and zoneFileLookupURL.
+- `Blockstack.lookupProfile`
+- `Gaia.getUserAppFileURL`
+- `Blockstack.promptClearDeviceKeychain` to reset the user's local storage for auth.
+- Descriptive comments that work with Xcode Quick Look
+
+### Changed
+- Non-JSON formats in getFile and putFile, specifically "text/plain" and "application/octet-stream" content types.
+- `Profile` object now includes an "apps" property.
+- Various fixes around sign in/sign out with the sample app.
+- The sample app now showcases multiplayer get, along with encrypted putFile and getFile.
+- `Blockstack.signOut` now just signs the user out and clears state for the current application.
+
 ## [0.2.0] - 2018-08-04
 
 ### Added
