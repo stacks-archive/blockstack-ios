@@ -273,7 +273,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Blockstack_Tests/Pods-Blockstack_Tests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Blockstack_Tests/Pods-Blockstack_Tests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Blockstack/Blockstack.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
@@ -288,7 +288,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Blockstack_Tests/Pods-Blockstack_Tests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Blockstack_Tests/Pods-Blockstack_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		41F2E0E9A4F45A9F7C51865D /* [CP] Check Pods Manifest.lock */ = {
@@ -315,7 +315,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Blockstack_Example/Pods-Blockstack_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Blockstack_Example/Pods-Blockstack_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Blockstack/Blockstack.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 			);
@@ -326,7 +326,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Blockstack_Example/Pods-Blockstack_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Blockstack_Example/Pods-Blockstack_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		974E8C8DC77944B134FB8E91 /* [CP] Check Pods Manifest.lock */ = {
