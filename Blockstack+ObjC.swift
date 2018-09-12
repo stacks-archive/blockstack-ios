@@ -8,13 +8,25 @@
 import Foundation
 
 extension Blockstack {
-    @objc(signInWithRedirectURI:appDomain:manifestURI:scopes:completion:)
+    
+    /**
+     Generates an authentication request and redirects the user to the Blockstack browser to approve the sign in request. redirectURI is the location to which the identity provider will redirect the user after the user approves sign in.
+     - parameter appDomain: The app origin.
+     - parameter manifestURI: Location of the manifest file; defaults to '[appDomain]/manifest.json'.
+     - parameter scopes: An array of strings indicating which permissions this app is requesting; defaults to requesting write access to this app's data store ("store_write")/
+     - parameter completion: Callback with an AuthResult object.
+     */ @objc(signInWithRedirectURI:appDomain:manifestURI:scopes:completion:)
     public func objc_signIn(redirectURI: String, appDomain: URL, manifestURI: URL? = nil, scopes: Array<String> = ["store_write"], completion: @escaping (ObjCAuthResult) -> ()) {
         self.signIn(redirectURI: redirectURI, appDomain: appDomain, manifestURI: manifestURI, scopes: scopes) {
             completion(ObjCAuthResult($0))
         }
     }
     
+    /**
+     Look up a user profile by Blockstack ID.
+     - parameter zoneFileLookupURL: The URL to use for zonefile lookup
+     - parameter completion: Callback containing a Profile object, if one was found.
+     */
     @objc(lookupProfileForUsername:zoneFileLookupURL:completion:)
     public func objc_lookupProfile(username: String, zoneFileLookupURL: URL = URL(string: BlockstackConstants.NameLookupEndpoint)!, completion: @escaping (ObjCProfile?, Error?) -> ()) {
         self.lookupProfile(username: username, zoneFileLookupURL: zoneFileLookupURL) {
@@ -25,7 +37,10 @@ extension Blockstack {
             }
         }
     }
-    
+
+    /**
+     Retrieves the user data object. The user's profile is stored in the key `profile`.
+     */
     @objc(loadUserData)
     public func objc_loadUserData() -> ObjCUserData? {
         if let userData = self.loadUserData() {

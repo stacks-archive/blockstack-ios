@@ -34,9 +34,7 @@ public enum BlockstackConstants {
     // - MARK: Authentication
     
     /**
-     Generates an authentication request and redirects the user to the Blockstack
-     browser to approve the sign in request.
-     
+     Generates an authentication request and redirects the user to the Blockstack browser to approve the sign in request.     
      - parameter redirectURI: The location to which the identity provider will redirect the user after the user approves sign in.
      - parameter appDomain: The app origin.
      - parameter manifestURI: Location of the manifest file; defaults to '[appDomain]/manifest.json'.
@@ -93,10 +91,16 @@ public enum BlockstackConstants {
         self.sfAuthSession?.start()
     }
     
+    /**
+     Retrieves the user data object. The user's profile is stored in the key `profile`.
+     */
     public func loadUserData() -> UserData? {
         return ProfileHelper.retrieveProfile()
     }
     
+    /**
+     Check if a user is currently signed in.
+     */
     @objc public func isSignedIn() -> Bool {
         return self.loadUserData() != nil
     }
