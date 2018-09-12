@@ -43,7 +43,8 @@ extension Blockstack {
      - parameter manifestURI: Location of the manifest file; defaults to '[appDomain]/manifest.json'.
      - parameter scopes: An array of strings indicating which permissions this app is requesting; defaults to requesting write access to this app's data store ("store_write")/
      - parameter completion: Callback with an AuthResult object.
-     */ @objc(signInWithRedirectURI:appDomain:manifestURI:scopes:completion:)
+     */
+    @objc(signInWithRedirectURI:appDomain:manifestURI:scopes:completion:)
     public func objc_signIn(redirectURI: String, appDomain: URL, manifestURI: URL? = nil, scopes: Array<String> = ["store_write"], completion: @escaping (ObjCAuthResult) -> ()) {
         self.signIn(redirectURI: redirectURI, appDomain: appDomain, manifestURI: manifestURI, scopes: scopes) {
             completion(ObjCAuthResult($0))
