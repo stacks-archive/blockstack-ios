@@ -13,7 +13,7 @@ public enum AuthResult {
     case failed(Error?)
 }
 
-open class Auth {
+class Auth {
     static func makeRequest(transitPrivateKey: String,
                             redirectURLScheme: String,
                             manifestURI: URL,
