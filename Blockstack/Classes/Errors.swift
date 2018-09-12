@@ -11,10 +11,9 @@ public enum AuthError: Error {
     case invalidResponse
 }
 
-public enum GaiaError: Error {
+@objc public enum GaiaError: Int, Error {
     case requestError
     case invalidResponse
     case connectionError
     case configurationError
 }
-

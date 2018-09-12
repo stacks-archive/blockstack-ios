@@ -72,7 +72,7 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
             let text = alert.textFields?.first?.text ?? "Default Text"
-            Blockstack.shared.putFile(to: "testFile", content: text, encrypt: false) { (publicURL, error) in
+            Blockstack.shared.putFile(to: "testFile", text: text, encrypt: false) { (publicURL, error) in
                 if error != nil {
                     print("put file error")
                 } else {

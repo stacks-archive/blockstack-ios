@@ -25,7 +25,7 @@ public enum BlockstackConstants {
     public static let AppOriginUserDefaultLabel = "BLOCKSTACK_APP_ORIGIN"
 }
 
-open class Blockstack {
+@objc open class Blockstack: NSObject {
 
     public static let shared = Blockstack()
     
@@ -47,7 +47,7 @@ open class Blockstack {
                      appDomain: URL,
                      manifestURI: URL? = nil,
                      scopes: Array<String> = ["store_write"],
-                     completion: ((AuthResult) -> Void)?) {
+                     completion: @escaping (AuthResult) -> ()) {
         print("signing in")
         
         guard let transitKey = Keys.generateTransitKey() else {
@@ -79,7 +79,7 @@ open class Blockstack {
             
             self.sfAuthSession = nil
             guard error == nil, let queryParams = url?.queryParameters, let authResponse = queryParams["authResponse"] else {
-                completion?(AuthResult.failed(error))
+                completion(AuthResult.failed(error))
                 return
             }
             
@@ -97,11 +97,11 @@ open class Blockstack {
         return ProfileHelper.retrieveProfile()
     }
     
-    public func isSignedIn() -> Bool {
+    @objc public func isSignedIn() -> Bool {
         return self.loadUserData() != nil
     }
     
-    public func signOut() {
+    @objc public func signOut() {
         Keys.clearTransitKey()
         ProfileHelper.clearProfile()
         Gaia.clearSession()
@@ -113,7 +113,7 @@ open class Blockstack {
      - parameter redirectURI: A custom scheme registered in the app Info.plist, i.e. "myBlockstackApp"
      - parameter completion: Callback indicating success or failure.
      */
-    public func promptClearDeviceKeychain(redirectUri: String, completion: @escaping (Error?) -> ()) {
+    @objc public func promptClearDeviceKeychain(redirectUri: String, completion: @escaping (Error?) -> ()) {
         // TODO: Use ASWebAuthenticationSession for iOS 12
         self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)?redirect_uri=\(redirectUri)")!, callbackURLScheme: nil) { _, error in
             self.sfAuthSession = nil
@@ -130,7 +130,7 @@ open class Blockstack {
      - parameter zoneFileLookupURL: The URL to use for zonefile lookup
      - parameter completion: Callback containing a Profile object, if one was found.
      */
-    public func lookupProfile(username: String, zoneFileLookupURL: URL = URL(string: BlockstackConstants.NameLookupEndpoint)!, completion: @escaping (Profile?, GaiaError?) -> ()) {
+    public func lookupProfile(username: String, zoneFileLookupURL: URL = URL(string: BlockstackConstants.NameLookupEndpoint)!, completion: @escaping (Profile?, Error?) -> ()) {
         let task = URLSession.shared.dataTask(with: zoneFileLookupURL.appendingPathComponent(username)) {
             data, response, error in
             guard let data = data, error == nil else {
@@ -159,40 +159,40 @@ open class Blockstack {
     /**
      Stores the data provided in the app's data store to to the file specified.
      - parameter to: The path to store the data in
-     - parameter content: The String data to store in the file
+     - parameter text: The String data to store in the file
      - parameter encrypt: The data with the app private key
      - parameter completion: Callback with the public url and any error
      - parameter publicURL: The publicly accessible url of the file
      - parameter error: Error returned by Gaia
      */
-    public func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: GaiaError?) -> Void) {
+    @objc public func putFile(to path: String, text: String, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: content, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
         }
     }
     
     /**
      Stores the data provided in the app's data store to to the file specified.
      - parameter to: The path to store the data in
-     - parameter content: The Bytes data to store in the file
+     - parameter bytes: The Bytes data to store in the file
      - parameter encrypt: The data with the app private key
      - parameter completion: Callback with the public url and any error
      - parameter publicURL: The publicly accessible url of the file
      - parameter error: Error returned by Gaia
      */
-    public func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: GaiaError?) -> Void) {
+    @objc public func putFile(to path: String, bytes: Bytes, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: content, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
         }
     }
     
@@ -204,7 +204,7 @@ open class Blockstack {
      - parameter content: The retrieved content as either Bytes, String, or DecryptedContent
      - parameter error: Error returned by Gaia
      */
-    public func getFile(at path: String, decrypt: Bool = false, completion: @escaping (_ content: Any?, _ error: GaiaError?) -> Void) {
+    @objc public func getFile(at path: String, decrypt: Bool = false, completion: @escaping (_ content: Any?, _ error: Error?) -> Void) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
@@ -226,12 +226,12 @@ open class Blockstack {
      - parameter content: The retrieved content as either Bytes, String, or DecryptedContent
      - parameter error: Error returned by Gaia
      */
-    public func getFile(at path: String,
+    @objc public func getFile(at path: String,
                         decrypt: Bool = false,
                         username: String,
                         app: String? = nil,
                         zoneFileLookupURL: URL? = nil,
-                        completion: @escaping (_ content: Any?, _ error: GaiaError?) -> Void) {
+                        completion: @escaping (_ content: Any?, _ error: Error?) -> Void) {
         
         guard let appOrigin = app ?? UserDefaults.standard.string(forKey: BlockstackConstants.AppOriginUserDefaultLabel) else {
             completion(nil, GaiaError.configurationError)

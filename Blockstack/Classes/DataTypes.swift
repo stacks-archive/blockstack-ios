@@ -1,5 +1,5 @@
 //
-//  Token.swift
+//  DataTypes.swift
 //  Blockstack
 //
 //  Created by Yukan Liao on 2018-04-12.
@@ -7,11 +7,9 @@
 
 import Foundation
 
-public typealias UserData = Payload
-
 public struct Token: Codable {
     let header: Header?
-    public let payload: Payload?
+    public let payload: UserData?
     let signature: String?
 }
 
@@ -19,7 +17,7 @@ public struct Header: Codable {
     let typ, alg: String?
 }
 
-public struct Payload: Codable {
+public class UserData: Codable {
     public let jti: String?
     public let iat, exp: Int?
     public let iss: String?

@@ -121,7 +121,7 @@ class GaiaSpec: QuickSpec {
     private func signIn(_ user: User) {
         // TODO: Better way of getting an authenticated user context
         guard let jsonData = try? JSONEncoder().encode(["private_key": user.privateKey]),
-            let userData = try? JSONDecoder().decode(Payload.self, from: jsonData),
+            let userData = try? JSONDecoder().decode(UserData.self, from: jsonData),
             let propertyEncodedData = try? PropertyListEncoder().encode(userData) else {
                 fail("Could not set up user account")
                 return
@@ -139,12 +139,12 @@ class GaiaSpec: QuickSpec {
     
     /// Convenience funtion to fail when presented with errors for putFile
     private func testUpload(fileName: String, content: Content, encrypt: Bool, completion: @escaping (String) -> ()) {
-        let put: (Content, @escaping (String?, GaiaError?) -> ()) -> () = { content, callback in
+        let put: (Content, @escaping (String?, Error?) -> ()) -> () = { content, callback in
             switch content {
             case let .text(text):
-                Blockstack.shared.putFile(to: fileName, content: text, encrypt: encrypt, completion: callback)
+                Blockstack.shared.putFile(to: fileName, text: text, encrypt: encrypt, completion: callback)
             case let .bytes(bytes):
-                Blockstack.shared.putFile(to: fileName, content: bytes, encrypt: encrypt, completion: callback)
+                Blockstack.shared.putFile(to: fileName, bytes: bytes, encrypt: encrypt, completion: callback)
             }
         }
         
