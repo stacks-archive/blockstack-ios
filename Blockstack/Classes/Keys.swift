@@ -20,12 +20,12 @@ enum secp256k1Curve {
 open class Keys {
     
     /**
-     Generates a set of random bytes.
-     - parameter byteLength: Byte count of the resulting hex string.
+     Generates a string from a set of random bytes.
+     - parameter numberOfBytes: Byte count of the resulting hex string.
      - returns: Hex string cmoprised of random bytes of the given length.
     */
-    @objc open static func generateRandomBytes(byteLength: Int = 32) -> String? {
-        var randomData = Data(count: byteLength)
+    @objc open static func getEntropy(numberOfBytes: Int = 32) -> String? {
+        var randomData = Data(count: numberOfBytes)
         let count = randomData.count
         let result = randomData.withUnsafeMutableBytes {
             SecRandomCopyBytes(kSecRandomDefault, count, $0)
@@ -38,7 +38,6 @@ open class Keys {
         }
     }
 
-    
     /**
      Get the associated public key from a given private key on the secp256k1 elliptic curve.
      - parameter privateKey: The private key from which to derive the public key.
@@ -59,7 +58,7 @@ open class Keys {
         var d: _BigInt<UInt>?
         
         repeat {
-            let randomBytes = generateRandomBytes()
+            let randomBytes = self.getEntropy()
             d = _BigInt<UInt>(randomBytes!, radix: 16)
         } while (d!.isNegative
             || d!.isZero
