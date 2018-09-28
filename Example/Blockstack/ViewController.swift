@@ -52,13 +52,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func resetDeviceKeychain(_ sender: Any) {
-        Blockstack.shared.promptClearDeviceKeychain(redirectUri: "myBlockstackApp") { error in
-            if let error = error {
-                print("sign out failed, error: \(error)")
-            } else {
-                print("sign out success")
-            }
-        }
+        Blockstack.shared.promptClearDeviceKeychain()
     }
     
     @IBAction func putFileTapped(_ sender: Any) {
