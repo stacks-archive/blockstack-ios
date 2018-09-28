@@ -216,12 +216,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 8AGC2Z4ZX9;
+						DevelopmentTeam = AY3JH3T849;
 						LastSwiftMigration = 0900;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						DevelopmentTeam = 8AGC2Z4ZX9;
+						DevelopmentTeam = AY3JH3T849;
 						LastSwiftMigration = 0900;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -507,7 +507,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = AY3JH3T849;
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -525,7 +525,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = AY3JH3T849;
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -542,7 +542,7 @@
 			baseConfigurationReference = 4F203563E3205F2FEE113060 /* Pods-Blockstack_Tests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = AY3JH3T849;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -563,7 +563,7 @@
 			baseConfigurationReference = 586561B3F8D15F92646A681D /* Pods-Blockstack_Tests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = AY3JH3T849;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
