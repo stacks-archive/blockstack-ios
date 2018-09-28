@@ -257,7 +257,58 @@ public enum BlockstackConstants {
                 completion: completion)
         }
     }
-
+    
+    /**
+     Encrypts the data provided with the app public key.
+     - parameter bytes: Bytes (Array<UInt8>) data to encrypt.
+     - parameter publicKey: The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user's appPrivateKey.
+     - returns: Stringified JSON ciphertext object
+     */
+    @objc public func encryptContent(bytes: Bytes, publicKey: String? = nil) -> String? {
+        let key: String?
+        if publicKey == nil, let privateKey = Blockstack.shared.loadUserData()?.privateKey {
+            key = Keys.getPublicKeyFromPrivate(privateKey)
+        } else {
+            key = publicKey
+        }
+        guard let recipientKey = key else {
+            return nil
+        }
+        return Encryption.encryptECIES(content: bytes, recipientPublicKey: recipientKey, isString: false)
+    }
+    
+    /**
+     Encrypts the data provided with the app public key.
+     - parameter text: String data to encrypt
+     - parameter publicKey: The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user's appPrivateKey.
+     - returns: Stringified JSON ciphertext object
+     */
+    @objc public func encryptContent(text: String, publicKey: String? = nil) -> String? {
+        let key: String?
+        if publicKey == nil, let privateKey = Blockstack.shared.loadUserData()?.privateKey {
+            key = Keys.getPublicKeyFromPrivate(privateKey)
+        } else {
+            key = publicKey
+        }
+        guard let recipientKey = key else {
+            return nil
+        }
+        return Encryption.encryptECIES(content: text, recipientPublicKey: recipientKey)
+    }
+    
+    /**
+     Decrypts data encrypted with `encryptContent` with the transit private key.
+     - parameter content: Encrypted, JSON stringified content.
+     - parameter privateKey: The hex string of the ECDSA private key to use for decryption. If not provided, will use user's appPrivateKey.
+     - returns: DecryptedValue object containing Byte or String content.
+     */
+    public func decryptContent(content: String, privateKey: String? = nil) -> DecryptedValue? {
+        guard let key = privateKey ?? Blockstack.shared.loadUserData()?.privateKey else {
+            return nil
+        }
+        return Encryption.decryptECIES(cipherObjectJSONString: content, privateKey: key)
+    }
+    
     // MARK: - Private
     
     // TODO: Return errors in completion handler

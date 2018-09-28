@@ -41,7 +41,7 @@ public class GaiaHubSession {
                             completion(nil, nil)
                             return
                         }
-                        let decryptedValue = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: text)
+                        let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: text, privateKey: privateKey)
                         completion(decryptedValue, nil)
                     } else {
                         completion(text, nil)
@@ -107,9 +107,9 @@ public class GaiaHubSession {
         var cipherObjectJSON: String?
         switch content {
         case let .bytes(bytes):
-            cipherObjectJSON = Encryption.encryptECIES(recipientPublicKey: publicKey, content: bytes, isString: false)
+            cipherObjectJSON = Encryption.encryptECIES(content: bytes, recipientPublicKey: publicKey, isString: false)
         case let .text(text):
-            cipherObjectJSON = Encryption.encryptECIES(recipientPublicKey: publicKey, content: text)
+            cipherObjectJSON = Encryption.encryptECIES(content: text, recipientPublicKey: publicKey)
         }
         
         guard let cipher = cipherObjectJSON else {

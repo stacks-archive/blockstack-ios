@@ -8,7 +8,7 @@
 import Foundation
 import CryptoSwift
 
-public class Encryption {
+class Encryption {
 
     static func decryptPrivateKey(privateKey: String, hexedEncrypted: String) -> String? {
         let encryptedData = Data(fromHexEncodedString: hexedEncrypted)
@@ -17,7 +17,7 @@ public class Encryption {
         return encryptionJS.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString!)?.plainText
     }
     
-    public static func encryptECIES(recipientPublicKey: String, content: Bytes, isString: Bool) -> String? {
+    static func encryptECIES(content: Bytes, recipientPublicKey: String, isString: Bool) -> String? {
         guard let ephemeralSK = Keys.makeECPrivateKey(),
             let sharedSecret = Keys.deriveSharedSecret(ephemeralSecretKey: ephemeralSK, recipientPublicKey: recipientPublicKey) else {
             return nil
@@ -50,22 +50,23 @@ public class Encryption {
         return nil
     }
     
-    public static func encryptECIES(recipientPublicKey: String, content: String) -> String? {
-        return self.encryptECIES(recipientPublicKey: recipientPublicKey, content: Array(content.utf8), isString: true)
+    static func encryptECIES(content: String, recipientPublicKey: String) -> String? {
+        return self.encryptECIES(content: Array(content.utf8), recipientPublicKey: recipientPublicKey, isString: true)
     }
     
-    public static func decryptECIES(privateKey: String, cipherObjectJSONString: String) -> DecryptedValue? {
+    static func decryptECIES(cipherObjectJSONString: String, privateKey: String) -> DecryptedValue? {
         return EncryptionJS().decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherObjectJSONString)
     }
 }
 
 public struct DecryptedValue {
-    public var isString: Bool {
-        return self.plainText != nil
-    }
     public let plainText: String?
     public let bytes: Bytes?
     
+    public var isString: Bool {
+        return self.plainText != nil
+    }
+
     init(text: String) {
         self.plainText = text
         self.bytes = nil
