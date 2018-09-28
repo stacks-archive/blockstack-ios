@@ -24,7 +24,7 @@ open class Keys {
      - parameter byteLength: Byte count of the resulting hex string.
      - returns: Hex string cmoprised of random bytes of the given length.
     */
-    open static func generateRandomBytes(byteLength: Int = 32) -> String? {
+    @objc open static func generateRandomBytes(byteLength: Int = 32) -> String? {
         var randomData = Data(count: byteLength)
         let count = randomData.count
         let result = randomData.withUnsafeMutableBytes {
@@ -45,15 +45,14 @@ open class Keys {
      - parameter compressed: Boolean indicating whether the returned public key should be compressed.
      - returns: Complementing, optionally compressed public key for given private key.
      */
-    open static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
+    @objc open static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
         return EllipticJS().getPublicKeyFromPrivate(privateKey, compressed: compressed)
     }
 
     /**
      Generate an elliptic curve private key for secp256k1.
      */
-    open static func makeECPrivateKey() -> String? {
-        
+    @objc open static func makeECPrivateKey() -> String? {
         let keyLength = 32
         let n = secp256k1Curve.n
         let nBigInt = _BigInt<UInt>(n, radix: 16)
