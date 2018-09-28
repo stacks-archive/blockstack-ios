@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hello, Blockstack!</title>
+  <title>Afari Redirect</title>
   <script>
   function getParameterByName(name) {
     var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
@@ -9,7 +9,7 @@
   }
 
   var authResponse = getParameterByName('authResponse')
-  window.location="myblockstackapp://?authResponse=" + authResponse
+  window.location="afari://?authResponse=" + authResponse
   </script>
 <body>
 </body>

@@ -99,7 +99,7 @@ open class Keys {
 //            print(randomBytes!)
             d = _BigInt<UInt>(randomBytes!, radix: 16)
 //            print("d")
-//            print(d?.toString() as Any)
+//            print(d?.toString() as Any) 
         } while (d!.isNegative
             || d!.isZero
             || d?._compare(to: nBigInt!) == .equal
@@ -132,5 +132,9 @@ open class Keys {
     
     static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) -> String? {
         return EllipticJS().computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
+    }
+
+    static func encodeCompressed(publicKey: String) -> String? {
+        return EllipticJS().encodeCompressed(publicKey: publicKey)
     }
 }

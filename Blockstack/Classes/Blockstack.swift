@@ -158,6 +158,101 @@ public enum BlockstackConstants {
         task.resume()
     }
     
+    /**
+     Extracts a profile from an encoded token and optionally verifies it, if `publicKeyOrAddress` is provided.
+     - parameter token: The token to be extracted
+     - parameter publicKeyOrAddress: The public key or address of the keypair that is thought to have signed the token
+     - returns: The profile extracted from the encoded token
+     - throws: If the token isn't signed by the provided `publicKeyOrAddress`
+     */
+    public func extractProfile(token: String, publicKeyOrAddress: String? = nil) throws -> Profile? {
+        let decodedToken: ProfileToken?
+        if let key = publicKeyOrAddress {
+            decodedToken = self.verifyProfileToken(token: token, publicKeyOrAddress: key)
+        } else {
+            guard let jsonString = JSONTokens().decodeToken(token: token),
+                let data = jsonString.data(using: .utf8) else {
+                    return nil
+            }
+            decodedToken = try? JSONDecoder().decode(ProfileToken.self, from: data)
+        }
+        return decodedToken?.payload?.claim
+    }
+    
+    /**
+     Wraps a token for a profile token file
+     - parameter token: the token to be wrapped
+     - returns: WrappedToken object containing `token` and `decodedToken`
+     */
+    public func wrapProfileToken(token: String) -> ProfileTokenFile? {
+        guard let jsonString = JSONTokens().decodeToken(token: token),
+            let data = jsonString.data(using: .utf8) else {
+                return nil
+        }
+        
+        guard let decoded = try? JSONDecoder().decode(ProfileToken.self, from: data) else {
+            return nil
+        }
+        return ProfileTokenFile(token: token, decodedToken: decoded)
+    }
+    
+    public func signProfileToken(profile: Profile, privateKey: String) {
+    }
+    
+    /**
+     Verifies a profile token.
+     - parameter token: The token to be verified
+     - parameter publicKeyOrAddress: The public key or address of the keypair that is thought to have signed the token
+     - returns: The verified, decoded profile token
+     - throws: Throws an error if token verification fails
+     */
+    public func verifyProfileToken(token: String, publicKeyOrAddress: String) -> ProfileToken? {
+        let jsonTokens = JSONTokens()
+        guard let jsonString = jsonTokens.decodeToken(token: token),
+            let data = jsonString.data(using: .utf8),
+            let decodedToken = try? JSONDecoder().decode(ProfileToken.self, from: data),
+            let payload = decodedToken.payload else {
+                return nil
+        }
+        
+        // Inspect and verify the subject
+        guard let _ = payload.subject?["publicKey"] else {
+            return nil
+        }
+        // Inspect and verify the issuer
+        guard let issuerPublicKey = payload.issuer?["publicKey"] else {
+            return nil
+        }
+        // Inspect and verify the claim
+        guard let _ = payload.claim else {
+            return nil
+        }
+        
+        if publicKeyOrAddress == issuerPublicKey {
+            // pass
+        } else if let uncompressedAddress = Keys.getAddressFromPublicKey(issuerPublicKey), publicKeyOrAddress == uncompressedAddress {
+            // pass
+        } else if let compressedKey = Keys.encodeCompressed(publicKey: issuerPublicKey),
+            let compressedAddress = Keys.getAddressFromPublicKey(issuerPublicKey) {
+            // pass
+        } else {
+            // TODO: FAIL
+            return nil
+        }
+        
+        guard let alg = decodedToken.header.alg else {
+            return nil
+        }
+        
+        guard let verified = jsonTokens.verifyToken(token: token, algorithm: alg, publicKey: issuerPublicKey), verified else {
+            return nil
+        }
+        return decodedToken
+    }
+    
+    public func validateProofs(profile: Profile, ownerAddress: String) {
+    }
+    
     // - MARK: Storage
     
     /**

@@ -18,7 +18,7 @@ public class ProfileHelper {
             
             do {
                 let jsonDecoder = JSONDecoder()
-                let profileResponse = try jsonDecoder.decode([ProfileResponse].self, from: data)
+                let profileResponse = try jsonDecoder.decode([ProfileTokenFile].self, from: data)
                 let profile = profileResponse[0].decodedToken?.payload?.claim
                 completion(profile, nil)
             } catch {

@@ -10,9 +10,6 @@ import JavaScriptCore
 
 open class JSONTokens {
     
-    var algorithm: String?
-    var privateKey: String?
-    
     lazy var context: JSContext? = {
         let context = JSContext()
 
@@ -49,25 +46,20 @@ open class JSONTokens {
         return context
     }()
     
-    init(algorithm: String, privateKey: String) {
-        self.algorithm = algorithm
-        self.privateKey = privateKey
-    }
-    
-    public func signToken(payload: [String: Any]) -> String? {
-        guard let context = context else {
+    public func signToken(payload: [String: Any], privateKey: String, algorithm: String = "ES256K") -> String? {
+        guard let context = self.context else {
             print("JSContext not found.")
             return nil
         }
         
         context.setObject(payload, forKeyedSubscript: "jsonTokenPayload" as NSCopying & NSObjectProtocol)
-        context.evaluateScript("var tokenSigner = new jsontokens.TokenSigner('ES256K', '\(privateKey!)')")
+        context.evaluateScript("var tokenSigner = new jsontokens.TokenSigner('ES256K', '\(privateKey)')")
         let token: JSValue = context.evaluateScript("tokenSigner.sign(jsonTokenPayload)")
         return token.toString()
     }
     
     public func decodeToken(token: String) -> String? {
-        guard let context = context else {
+        guard let context = self.context else {
             print("JSContext not found.")
             return nil
         }
@@ -77,6 +69,16 @@ open class JSONTokens {
         let jsonData = decodedTokenJsonString.toString()
         
         return jsonData
+    }
+    
+    public func verifyToken(token: String, algorithm: String, publicKey: String) -> Bool? {
+        guard let context = self.context else {
+            print("JSContext not found.")
+            return nil
+        }
+        context.evaluateScript("var tokenVerifier = jsonTokens.TokenVerifier(\(algorithm), \(publicKey))")
+        let tokenVerified = context.evaluateScript("tokenVerifier.verify(\(token))")
+        return tokenVerified?.toBool()
     }
     
 }

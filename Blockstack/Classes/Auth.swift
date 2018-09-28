@@ -42,20 +42,17 @@ class Auth {
             "scopes": scopes
         ]
         
-        let jsonTokens = JSONTokens(algorithm: "ES256K", privateKey: transitPrivateKey)
-        request = jsonTokens.signToken(payload: payload)!
-        
+        request = JSONTokens().signToken(payload: payload, privateKey: transitPrivateKey)!
         return request
     }
     
-    static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> Token? {
-        let jsonTokens = JSONTokens(algorithm: "ES256K", privateKey: transitPrivateKey)
-        let decodedTokenJsonString = jsonTokens.decodeToken(token: authResponse)
-        var token: Token?
+    static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> UserDataToken? {
+        let decodedTokenJsonString = JSONTokens().decodeToken(token: authResponse)
+        var token: UserDataToken?
         
         do {
             let jsonDecoder = JSONDecoder()
-            token = try jsonDecoder.decode(Token.self, from: decodedTokenJsonString!.data(using: .utf8)!)
+            token = try jsonDecoder.decode(UserDataToken.self, from: decodedTokenJsonString!.data(using: .utf8)!)
         } catch {
             print("error")
         }
