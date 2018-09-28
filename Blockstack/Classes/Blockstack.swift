@@ -20,7 +20,6 @@ public enum BlockstackConstants {
     public static let AuthProtocolVersion = "1.1.0"
     public static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     public static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
-    public static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
     public static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
     public static let AppOriginUserDefaultLabel = "BLOCKSTACK_APP_ORIGIN"
 }
@@ -48,7 +47,7 @@ public enum BlockstackConstants {
                      completion: @escaping (AuthResult) -> ()) {
         print("signing in")
         
-        guard let transitKey = Keys.generateTransitKey() else {
+        guard let transitKey = Keys.makeECPrivateKey() else {
             print("Failed to generate transit key")
             return
         }
@@ -106,7 +105,6 @@ public enum BlockstackConstants {
     }
     
     @objc public func signOut() {
-        Keys.clearTransitKey()
         ProfileHelper.clearProfile()
         Gaia.clearSession()
     }

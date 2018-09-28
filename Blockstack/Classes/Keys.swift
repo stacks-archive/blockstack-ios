@@ -19,87 +19,20 @@ enum secp256k1Curve {
 
 open class Keys {
     
-    /**
-     Generate the transit private key
-     TODO - Use Keychain for secure key storage
-     */
-    static func generateTransitKey() -> String? {
-        let transitKey = makeECPrivateKey()
-        
-        storeKey(keyData: transitKey!, label: BlockstackConstants.TransitPrivateKeyUserDefaultLabel)
-        
-        return transitKey
-//        print("storing transit key")
-//        print(transitKey as Any)
-        
-//        let key = transitKey
-//        let tag = "org.test.keys.appKey".data(using: .utf8)!
-//        let addquery: [String: Any] = [kSecClass as String: kSecClassKey,
-//                                       kSecAttrApplicationTag as String: tag,
-//                                       kSecValueRef as String: key as Any]
-//        let status = SecItemAdd(addquery as CFDictionary, nil)
-//        guard status == errSecSuccess else {
-//            print("ERROR STORING KEY")
-//            print(status)
-//            return nil
-//        }
-    }
-    
-    static func retrieveTransitKey() -> String? {
-        return retrieveKey(label: BlockstackConstants.TransitPrivateKeyUserDefaultLabel)
-        
-//        let tag = "org.test.keys.appKey".data(using: .utf8)!
-//        let getquery: [String: Any] = [kSecClass as String: kSecClassKey,
-//                                       kSecAttrApplicationTag as String: tag,
-//                                       kSecAttrKeyType as String: kSecAttrKeyTypeEC,
-//                                       kSecReturnRef as String: true]
-//
-//        var item: CFTypeRef?
-//        let status = SecItemCopyMatching(getquery as CFDictionary, &item)
-//        guard status == errSecSuccess else {
-//            print("ERROR RETRIEVING KEY")
-//            return
-//        }
-//        let key = item as! SecKey
-//        print("printing retrieved key")
-//        print(key)
-    }
-    
-    static func clearTransitKey() {
-        return clearKeys(label: BlockstackConstants.TransitPrivateKeyUserDefaultLabel)
-    }
-    
-    static func storeKey(keyData: String, label: String) {
-        UserDefaults.standard.set(keyData, forKey: label)
-    }
-    
-    static func retrieveKey(label: String) -> String? {
-        return UserDefaults.standard.string(forKey: label)
-    }
-    
-    static func clearKeys(label: String) {
-        UserDefaults.standard.removeObject(forKey: label)
-    }
     
     /**
      Generate an elliptic curve private key for secp256k1.
      */
-    static func makeECPrivateKey() -> String? {
-
+    open static func makeECPrivateKey() -> String? {
+        
         let keyLength = 32
         let n = secp256k1Curve.n
         let nBigInt = _BigInt<UInt>(n, radix: 16)
-//        print("n")
-//        print(nBigInt?.toString() as Any)
-        
         var d: _BigInt<UInt>?
         
         repeat {
             let randomBytes = generateRandomBytes()
-//            print(randomBytes!)
             d = _BigInt<UInt>(randomBytes!, radix: 16)
-//            print("d")
-//            print(d?.toString() as Any)
         } while (d!.isNegative
             || d!.isZero
             || d?._compare(to: nBigInt!) == .equal
@@ -108,7 +41,7 @@ open class Keys {
         return d?.toString(radix: 16, lowercase: true).paddingLeft(to: keyLength * 2, with: "0")
     }
     
-    static func generateRandomBytes(bytes: Int = 32) -> String? {
+    open static func generateRandomBytes(bytes: Int = 32) -> String? {
         var randomData = Data(count: bytes)
         let count = randomData.count
         let result = randomData.withUnsafeMutableBytes {
