@@ -19,7 +19,36 @@ enum secp256k1Curve {
 
 open class Keys {
     
+    /**
+     Generates a set of random bytes.
+     - parameter byteLength: Byte count of the resulting hex string.
+     - returns: Hex string cmoprised of random bytes of the given length.
+    */
+    open static func generateRandomBytes(byteLength: Int = 32) -> String? {
+        var randomData = Data(count: byteLength)
+        let count = randomData.count
+        let result = randomData.withUnsafeMutableBytes {
+            SecRandomCopyBytes(kSecRandomDefault, count, $0)
+        }
+        if result == errSecSuccess {
+            return randomData.hexEncodedString()
+        } else {
+            print("Problem generating random bytes")
+            return nil
+        }
+    }
+
     
+    /**
+     Get the associated public key from a given private key on the secp256k1 elliptic curve.
+     - parameter privateKey: The private key from which to derive the public key.
+     - parameter compressed: Boolean indicating whether the returned public key should be compressed.
+     - returns: Complementing, optionally compressed public key for given private key.
+     */
+    open static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
+        return EllipticJS().getPublicKeyFromPrivate(privateKey, compressed: compressed)
+    }
+
     /**
      Generate an elliptic curve private key for secp256k1.
      */
@@ -39,24 +68,6 @@ open class Keys {
             || d?._compare(to: nBigInt!) == .greaterThan)
         
         return d?.toString(radix: 16, lowercase: true).paddingLeft(to: keyLength * 2, with: "0")
-    }
-    
-    open static func generateRandomBytes(bytes: Int = 32) -> String? {
-        var randomData = Data(count: bytes)
-        let count = randomData.count
-        let result = randomData.withUnsafeMutableBytes {
-            SecRandomCopyBytes(kSecRandomDefault, count, $0)
-        }
-        if result == errSecSuccess {
-            return randomData.hexEncodedString()
-        } else {
-            print("Problem generating random bytes")
-            return nil
-        }
-    }
-    
-    open static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
-        return EllipticJS().getPublicKeyFromPrivate(privateKey, compressed: compressed)
     }
     
     static func getAddressFromPublicKey(_ publicKey: String) -> String? {
