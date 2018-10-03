@@ -76,8 +76,8 @@ open class JSONTokens {
             print("JSContext not found.")
             return nil
         }
-        context.evaluateScript("var tokenVerifier = jsonTokens.TokenVerifier(\(algorithm), \(publicKey))")
-        let tokenVerified = context.evaluateScript("tokenVerifier.verify(\(token))")
+        context.evaluateScript("var tokenVerifier = new jsontokens.TokenVerifier('\(algorithm)', '\(publicKey)')")
+        let tokenVerified = context.evaluateScript("tokenVerifier.verify('\(token)')")
         return tokenVerified?.toBool()
     }
     

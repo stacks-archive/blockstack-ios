@@ -196,7 +196,47 @@ public enum BlockstackConstants {
         return ProfileTokenFile(token: token, decodedToken: decoded)
     }
     
-    public func signProfileToken(profile: Profile, privateKey: String) {
+    /**
+     Signs a profile token. Issued by default today, and expires by default in 1 year (31557600 seconds).
+     - parameter profile: The profile to be signed
+     - parameter privateKey: The signing private key
+     - parameter subject: The entity that the information is about, defaults to ["publicKey": the associated publicKey of the signing privateKey].
+     - parameter issuer: The entity that is issuing the token, defaults to ["publicKey": the associated publicKey of the signing privateKey].
+     - parameter issuedAt: The time of issuance of the token
+     - parameter expiresAt: The time of expiration of the token
+     - returns: The signed profile token
+     */
+    public func signProfileToken(
+        profile: Profile,
+        privateKey: String,
+        subject: [String: String]? = nil,
+        issuer: [String: String]? = nil,
+        issuedAt: Date = Date(),
+        expiresAt: Date = Date().addingTimeInterval(31557600)
+        ) -> String? {
+        // Other algorithms are not yet supported.
+        let signingAlgorithm = "ES256K"
+
+        guard let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
+                return nil
+        }
+        
+        // Create the payload.
+        let payload = ProfileTokenPayload(
+            jti: NSUUID().uuidString,
+            iat: ISO8601DateFormatter.string(from: issuedAt, timeZone: TimeZone(secondsFromGMT: 0)!, formatOptions: []),
+            exp: ISO8601DateFormatter.string(from: expiresAt, timeZone: TimeZone(secondsFromGMT: 0)!, formatOptions: []),
+            subject: subject ?? ["publicKey": publicKey],
+            issuer: issuer ?? ["publicKey": publicKey],
+            claim: profile)
+        
+        // Convert payload into a JSON object, then into [String: Any] representation.
+        guard let payloadData = try? JSONEncoder().encode(payload),
+            let payloadJSONObject = try? JSONSerialization.jsonObject(with: payloadData, options: .allowFragments),
+            let payloadJSON = payloadJSONObject as? [String: Any] else {
+                return nil
+        }
+        return JSONTokens().signToken(payload: payloadJSON, privateKey: privateKey, algorithm: signingAlgorithm)
     }
     
     /**
@@ -217,14 +257,17 @@ public enum BlockstackConstants {
         
         // Inspect and verify the subject
         guard let _ = payload.subject?["publicKey"] else {
+            // TODO: Throw error "Token doesn\'t have a subject public key"
             return nil
         }
         // Inspect and verify the issuer
         guard let issuerPublicKey = payload.issuer?["publicKey"] else {
+            // TODO: Throw error "Token doesn\'t have an issuer public key"
             return nil
         }
         // Inspect and verify the claim
         guard let _ = payload.claim else {
+            // TODO: Throw error "Token doesn\'t have a claim"
             return nil
         }
         
