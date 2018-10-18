@@ -72,7 +72,7 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
             let text = alert.textFields?.first?.text ?? "Default Text"
-            Blockstack.shared.putFile(to: "testFile", text: text, encrypt: false) { (publicURL, error) in
+            Blockstack.shared.putFile(to: "testFile", text: text, encrypt: true) { (publicURL, error) in
                 if error != nil {
                     print("put file error")
                 } else {
@@ -88,24 +88,25 @@ class ViewController: UIViewController {
         let privateKey = userData.privateKey!
         let profileToken = Blockstack.shared.signProfileToken(profile: profile, privateKey: privateKey)
         
+        ProfileHelper.fetch(profileURL: URL(string: "https://gaia.blockstack.org/hub/15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx/0/profile.json")!) { profile, error in
+            Blockstack.shared.validateProofs(profile: profile!, ownerAddress: "15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx") { _ in
+            }
+        }
         
-        let publicKey = Keys.getPublicKeyFromPrivate(privateKey)!
-        let verifyResult = Blockstack.shared.verifyProfileToken(token: profileToken!, publicKeyOrAddress: publicKey)
-        
-//        // Read data from Gaia'
-//        Blockstack.shared.getFile(at: "testFile") { response, error in
-//            if error != nil {
-//                print("get file error")
-//            } else {
-//                print("get file success")
-//                print(response as Any)
-//
-//                let text = response as? String ?? "Invalid Content: Try putting something first!"
-//                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
-//                self.present(alert, animated: true, completion: nil)
-//            }
-//        }
+        // Read data from Gaia'
+        Blockstack.shared.getFile(at: "testFile", decrypt: true) { response, error in
+            if error != nil {
+                print("get file error")
+            } else {
+                print("get file success")
+                print(response as Any)
+
+                let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
+                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func multiplayerGetFileTapped(_ sender: Any) {

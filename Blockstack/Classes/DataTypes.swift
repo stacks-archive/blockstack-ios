@@ -46,12 +46,13 @@ public struct Profile: Codable {
     public let name: String?
     public let description: String?
     public let apps: [String: String]?
+    public let account: [ExternalAccount]?
     public let image: [Content]?
     
     enum CodingKeys: String, CodingKey {
         case type = "@type"
         case context = "@context"
-        case name, description, apps, image
+        case name, description, apps, account, image
     }
 }
 
@@ -63,6 +64,32 @@ public struct Content: Codable {
     enum CodingKeys: String, CodingKey {
         case type = "@type"
         case name, contentUrl
+    }
+}
+
+public struct ExternalAccount: Codable {
+    public let type: String?
+    public let placeholder: Bool?
+    public let service: String?
+    public let identifier: String?
+    public let proofType: String?
+    public let proofUrl: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case type = "@type"
+        case placeholder, service, identifier, proofType, proofUrl
+    }
+}
+
+public struct ExternalAccountProof: Codable {
+    public let service: String
+    public let proofUrl: String
+    public let identifier: String
+    public let valid: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case proofUrl = "proof_url"
+        case service, identifier, valid
     }
 }
 
