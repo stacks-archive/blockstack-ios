@@ -315,7 +315,7 @@ public enum BlockstackConstants {
      - parameter name: The Blockstack name to be validated
      - parameter completion: Callback with an array of validated proof objects, or nil if there was an error.
      */
-    public func validateProofs(profile: Profile, name: String, completion: ([ExternalAccountProof]?) -> ()) {
+    public func validateProofs(profile: Profile, name: String, completion: @escaping ([ExternalAccountProof]?) -> ()) {
         guard let profileData = try? JSONEncoder().encode(profile),
             let profileJSON = String(data: profileData, encoding: .utf8) else {
                 return
