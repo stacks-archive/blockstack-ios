@@ -87,12 +87,7 @@ class ViewController: UIViewController {
         let profile = userData.profile!
         let privateKey = userData.privateKey!
         let profileToken = Blockstack.shared.signProfileToken(profile: profile, privateKey: privateKey)
-        
-        ProfileHelper.fetch(profileURL: URL(string: "https://gaia.blockstack.org/hub/15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx/0/profile.json")!) { profile, error in
-            Blockstack.shared.validateProofs(profile: profile!, ownerAddress: "15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx") { _ in
-            }
-        }
-        
+                
         // Read data from Gaia'
         Blockstack.shared.getFile(at: "testFile", decrypt: true) { response, error in
             if error != nil {
