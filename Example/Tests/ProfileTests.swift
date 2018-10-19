@@ -20,6 +20,24 @@ class ProfileSpec: QuickSpec {
                 expect(tokenFile).toNot(beNil())
                 expect(tokenFile?.decodedToken).toNot(beNil())
             }
+            
+            it("can validateProofs") {
+                var didValidateProofs = false
+                let userProfileUrl = "https://gaia.blockstack.org/hub/15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx/0/profile.json"
+                let userOwnerAddress = "15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx"
+                ProfileHelper.fetch(profileURL: URL(string: userProfileUrl)!) { profile, error in
+                    Blockstack.shared.validateProofs(profile: profile!, ownerAddress: userOwnerAddress) { proofs in
+                        expect(proofs).toNot(beNil())
+                        proofs!.forEach { proof in
+                            if !proof.valid {
+                                fail("Failed to validate proof for: \(proof.service)")
+                            }
+                        }
+                        didValidateProofs = true
+                    }
+                }
+                expect(didValidateProofs).toEventually(beTrue(), timeout: 10, pollInterval: 1)
+            }
         }
     }
 }
