@@ -100,7 +100,7 @@ public enum BlockstackConstants {
     /**
      Check if a user is currently signed in.
      */
-    @objc public func isSignedIn() -> Bool {
+    @objc public func isUserSignedIn() -> Bool {
         return self.loadUserData() != nil
     }
     

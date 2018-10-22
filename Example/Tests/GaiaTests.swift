@@ -129,7 +129,7 @@ class GaiaSpec: QuickSpec {
         UserDefaults.standard.set(propertyEncodedData, forKey: BlockstackConstants.ProfileUserDefaultLabel)
         
         // Ensure signed in
-        expect(Blockstack.shared.isSignedIn()).to(beTrue())
+        expect(Blockstack.shared.isUserSignedIn()).to(beTrue())
     }
     
     enum Content {

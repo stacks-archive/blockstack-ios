@@ -124,7 +124,7 @@ class ViewController: UIViewController {
     
     private func updateUI() {
         DispatchQueue.main.async {
-            if Blockstack.shared.isSignedIn() {
+            if Blockstack.shared.isUserSignedIn() {
                 // Read user profile data
                 let retrievedUserData = Blockstack.shared.loadUserData()
                 print(retrievedUserData?.profile?.name as Any)
@@ -142,7 +142,7 @@ class ViewController: UIViewController {
     }
     
     func checkIfSignedIn() {
-        Blockstack.shared.isSignedIn() ? print("currently signed in") : print("not signed in")
+        Blockstack.shared.isUserSignedIn() ? print("currently signed in") : print("not signed in")
     }
 }
 
