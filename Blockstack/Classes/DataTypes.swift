@@ -101,17 +101,17 @@ public struct ProfileTokenFile: Codable {
 }
 
 public struct ProfileToken: Codable {
-    let header: Header
-    let payload: ProfileTokenPayload?
-    let signature: String
+    public let header: Header
+    public let payload: ProfileTokenPayload?
+    public let signature: String
 }
 
 public struct ProfileTokenPayload: Codable {
-    let jti: String?
-    let iat, exp: String?
-    let subject: [String: String]?
-    let issuer: [String: String]?
-    let claim: Profile?
+    public let jti: String?
+    public let iat, exp: String?
+    public let subject: [String: String]?
+    public let issuer: [String: String]?
+    public let claim: Profile?
 }
 
 public struct NameInfo: Codable {

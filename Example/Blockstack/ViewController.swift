@@ -82,12 +82,7 @@ class ViewController: UIViewController {
         })
     }
     
-    @IBAction func getFileTapped(_ sender: Any) {
-        let userData = Blockstack.shared.loadUserData()!
-        let profile = userData.profile!
-        let privateKey = userData.privateKey!
-        let profileToken = Blockstack.shared.signProfileToken(profile: profile, privateKey: privateKey)
-                
+    @IBAction func getFileTapped(_ sender: Any) {                
         // Read data from Gaia'
         Blockstack.shared.getFile(at: "testFile", decrypt: true) { response, error in
             if error != nil {

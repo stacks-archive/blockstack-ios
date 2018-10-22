@@ -168,7 +168,11 @@ public enum BlockstackConstants {
     public func extractProfile(token: String, publicKeyOrAddress: String? = nil) throws -> Profile? {
         let decodedToken: ProfileToken?
         if let key = publicKeyOrAddress {
-            decodedToken = self.verifyProfileToken(token: token, publicKeyOrAddress: key)
+            do {
+                decodedToken = try self.verifyProfileToken(token: token, publicKeyOrAddress: key)
+            } catch let error {
+                throw error
+            }
         } else {
             guard let jsonString = JSONTokens().decodeToken(token: token),
                 let data = jsonString.data(using: .utf8) else {
@@ -246,49 +250,48 @@ public enum BlockstackConstants {
      - returns: The verified, decoded profile token
      - throws: Throws an error if token verification fails
      */
-    public func verifyProfileToken(token: String, publicKeyOrAddress: String) -> ProfileToken? {
+    public func verifyProfileToken(token: String, publicKeyOrAddress: String) throws -> ProfileToken {
         let jsonTokens = JSONTokens()
         guard let jsonString = jsonTokens.decodeToken(token: token),
             let data = jsonString.data(using: .utf8),
             let decodedToken = try? JSONDecoder().decode(ProfileToken.self, from: data),
             let payload = decodedToken.payload else {
-                return nil
+                throw NSError.create(description: "Cannot decode payload from token.")
         }
         
         // Inspect and verify the subject
         guard let _ = payload.subject?["publicKey"] else {
-            // TODO: Throw error "Token doesn\'t have a subject public key"
-            return nil
+            throw NSError.create(description: "Token doesn\'t have a subject public key")
         }
         // Inspect and verify the issuer
         guard let issuerPublicKey = payload.issuer?["publicKey"] else {
-            // TODO: Throw error "Token doesn\'t have an issuer public key"
-            return nil
+            throw NSError.create(description: "Token doesn\'t have an issuer public key")
         }
         // Inspect and verify the claim
         guard let _ = payload.claim else {
-            // TODO: Throw error "Token doesn\'t have a claim"
-            return nil
+            throw NSError.create(description: "Token doesn\'t have a claim")
         }
         
         if publicKeyOrAddress == issuerPublicKey {
             // pass
-        } else if let uncompressedAddress = Keys.getAddressFromPublicKey(issuerPublicKey), publicKeyOrAddress == uncompressedAddress {
+        } else if let uncompressedKey = Keys.getUncompressed(publicKey: issuerPublicKey),
+            let uncompressedAddress = Keys.getAddressFromPublicKey(uncompressedKey),
+            publicKeyOrAddress == uncompressedAddress {
             // pass
-        } else if let compressedKey = Keys.encodeCompressed(publicKey: issuerPublicKey),
-            let compressedAddress = Keys.getAddressFromPublicKey(issuerPublicKey) {
+        } else if let compressedKey = Keys.getCompressed(publicKey: issuerPublicKey),
+            let compressedAddress = Keys.getAddressFromPublicKey(compressedKey),
+            publicKeyOrAddress == compressedAddress {
             // pass
         } else {
-            // TODO: Throw error "Token issuer public key does not match the verifying value"
-            return nil
+            throw NSError.create(description: "Token verification failed")
         }
         
         guard let alg = decodedToken.header.alg else {
-            return nil
+            throw NSError.create(description: "Token doesn't have an alg specified.")
         }
         
         guard let verified = jsonTokens.verifyToken(token: token, algorithm: alg, publicKey: issuerPublicKey), verified else {
-            return nil
+            throw NSError.create(description: "Token verification failed")
         }
         return decodedToken
     }
