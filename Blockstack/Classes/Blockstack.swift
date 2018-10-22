@@ -104,7 +104,10 @@ public enum BlockstackConstants {
         return self.loadUserData() != nil
     }
     
-    @objc public func signOut() {
+    /**
+     Sign the user out.
+     */
+    @objc public func signUserOut() {
         ProfileHelper.clearProfile()
         Gaia.clearSession()
     }
