@@ -51,7 +51,7 @@ public class GaiaHubSession {
             task.resume()
         }
         if let options = multiplayerOptions {
-            Gaia.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) { url in
+            Blockstack.shared.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) { url in
                 fetch(url?.appendingPathComponent(path))
             }
         } else {
