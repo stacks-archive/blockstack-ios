@@ -134,7 +134,11 @@ open class Keys {
         return EllipticJS().computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
     }
 
-    static func encodeCompressed(publicKey: String) -> String? {
+    static func getCompressed(publicKey: String) -> String? {
         return EllipticJS().encodeCompressed(publicKey: publicKey)
+    }
+    
+    static func getUncompressed(publicKey: String) -> String? {
+        return EllipticJS().getUncompressed(publicKey: publicKey)
     }
 }
