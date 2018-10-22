@@ -41,7 +41,7 @@ public enum BlockstackConstants {
      - parameter completion: Callback with an AuthResult object.
      */
     public func signIn(redirectURI: String,
-                     appDomain: URL,
+                    appDomain: URL,
                      manifestURI: URL? = nil,
                      scopes: Array<String> = ["store_write"],
                      completion: @escaping (AuthResult) -> ()) {
@@ -55,13 +55,14 @@ public enum BlockstackConstants {
         let _manifestURI = manifestURI ?? URL(string: "/manifest.json", relativeTo: appDomain)
         let appBundleID = "AppBundleID"
         
-        let authRequest = Auth.makeRequest(transitPrivateKey: transitKey,
-                                           redirectURLScheme: redirectURI,
-                                           manifestURI: _manifestURI!,
-                                           appDomain: appDomain,
-                                           appBundleID: appBundleID,
-                                           scopes: scopes)
-        
+        let authRequest = self.makeAuthRequest(
+            transitPrivateKey: transitKey,
+            redirectURLScheme: redirectURI,
+            manifestURI: _manifestURI!,
+            appDomain: appDomain,
+            appBundleID: appBundleID,
+            scopes: scopes)
+
         var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest), URLQueryItem(name: "client", value: "ios_secure")]
         let url = urlComps.url!
@@ -88,6 +89,39 @@ public enum BlockstackConstants {
                                     completion: completion)
         }
         self.sfAuthSession?.start()
+    }
+    
+    /**
+     Generates an authentication request that can be sent to the Blockstack
+     browser for the user to approve sign in. This authentication request can
+     then be used for sign in by passing it to the `redirectToSignInWithAuthRequest`
+     method.
+     
+     Note: This method should only be used if you want to roll your own authentication
+     flow. Typically you'd use `redirectToSignIn` which takes care of this
+     under the hood.*
+     
+     - parameter transitPrivateKey - hex encoded transit private key
+     - parameter redirectURI: Location to redirect user to after sign in approval
+     - parameter manifestURI: Location of this app's manifest file
+     - parameter scopes: The permissions this app is requesting
+     - parameter appDomain: The origin of this app
+     - parameter expiresAt: The time at which this request is no longer valid
+     - returns: The authentication request
+     */
+    public func makeAuthRequest(transitPrivateKey: String,
+                    redirectURLScheme: String,
+                    manifestURI: URL,
+                    appDomain: URL,
+                    appBundleID: String,
+                    scopes: Array<String>,
+                    expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String? {
+        return Auth.makeRequest(transitPrivateKey: transitPrivateKey,
+                                redirectURLScheme: redirectURLScheme,
+                                manifestURI: manifestURI,
+                                appDomain: appDomain,
+                                appBundleID: appBundleID,
+                                scopes: scopes, expiresAt: expiresAt)
     }
     
     /**
