@@ -47,7 +47,7 @@ class ViewController: UIViewController {
     
     @IBAction func signOut(_ sender: Any) {
         // Sign user out
-        Blockstack.shared.signOut()
+        Blockstack.shared.signUserOut()
         self.updateUI()
     }
     
