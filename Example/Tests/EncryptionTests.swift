@@ -20,7 +20,7 @@ class EncryptionSpec : QuickSpec {
             
             context("with text") {
                 let content = "all work and no play makes jack a dull boy"
-                let cipherText = Encryption.encryptECIES(recipientPublicKey: publicKey, content: content)
+                let cipherText = Blockstack.shared.encryptContent(text: content, publicKey: publicKey)
                 it("can encrypt") {
                     expect(cipherText).toNot(beNil())
                 }
@@ -29,7 +29,7 @@ class EncryptionSpec : QuickSpec {
                         fail("Invalid cipherText")
                         return
                     }
-                    guard let plainText = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipher)?.plainText else {
+                    guard let plainText = Blockstack.shared.decryptContent(content: cipher, privateKey: privateKey)?.plainText else {
                         fail()
                         return
                     }
@@ -39,8 +39,7 @@ class EncryptionSpec : QuickSpec {
             
             context("with bytes") {
                 let data = Data(bytes: [0x01, 0x02, 0x03])
-                let cipherText = Encryption.encryptECIES(recipientPublicKey: publicKey, content: data.bytes, isString: false)
-                
+                let cipherText = Blockstack.shared.encryptContent(bytes: data.bytes, publicKey: publicKey)
                 it("can encrypt") {
                     expect(cipherText).toNot(beNil())
                 }
@@ -50,7 +49,7 @@ class EncryptionSpec : QuickSpec {
                         fail("Invalid cipherText")
                         return
                     }
-                    guard let bytes = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipher)?.bytes else {
+                    guard let bytes = Blockstack.shared.decryptContent(content: cipher, privateKey: privateKey)?.bytes else {
                         fail()
                         return
                     }
@@ -76,7 +75,7 @@ class EncryptionSpec : QuickSpec {
                 let canDecrypt: ([String: Any]) -> Bool = { cipherObject in
                     guard let cipherData = try? JSONSerialization.data(withJSONObject: cipherObject, options: []),
                         let cipherJSON = String(data: cipherData, encoding: String.Encoding.utf8),
-                        let _ = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: cipherJSON)?.plainText else {
+                        let _ = Blockstack.shared.decryptContent(content: cipherJSON, privateKey: privateKey)?.plainText else {
                             return false
                     }
                     return true
@@ -97,7 +96,7 @@ class EncryptionSpec : QuickSpec {
                 }
                 
                 it("will fail") {
-                    let decryptedContent = Encryption.decryptECIES(privateKey: privateKey, cipherObjectJSONString: corruptedCipherContent)
+                    let decryptedContent = Blockstack.shared.decryptContent(content: corruptedCipherContent, privateKey: privateKey)
                     expect(decryptedContent).to(beNil())
                 }
             }

@@ -8,6 +8,18 @@
 import Foundation
 
 extension Blockstack {
+    /**
+     Decrypts data encrypted with `encryptContent` with the given private key.
+     - parameter privateKey: The hex string of the ECDSA private key to use for decryption. If not provided, will use user's appPrivateKey.
+     - returns: DecryptedValue object containing Byte or String content.
+     */
+    @objc(decryptContent:privateKey:)
+    public func objc_decryptContent(content: String, privateKey: String? = nil) -> ObjCDecryptedValue? {
+        guard let decryptedValue = self.decryptContent(content: content, privateKey: privateKey) else {
+            return nil
+        }
+        return ObjCDecryptedValue(decryptedValue)
+    }
     
     /**
      Retrieves the user data object. The user's profile is stored in the key `profile`.

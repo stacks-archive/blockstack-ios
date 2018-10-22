@@ -20,7 +20,6 @@ public enum BlockstackConstants {
     public static let AuthProtocolVersion = "1.1.0"
     public static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     public static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
-    public static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
     public static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
     public static let AppOriginUserDefaultLabel = "BLOCKSTACK_APP_ORIGIN"
 }
@@ -48,7 +47,7 @@ public enum BlockstackConstants {
                      completion: @escaping (AuthResult) -> ()) {
         print("signing in")
         
-        guard let transitKey = Keys.generateTransitKey() else {
+        guard let transitKey = Keys.makeECPrivateKey() else {
             print("Failed to generate transit key")
             return
         }
@@ -106,22 +105,18 @@ public enum BlockstackConstants {
     }
     
     @objc public func signOut() {
-        Keys.clearTransitKey()
         ProfileHelper.clearProfile()
         Gaia.clearSession()
     }
     
     /**
-     Clear the keychain and all settings for this device.
+     Prompt web flow to clear the keychain and all settings for this device.
      WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
-     - parameter redirectURI: A custom scheme registered in the app Info.plist, i.e. "myBlockstackApp"
-     - parameter completion: Callback indicating success or failure.
      */
-    @objc public func promptClearDeviceKeychain(redirectUri: String, completion: @escaping (Error?) -> ()) {
+    @objc public func promptClearDeviceKeychain() {
         // TODO: Use ASWebAuthenticationSession for iOS 12
-        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)?redirect_uri=\(redirectUri)")!, callbackURLScheme: nil) { _, error in
+        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!, callbackURLScheme: nil) { _, error in
             self.sfAuthSession = nil
-            completion(error)
         }
         self.sfAuthSession?.start()
     }
@@ -259,7 +254,58 @@ public enum BlockstackConstants {
                 completion: completion)
         }
     }
-
+    
+    /**
+     Encrypts the data provided with the app public key.
+     - parameter bytes: Bytes (Array<UInt8>) data to encrypt.
+     - parameter publicKey: The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user's appPrivateKey.
+     - returns: Stringified JSON ciphertext object
+     */
+    @objc public func encryptContent(bytes: Bytes, publicKey: String? = nil) -> String? {
+        let key: String?
+        if publicKey == nil, let privateKey = Blockstack.shared.loadUserData()?.privateKey {
+            key = Keys.getPublicKeyFromPrivate(privateKey)
+        } else {
+            key = publicKey
+        }
+        guard let recipientKey = key else {
+            return nil
+        }
+        return Encryption.encryptECIES(content: bytes, recipientPublicKey: recipientKey, isString: false)
+    }
+    
+    /**
+     Encrypts the data provided with the app public key.
+     - parameter text: String data to encrypt
+     - parameter publicKey: The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user's appPrivateKey.
+     - returns: Stringified JSON ciphertext object
+     */
+    @objc public func encryptContent(text: String, publicKey: String? = nil) -> String? {
+        let key: String?
+        if publicKey == nil, let privateKey = Blockstack.shared.loadUserData()?.privateKey {
+            key = Keys.getPublicKeyFromPrivate(privateKey)
+        } else {
+            key = publicKey
+        }
+        guard let recipientKey = key else {
+            return nil
+        }
+        return Encryption.encryptECIES(content: text, recipientPublicKey: recipientKey)
+    }
+    
+    /**
+     Decrypts data encrypted with `encryptContent` with the transit private key.
+     - parameter content: Encrypted, JSON stringified content.
+     - parameter privateKey: The hex string of the ECDSA private key to use for decryption. If not provided, will use user's appPrivateKey.
+     - returns: DecryptedValue object containing Byte or String content.
+     */
+    public func decryptContent(content: String, privateKey: String? = nil) -> DecryptedValue? {
+        guard let key = privateKey ?? Blockstack.shared.loadUserData()?.privateKey else {
+            return nil
+        }
+        return Encryption.decryptECIES(cipherObjectJSONString: content, privateKey: key)
+    }
+    
     // MARK: - Private
     
     // TODO: Return errors in completion handler
