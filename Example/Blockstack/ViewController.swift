@@ -83,29 +83,20 @@ class ViewController: UIViewController {
     }
     
     @IBAction func getFileTapped(_ sender: Any) {
-        let userData = Blockstack.shared.loadUserData()!
-        let profile = userData.profile!
-        let privateKey = userData.privateKey!
-        let profileToken = Blockstack.shared.signProfileToken(profile: profile, privateKey: privateKey)
-        
-        
-        let publicKey = Keys.getPublicKeyFromPrivate(privateKey)!
-        let verifyResult = Blockstack.shared.verifyProfileToken(token: profileToken!, publicKeyOrAddress: publicKey)
-        
-//        // Read data from Gaia'
-//        Blockstack.shared.getFile(at: "testFile") { response, error in
-//            if error != nil {
-//                print("get file error")
-//            } else {
-//                print("get file success")
-//                print(response as Any)
-//
-//                let text = response as? String ?? "Invalid Content: Try putting something first!"
-//                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
-//                self.present(alert, animated: true, completion: nil)
-//            }
-//        }
+        // Read data from Gaia
+        Blockstack.shared.getFile(at: "testFile") { response, error in
+            if error != nil {
+                print("get file error")
+            } else {
+                print("get file success")
+                print(response as Any)
+
+                let text = response as? String ?? "Invalid Content: Try putting something first!"
+                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func multiplayerGetFileTapped(_ sender: Any) {
