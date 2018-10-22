@@ -47,4 +47,33 @@ public class ProfileHelper {
     static func clearProfile() {
         UserDefaults.standard.removeObject(forKey: BlockstackConstants.ProfileUserDefaultLabel)
     }
+
+    // TODO: Return errors in completion handler
+    static func resolveZoneFileToProfile(zoneFile: String, publicKeyOrAddress: String, completion: @escaping (Profile?) -> ()) {
+        // TODO: Support legacy zone files
+        guard let zoneFile = BlockstackJS().parseZoneFile(zoneFile: zoneFile),
+            var tokenFileUrl = zoneFile.uri.first?["target"] as? String else {
+                completion(nil)
+                return
+        }
+        
+        // Fix url
+        if !tokenFileUrl.starts(with: "http") {
+            tokenFileUrl = "https://\(tokenFileUrl)"
+        }
+        
+        guard let url = URL(string: tokenFileUrl) else {
+            completion(nil)
+            return
+        }
+        
+        ProfileHelper.fetch(profileURL: url) { profile, error in
+            guard let profile = profile, error == nil else {
+                completion(nil)
+                return
+            }
+            completion(profile)
+        }
+    }
+
 }
