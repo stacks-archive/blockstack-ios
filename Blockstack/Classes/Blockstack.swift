@@ -20,7 +20,6 @@ public enum BlockstackConstants {
     public static let AuthProtocolVersion = "1.1.0"
     public static let DefaultGaiaHubURL = "https://hub.blockstack.org"
     public static let ProfileUserDefaultLabel = "BLOCKSTACK_PROFILE_LABEL"
-    public static let TransitPrivateKeyUserDefaultLabel = "BLOCKSTACK_TRANSIT_PRIVATE_KEY"
     public static let GaiaHubConfigUserDefaultLabel = "GAIA_HUB_CONFIG"
     public static let AppOriginUserDefaultLabel = "BLOCKSTACK_APP_ORIGIN"
 }
@@ -42,13 +41,13 @@ public enum BlockstackConstants {
      - parameter completion: Callback with an AuthResult object.
      */
     public func signIn(redirectURI: String,
-                     appDomain: URL,
+                    appDomain: URL,
                      manifestURI: URL? = nil,
                      scopes: Array<String> = ["store_write"],
                      completion: @escaping (AuthResult) -> ()) {
         print("signing in")
         
-        guard let transitKey = Keys.generateTransitKey() else {
+        guard let transitKey = Keys.makeECPrivateKey() else {
             print("Failed to generate transit key")
             return
         }
@@ -56,13 +55,14 @@ public enum BlockstackConstants {
         let _manifestURI = manifestURI ?? URL(string: "/manifest.json", relativeTo: appDomain)
         let appBundleID = "AppBundleID"
         
-        let authRequest = Auth.makeRequest(transitPrivateKey: transitKey,
-                                           redirectURLScheme: redirectURI,
-                                           manifestURI: _manifestURI!,
-                                           appDomain: appDomain,
-                                           appBundleID: appBundleID,
-                                           scopes: scopes)
-        
+        let authRequest = self.makeAuthRequest(
+            transitPrivateKey: transitKey,
+            redirectURLScheme: redirectURI,
+            manifestURI: _manifestURI!,
+            appDomain: appDomain,
+            appBundleID: appBundleID,
+            scopes: scopes)
+
         var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest), URLQueryItem(name: "client", value: "ios_secure")]
         let url = urlComps.url!
@@ -92,6 +92,39 @@ public enum BlockstackConstants {
     }
     
     /**
+     Generates an authentication request that can be sent to the Blockstack
+     browser for the user to approve sign in. This authentication request can
+     then be used for sign in by passing it to the `redirectToSignInWithAuthRequest`
+     method.
+     
+     Note: This method should only be used if you want to roll your own authentication
+     flow. Typically you'd use `redirectToSignIn` which takes care of this
+     under the hood.*
+     
+     - parameter transitPrivateKey - hex encoded transit private key
+     - parameter redirectURI: Location to redirect user to after sign in approval
+     - parameter manifestURI: Location of this app's manifest file
+     - parameter scopes: The permissions this app is requesting
+     - parameter appDomain: The origin of this app
+     - parameter expiresAt: The time at which this request is no longer valid
+     - returns: The authentication request
+     */
+    public func makeAuthRequest(transitPrivateKey: String,
+                    redirectURLScheme: String,
+                    manifestURI: URL,
+                    appDomain: URL,
+                    appBundleID: String,
+                    scopes: Array<String>,
+                    expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String? {
+        return Auth.makeRequest(transitPrivateKey: transitPrivateKey,
+                                redirectURLScheme: redirectURLScheme,
+                                manifestURI: manifestURI,
+                                appDomain: appDomain,
+                                appBundleID: appBundleID,
+                                scopes: scopes, expiresAt: expiresAt)
+    }
+    
+    /**
      Retrieves the user data object. The user's profile is stored in the key `profile`.
      */
     public func loadUserData() -> UserData? {
@@ -101,27 +134,26 @@ public enum BlockstackConstants {
     /**
      Check if a user is currently signed in.
      */
-    @objc public func isSignedIn() -> Bool {
+    @objc public func isUserSignedIn() -> Bool {
         return self.loadUserData() != nil
     }
     
-    @objc public func signOut() {
-        Keys.clearTransitKey()
+    /**
+     Sign the user out.
+     */
+    @objc public func signUserOut() {
         ProfileHelper.clearProfile()
         Gaia.clearSession()
     }
     
     /**
-     Clear the keychain and all settings for this device.
+     Prompt web flow to clear the keychain and all settings for this device.
      WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
-     - parameter redirectURI: A custom scheme registered in the app Info.plist, i.e. "myBlockstackApp"
-     - parameter completion: Callback indicating success or failure.
      */
-    @objc public func promptClearDeviceKeychain(redirectUri: String, completion: @escaping (Error?) -> ()) {
+    @objc public func promptClearDeviceKeychain() {
         // TODO: Use ASWebAuthenticationSession for iOS 12
-        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)?redirect_uri=\(redirectUri)")!, callbackURLScheme: nil) { _, error in
+        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!, callbackURLScheme: nil) { _, error in
             self.sfAuthSession = nil
-            completion(error)
         }
         self.sfAuthSession?.start()
     }
@@ -145,7 +177,7 @@ public enum BlockstackConstants {
                 completion(nil, GaiaError.invalidResponse)
                 return
             }
-            self.resolveZoneFileToProfile(zoneFile: nameInfo.zonefile, publicKeyOrAddress: nameInfo.address) {
+            ProfileHelper.resolveZoneFileToProfile(zoneFile: nameInfo.zonefile, publicKeyOrAddress: nameInfo.address) {
                 profile in
                 // TODO: Return proper errors from resolveZoneFileToProfile
                 guard let profile = profile else {
@@ -303,6 +335,28 @@ public enum BlockstackConstants {
     // - MARK: Storage
     
     /**
+     Fetch the public read URL of a user file for the specified app.
+     - parameter path: The path to the file to read
+     - parameter username: The Blockstack ID of the user to look up
+     - parameter appOrigin: The app origin
+     - parameter zoneFileLookupURL: The URL to use for zonefile lookup. Defaults to 'http://localhost:6270/v1/names/'.
+     - parameter completion: Callback with public read URL of the file, if one was found.
+     */
+    @objc public func getUserAppFileURL(at path: String, username: String, appOrigin: String, zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!, completion: @escaping (URL?) -> ()) {
+        // TODO: Return errors in completion handler
+        Blockstack.shared.lookupProfile(username: username, zoneFileLookupURL: zoneFileLookupURL) { profile, error in
+            guard error == nil,
+                let profile = profile,
+                let bucketUrl = profile.apps?[appOrigin],
+                let url = URL(string: bucketUrl) else {
+                    completion(nil)
+                    return
+            }
+            completion(url)
+        }
+    }
+
+    /**
      Stores the data provided in the app's data store to to the file specified.
      - parameter to: The path to store the data in
      - parameter text: The String data to store in the file
@@ -401,34 +455,55 @@ public enum BlockstackConstants {
                 completion: completion)
         }
     }
-
-    // MARK: - Private
     
-    // TODO: Return errors in completion handler
-    private func resolveZoneFileToProfile(zoneFile: String, publicKeyOrAddress: String, completion: @escaping (Profile?) -> ()) {
-        // TODO: Support legacy zone files
-        guard let zoneFile = BlockstackJS().parseZoneFile(zoneFile: zoneFile),
-            var tokenFileUrl = zoneFile.uri.first?["target"] as? String else {
-                completion(nil)
-                return
+    /**
+     Encrypts the data provided with the app public key.
+     - parameter bytes: Bytes (Array<UInt8>) data to encrypt.
+     - parameter publicKey: The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user's appPrivateKey.
+     - returns: Stringified JSON ciphertext object
+     */
+    @objc public func encryptContent(bytes: Bytes, publicKey: String? = nil) -> String? {
+        let key: String?
+        if publicKey == nil, let privateKey = Blockstack.shared.loadUserData()?.privateKey {
+            key = Keys.getPublicKeyFromPrivate(privateKey)
+        } else {
+            key = publicKey
         }
-        
-        // Fix url
-        if !tokenFileUrl.starts(with: "http") {
-            tokenFileUrl = "https://\(tokenFileUrl)"
+        guard let recipientKey = key else {
+            return nil
         }
-        
-        guard let url = URL(string: tokenFileUrl) else {
-            completion(nil)
-            return
+        return Encryption.encryptECIES(content: bytes, recipientPublicKey: recipientKey, isString: false)
+    }
+    
+    /**
+     Encrypts the data provided with the app public key.
+     - parameter text: String data to encrypt
+     - parameter publicKey: The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user's appPrivateKey.
+     - returns: Stringified JSON ciphertext object
+     */
+    @objc public func encryptContent(text: String, publicKey: String? = nil) -> String? {
+        let key: String?
+        if publicKey == nil, let privateKey = Blockstack.shared.loadUserData()?.privateKey {
+            key = Keys.getPublicKeyFromPrivate(privateKey)
+        } else {
+            key = publicKey
         }
-        
-        ProfileHelper.fetch(profileURL: url) { profile, error in
-            guard let profile = profile, error == nil else {
-                completion(nil)
-                return
-            }
-            completion(profile)
+        guard let recipientKey = key else {
+            return nil
         }
+        return Encryption.encryptECIES(content: text, recipientPublicKey: recipientKey)
+    }
+    
+    /**
+     Decrypts data encrypted with `encryptContent` with the transit private key.
+     - parameter content: Encrypted, JSON stringified content.
+     - parameter privateKey: The hex string of the ECDSA private key to use for decryption. If not provided, will use user's appPrivateKey.
+     - returns: DecryptedValue object containing Byte or String content.
+     */
+    public func decryptContent(content: String, privateKey: String? = nil) -> DecryptedValue? {
+        guard let key = privateKey ?? Blockstack.shared.loadUserData()?.privateKey else {
+            return nil
+        }
+        return Encryption.decryptECIES(cipherObjectJSONString: content, privateKey: key)
     }
 }

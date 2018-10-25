@@ -25,7 +25,7 @@ class GaiaSpec: QuickSpec {
             let fileName = "testFile"
             // Clear file before each test
             beforeEach {
-                Blockstack.shared.signOut()
+                Blockstack.shared.signUserOut()
                 self.signIn(bob)
                 waitUntil(timeout: 10) { done in
                     self.testUpload(fileName: fileName, content: .text(""), encrypt: false) { _ in
@@ -101,7 +101,7 @@ class GaiaSpec: QuickSpec {
                     var result: String?
                     self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { url in
                         print("Uploaded URL: \(url)")
-                        Blockstack.shared.signOut()
+                        Blockstack.shared.signUserOut()
                         // Switch users
                         self.signIn(mary)
                         // Retrieve Bob's file
@@ -129,7 +129,7 @@ class GaiaSpec: QuickSpec {
         UserDefaults.standard.set(propertyEncodedData, forKey: BlockstackConstants.ProfileUserDefaultLabel)
         
         // Ensure signed in
-        expect(Blockstack.shared.isSignedIn()).to(beTrue())
+        expect(Blockstack.shared.isUserSignedIn()).to(beTrue())
     }
     
     enum Content {

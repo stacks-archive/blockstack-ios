@@ -20,7 +20,7 @@ class Auth {
                             appDomain: URL,
                             appBundleID: String,
                             scopes: Array<String>,
-                            expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String {
+                            expiresAt: Date) -> String {
         var request: String
         
         let publicKey = Keys.getPublicKeyFromPrivate(transitPrivateKey)

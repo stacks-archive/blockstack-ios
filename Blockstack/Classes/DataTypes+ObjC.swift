@@ -7,6 +7,21 @@
 
 import Foundation
 
+@objc(DecryptedValue)
+public class ObjCDecryptedValue: NSObject {
+    public let plainText: String?
+    public let bytes: Bytes?
+
+    public var isString: Bool {
+        return self.plainText != nil
+    }
+    
+    public init(_ decryptedValue: DecryptedValue) {
+        self.plainText = decryptedValue.plainText
+        self.bytes = decryptedValue.bytes
+    }
+}
+
 @objc(Profile)
 public class ObjCProfile: NSObject {
     public let type: String?
