@@ -77,14 +77,14 @@ class ViewController: UIViewController {
     }
     
     @IBAction func getFileTapped(_ sender: Any) {
-        // Read data from Gaia'
+        // Read data from Gaia
         Blockstack.shared.getFile(at: "testFile") { response, error in
             if error != nil {
                 print("get file error")
             } else {
                 print("get file success")
                 print(response as Any)
-                
+
                 let text = response as? String ?? "Invalid Content: Try putting something first!"
                 let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))

@@ -80,7 +80,7 @@ open class EllipticJS {
     }
     
     public func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool) -> String? {
-        guard let context = context else {
+        guard let context = self.context else {
             print("JSContext not found.")
             return nil
         }
@@ -91,6 +91,32 @@ open class EllipticJS {
         let publicKeyJS = compressed ?
             context.evaluateScript("publicKey.encodeCompressed('hex')") :
             context.evaluateScript("publicKey.encode('hex')")
+        return publicKeyJS?.toString()
+    }
+    
+    public func encodeCompressed(publicKey: String) -> String? {
+        guard let context = self.context else {
+            print("JSContext not found.")
+            return nil
+        }
+        context.evaluateScript("""
+            const curve = new ec('secp256k1');
+            const ecPK = curve.keyFromPublic('\(publicKey)', 'hex').getPublic();
+            """)
+        let publicKeyJS = context.evaluateScript("ecPK.encodeCompressed('hex')")
+        return publicKeyJS?.toString()
+    }
+    
+    public func getUncompressed(publicKey: String) -> String? {
+        guard let context = self.context else {
+            print("JSContext not found.")
+            return nil
+        }
+        context.evaluateScript("""
+            const curve = new ec('secp256k1');
+            const ecPK = curve.keyFromPublic('\(publicKey)', 'hex').getPublic();
+            """)
+        let publicKeyJS = context.evaluateScript("ecPK.encode('hex')")
         return publicKeyJS?.toString()
     }
 

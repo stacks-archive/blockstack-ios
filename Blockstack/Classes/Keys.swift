@@ -75,4 +75,12 @@ open class Keys {
     static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) -> String? {
         return EllipticJS().computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
     }
+
+    static func getCompressed(publicKey: String) -> String? {
+        return EllipticJS().encodeCompressed(publicKey: publicKey)
+    }
+    
+    static func getUncompressed(publicKey: String) -> String? {
+        return EllipticJS().getUncompressed(publicKey: publicKey)
+    }
 }

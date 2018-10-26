@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct Token: Codable {
-    let header: Header?
-    public let payload: UserData?
-    let signature: String?
+public struct UserDataToken: Codable {
+    let header: Header
+    let payload: UserData?
+    let signature: String
 }
 
 public struct Header: Codable {
@@ -68,17 +68,23 @@ public struct Content: Codable {
 
 // Special structs to handle profile.json tokens - which returns iat and exp in datetime string format instead of timestamp
 
-public struct ProfileResponse: Codable {
-    let token: String?
-    let decodedToken: ProfileToken?
+public struct ProfileTokenFile: Codable {
+    public let token: String?
+    public let decodedToken: ProfileToken?
 }
 
 public struct ProfileToken: Codable {
-    let payload: ProfileTokenPayload?
+    public let header: Header
+    public let payload: ProfileTokenPayload?
+    public let signature: String
 }
 
 public struct ProfileTokenPayload: Codable {
-    let claim: Profile?
+    public let jti: String?
+    public let iat, exp: String?
+    public let subject: [String: String]?
+    public let issuer: [String: String]?
+    public let claim: Profile?
 }
 
 public struct NameInfo: Codable {

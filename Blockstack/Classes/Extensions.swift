@@ -61,6 +61,12 @@ extension Dictionary where Key == String, Value == Any? {
     }
 }
 
+extension NSError {
+    static func create(description: String) -> Error {
+        return NSError(domain: "blockstack", code: 0, userInfo: [NSLocalizedDescriptionKey: description])
+    }
+}
+
 extension String {
     func decodingFromBase64() -> String? {
         guard let data = Data(base64Encoded: self, options: Data.Base64DecodingOptions(rawValue: 0)) else {
