@@ -63,6 +63,7 @@ Good mood
   [Poly1305](http://cr.yp.to/mac/poly1305-20050329.pdf)
 | [HMAC (MD5, SHA1, SHA256)](https://www.ietf.org/rfc/rfc2104.txt)
 | [CMAC](https://tools.ietf.org/html/rfc4493)
+| [CBC-MAC](https://en.wikipedia.org/wiki/CBC-MAC)
 
 #### Cipher mode of operation
 - Electronic codebook ([ECB](http://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Electronic_codebook_.28ECB.29))
@@ -72,6 +73,7 @@ Good mood
 - Output Feedback ([OFB](http://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Output_Feedback_.28OFB.29))
 - Counter Mode ([CTR](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_.28CTR.29))
 - Galois/Counter Mode ([GCM](https://csrc.nist.gov/publications/detail/sp/800-38d/final))
+- Counter with Cipher Block Chaining-Message Authentication Code ([CCM](https://csrc.nist.gov/publications/detail/sp/800-38c/final))
 
 #### Password-Based Key Derivation Function
 - [PBKDF1](http://tools.ietf.org/html/rfc2898#section-5.1) (Password-Based Key Derivation Function 1)
@@ -449,7 +451,7 @@ decryption
 
 ```swift
 do {
-    // In combined mode, the authentication tag is directly appended to the encrypted message. This is usually what you want.
+    // In combined mode, the authentication tag is appended to the encrypted message. This is usually what you want.
     let gcm = GCM(iv: iv, mode: .combined)
     let aes = try AES(key: key, blockMode: gcm, padding: .noPadding)
     return try aes.decrypt(encrypted)
@@ -458,8 +460,25 @@ do {
 }
 ```
 
-
 **Note**: GCM instance is not intended to be reused. So you can't use the `GCM` from encoding, do decoding.
+
+##### AES-CCM
+
+The result of Counter with Cipher Block Chaining-Message Authentication Code encryption is ciphertext and **authentication tag**, that is later used to decryption.
+
+```
+do {
+    // The authentication tag is appended to the encrypted message.
+	let tagLength = 8
+	let ccm = CCM(iv: iv, tagLength: tagLength, messageLength: ciphertext.count - tagLength, additionalAuthenticatedData: data)
+    let aes = try AES(key: key, blockMode: ccm, padding: .noPadding)
+    return try aes.decrypt(encrypted)
+} catch {
+    // failed
+}
+```
+
+Check documentation or CCM specification for valid parameters for CCM.
 
 ##### AEAD
 
@@ -473,6 +492,12 @@ let decrypt = try AEADChaCha20Poly1305.decrypt(ciphertext, key: key, iv: nonce, 
 CryptoSwift is owned and maintained by [Marcin Krzyżanowski](http://www.krzyzanowskim.com)
 
 You can follow me on Twitter at [@krzyzanowskim](http://twitter.com/krzyzanowskim) for project updates and releases.
+
+# Cryptography Notice
+
+This distribution includes cryptographic software. The country in which you currently reside may have restrictions on the import, possession, use, and/or re-export to another country, of encryption software. BEFORE using any encryption software, please check your country's laws, regulations and policies concerning the import, possession, or use, and re-export of encryption software, to see if this is permitted. See http://www.wassenaar.org/ for more information.
+
+The U.S. Government Department of Commerce, Bureau of Industry and Security (BIS), has classified this software as Export Commodity Control Number (ECCN) 5D002.C.1, which includes information security software using or performing cryptographic functions with asymmetric algorithms. The form and manner of this distribution makes it eligible for export under the License Exception ENC Technology Software Unrestricted (TSU) exception (see the BIS Export Administration Regulations, Section 740.13) for both object code and source code.
 
 ## License
 

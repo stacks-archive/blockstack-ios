@@ -1,9 +1,9 @@
 PODS:
-  - Blockstack (0.3.0):
+  - Blockstack (0.4.0):
     - CryptoSwift
-  - CryptoSwift (0.11.0)
-  - Nimble (7.3.0)
-  - Quick (1.3.1)
+  - CryptoSwift (0.13.0)
+  - Nimble (7.3.1)
+  - Quick (1.3.2)
 
 DEPENDENCIES:
   - Blockstack (from `../`)
@@ -21,11 +21,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Blockstack: b48f4bb99f75c37009fcb0a496919ab1fee4782f
-  CryptoSwift: ad5208dd2aae0a764ea4ce2c2d34bd067cae67f0
-  Nimble: c8d6a1f463701921c46de965c673e13cafa09196
-  Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
+  Blockstack: b81a4d7033e5572823dd220b47acb09c8295bb19
+  CryptoSwift: 16e78bebf567bad1c87b2d58f6547f25b74c31aa
+  Nimble: 04f732da099ea4d153122aec8c2a88fd0c7219ae
+  Quick: 2623cb30d7a7f41ca62f684f679586558f483d46
 
 PODFILE CHECKSUM: 6ba8a47a79a7bc3d2f4566ad9b7946295d68a2ac
 
-COCOAPODS: 1.6.0.beta.1
+COCOAPODS: 1.6.0.beta.2
