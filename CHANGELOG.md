@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.0] - 2018-10-29
 
 ### Added
-- A lot more methods from Blockstack.js are now supported in Swift. Specifically..
+- A lot more methods from Blockstack.js are now supported in Swift. Specifically...
 - `Blockstack.encryptContent`
 - `Blockstack.decryptContent`
 - `Blockstack.extractProfile`
