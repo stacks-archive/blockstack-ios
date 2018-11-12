@@ -486,13 +486,13 @@ var LinkedIn = function (_Service) {
     key: 'getProofIdentity',
     value: function getProofIdentity(searchText) {
       var $ = _cheerio2.default.load(searchText);
-      var profileLink = $('article').find('.post-meta__profile-link');
+      var profileLink = $('.author-profile__view-profile');
 
       if (profileLink !== undefined) {
         if (profileLink.attr('href') === undefined) {
           return '';
         }
-        return profileLink.attr('href').split('/').pop();
+        return profileLink.attr('href').split('/').pop().split('?')[0];
       } else {
         return '';
       }
@@ -501,7 +501,7 @@ var LinkedIn = function (_Service) {
     key: 'getProofStatement',
     value: function getProofStatement(searchText) {
       var $ = _cheerio2.default.load(searchText);
-      var postContent = $('article').find('.commentary');
+      var postContent = $('.share-update-card__update-text');
       var statement = '';
 
       if (postContent !== undefined) {
