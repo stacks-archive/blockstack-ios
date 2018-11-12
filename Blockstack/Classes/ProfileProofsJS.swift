@@ -97,7 +97,6 @@ open class ProfileProofsJS {
                 let accountProofs = try? JSONDecoder().decode([ExternalAccountProof].self, from: data) else {
                     return
             }
-            accountProofs.forEach { print("\($0.service), isValid: \($0.valid)") }
             completion(accountProofs)
         }
         context.setObject(unsafeBitCast(callback, to: AnyObject.self), forKeyedSubscript: "callback" as NSCopying & NSObjectProtocol)
