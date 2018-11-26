@@ -8,7 +8,7 @@
 import Foundation
 
 @objc(DecryptedValue)
-public class ObjCDecryptedValue: NSObject {
+@objcMembers public class ObjCDecryptedValue: NSObject {
     public let plainText: String?
     public let bytes: Bytes?
 
@@ -23,7 +23,7 @@ public class ObjCDecryptedValue: NSObject {
 }
 
 @objc(Profile)
-public class ObjCProfile: NSObject {
+@objcMembers public class ObjCProfile: NSObject {
     public let type: String?
     public let context: String?
     public let name: String?
@@ -38,7 +38,7 @@ public class ObjCProfile: NSObject {
 }
 
 @objc(Payload)
-public class ObjCUserData: NSObject {
+@objcMembers public class ObjCUserData: NSObject {
     public let jti: String?
     public let iat, exp: Int?
     public let iss: String?

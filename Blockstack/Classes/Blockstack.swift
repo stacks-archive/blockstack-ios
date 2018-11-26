@@ -26,7 +26,7 @@ public enum BlockstackConstants {
 
 @objc open class Blockstack: NSObject {
 
-    public static let shared = Blockstack()
+    @objc public static let shared = Blockstack()
     
     var sfAuthSession : SFAuthenticationSession?
 

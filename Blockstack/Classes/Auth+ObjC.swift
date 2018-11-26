@@ -8,10 +8,10 @@
 import Foundation
 
 @objc(AuthResult)
-public class ObjCAuthResult: NSObject {
-    let result: OperationResult
-    let userData: ObjCUserData?
-    let error: Error?
+@objcMembers public class ObjCAuthResult: NSObject {
+    public let result: OperationResult
+    public let userData: ObjCUserData?
+    public let error: Error?
     
     init(_ authResult: AuthResult) {
         switch authResult {
@@ -31,6 +31,6 @@ public class ObjCAuthResult: NSObject {
     }
 }
 
-@objc enum OperationResult: Int {
+@objc public enum OperationResult: Int {
     case success, failed, cancelled
 }
