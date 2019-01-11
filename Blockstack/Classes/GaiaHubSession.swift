@@ -135,7 +135,7 @@ public class GaiaHubSession {
             do {
                 let jsonDecoder = JSONDecoder()
                 let putfileResponse = try jsonDecoder.decode(PutFileResponse.self, from: data)
-                completion(putfileResponse.publicURL, nil)
+                completion(putfileResponse.publicURL!, nil)
             } catch {
                 completion(nil, GaiaError.invalidResponse)
             }
