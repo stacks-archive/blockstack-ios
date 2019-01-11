@@ -372,7 +372,21 @@ public enum BlockstackConstants {
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: text, encrypt: encrypt) { url, error in
+                guard error != .configurationError else {
+                    // Retry with a new config
+                    Gaia.setLocalGaiaHubConnection() { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error upon retry")
+                            completion(nil, error)
+                            return
+                        }
+                        session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
+                    }
+                    return
+                }
+                completion(url, error)
+            }
         }
     }
     
@@ -392,7 +406,21 @@ public enum BlockstackConstants {
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: bytes, encrypt: encrypt) { url, error in
+                guard error != .configurationError else {
+                    // Retry with a new config
+                    Gaia.setLocalGaiaHubConnection() { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error upon retry")
+                            completion(nil, error)
+                            return
+                        }
+                        session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
+                    }
+                    return
+                }
+                completion(url, error)
+            }
         }
     }
     
