@@ -134,7 +134,7 @@ public class GaiaHubSession {
             }
 
             // Check for specific codes that indicate config error
-            if let code = (response as? HTTPURLResponse)?.statusCode, [401, 421].contains(code) {
+            if let code = (response as? HTTPURLResponse)?.statusCode == 401 {
                 completion(nil, GaiaError.configurationError)
                 return
             }
