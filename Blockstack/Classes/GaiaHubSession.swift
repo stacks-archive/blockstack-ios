@@ -132,6 +132,13 @@ public class GaiaHubSession {
                 completion(nil, GaiaError.requestError)
                 return
             }
+
+            // Check for specific codes that indicate config error
+            if let code = (response as? HTTPURLResponse)?.statusCode, [401, 421].contains(code) {
+                completion(nil, GaiaError.configurationError)
+                return
+            }
+            
             do {
                 let jsonDecoder = JSONDecoder()
                 let putfileResponse = try jsonDecoder.decode(PutFileResponse.self, from: data)
