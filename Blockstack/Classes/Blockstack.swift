@@ -147,6 +147,13 @@ public enum BlockstackConstants {
     }
     
     /**
+     Clear Gaia session.
+    */
+    @objc public func clearGaiaSession() {
+        Gaia.clearSession()
+    }
+    
+    /**
      Prompt web flow to clear the keychain and all settings for this device.
      WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
      */
@@ -372,7 +379,21 @@ public enum BlockstackConstants {
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: text, encrypt: encrypt) { url, error in
+                guard error != .configurationError else {
+                    // Retry with a new config
+                    Gaia.setLocalGaiaHubConnection() { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error upon retry")
+                            completion(nil, error)
+                            return
+                        }
+                        session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
+                    }
+                    return
+                }
+                completion(url, error)
+            }
         }
     }
     
@@ -392,7 +413,21 @@ public enum BlockstackConstants {
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
+            session.putFile(to: path, content: bytes, encrypt: encrypt) { url, error in
+                guard error != .configurationError else {
+                    // Retry with a new config
+                    Gaia.setLocalGaiaHubConnection() { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error upon retry")
+                            completion(nil, error)
+                            return
+                        }
+                        session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
+                    }
+                    return
+                }
+                completion(url, error)
+            }
         }
     }
     

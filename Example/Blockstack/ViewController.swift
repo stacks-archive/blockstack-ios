@@ -56,6 +56,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func putFileTapped(_ sender: Any) {
+//        guard self.saveInvalidGaiaConfig() else {
+//            return
+//        }
         // Put file example
         let alert = UIAlertController(title: "Put File", message: "Type a message to put in the file:", preferredStyle: .alert)
         alert.addTextField { field in
@@ -70,7 +73,7 @@ class ViewController: UIViewController {
                 if error != nil {
                     print("put file error")
                 } else {
-                    print("put file success \(publicURL!)")
+                    print("put file success \(publicURL ?? "NA")")
                 }
             }
         })
@@ -120,6 +123,30 @@ class ViewController: UIViewController {
             }
         })
         self.present(alert, animated: true)
+    }
+    
+    private func saveInvalidGaiaConfig() -> Bool {
+        // Ensure existing hub connection
+//        Blockstack.shared.putFile(to: "test", text: "hello") { _, _ in
+//        }
+
+        // Get previous gaia config
+        guard let data = UserDefaults.standard.value(forKey:
+            BlockstackConstants.GaiaHubConfigUserDefaultLabel) as? Data,
+            let config = try? PropertyListDecoder().decode(GaiaConfig.self, from: data) else {
+                return false
+        }
+        
+        // Create invalid config
+        let invalidConfig = GaiaConfig(URLPrefix: config.URLPrefix, address: config.address, token: "v1:invalidated", server: config.server)
+        
+        // Save invalid gaia config
+        Blockstack.shared.clearGaiaSession()
+        guard let encodedInvalidConfig = try? PropertyListEncoder().encode(invalidConfig) else {
+            return false
+        }
+        UserDefaults.standard.set(encodedInvalidConfig, forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+        return true
     }
     
     private func updateUI() {
