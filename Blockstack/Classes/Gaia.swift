@@ -117,6 +117,13 @@ public struct GaiaConfig: Codable {
     public let address: String?
     public let token: String?
     public let server: String?
+    
+    public init(URLPrefix: String?, address: String?, token: String?, server: String?) {
+        self.URLPrefix = URLPrefix
+        self.address = address
+        self.token = token
+        self.server = server
+    }
 }
 
 public struct GaiaHubInfo: Codable {
