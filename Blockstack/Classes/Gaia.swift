@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Gaia {
+class Gaia {
 
     // TODO: Utilize promise pattern/other way of preventing simultaneous requests
     static func getOrSetLocalHubConnection(callback: @escaping (GaiaHubSession?, GaiaError?) -> Void) {
