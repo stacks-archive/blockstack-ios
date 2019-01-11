@@ -147,6 +147,13 @@ public enum BlockstackConstants {
     }
     
     /**
+     Clear Gaia session.
+    */
+    @objc public func clearGaiaSession() {
+        Gaia.clearSession()
+    }
+    
+    /**
      Prompt web flow to clear the keychain and all settings for this device.
      WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
      */
