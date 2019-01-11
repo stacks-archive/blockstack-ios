@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2018-01-11
+
+### Added
+- `Blockstack.clearGaiaSession`
+
+### Changed
+- `Blockstack.putFile` has been modified to retry in the case of a configuration error. This may be the case if there have been any token revocations. This new logic will catch the first failed write, construct (and cache) a new Gaia token, and then attempt the write again. This allows tokens to be revoked without any hiccups from a user experience standpoint.
+
+
 ## [0.4.0] - 2018-10-29
 
 ### Added
