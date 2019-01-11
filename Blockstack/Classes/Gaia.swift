@@ -113,10 +113,10 @@ public class Gaia {
 }
 
 public struct GaiaConfig: Codable {
-    let URLPrefix: String?
-    let address: String?
-    let token: String?
-    let server: String?
+    public let URLPrefix: String?
+    public let address: String?
+    public let token: String?
+    public let server: String?
 }
 
 public struct GaiaHubInfo: Codable {
