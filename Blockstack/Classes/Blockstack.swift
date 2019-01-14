@@ -125,6 +125,14 @@ public enum BlockstackConstants {
     }
     
     /**
+     Generates a ECDSA keypair and stores the hex value of the private key in local storage.
+     - returns: The hex encoded private key, or nil if key generation failed.
+     */
+    public func generateTransitKey() -> String? {
+        return Keys.makeECPrivateKey()
+    }
+
+    /**
      Retrieves the user data object. The user's profile is stored in the key `profile`.
      */
     public func loadUserData() -> UserData? {
