@@ -113,6 +113,34 @@ class GaiaSpec: QuickSpec {
                     expect(result).toEventually(equal(content), timeout: 20, pollInterval: 1)
                 }
             }
+            context("with invalid config") {
+                // MARK: - Gaia__with_invalid_config__retries_upload
+                it ("retries upload") {
+                    // Get previous gaia config
+                    guard let data = UserDefaults.standard.value(forKey:
+                        BlockstackConstants.GaiaHubConfigUserDefaultLabel) as? Data,
+                        let config = try? PropertyListDecoder().decode(GaiaConfig.self, from: data) else {
+                            fail()
+                            return
+                    }
+                    
+                    // Create invalid config
+                    let invalidConfig = GaiaConfig(URLPrefix: config.URLPrefix, address: config.address, token: "v1:invalidated", server: config.server)
+                    
+                    // Save invalid gaia config
+                    Blockstack.shared.clearGaiaSession()
+                    if let encodedInvalidConfig = try? PropertyListEncoder().encode(invalidConfig) {
+                        UserDefaults.standard.set(encodedInvalidConfig, forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
+                    }
+                    
+                    let content = "Testing upload"
+                    var url: String?
+                    self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { result in
+                        url = result
+                    }
+                    expect(url).toEventuallyNot(beNil(), timeout: 10, pollInterval: 1)
+                }
+            }
         }
     }
     

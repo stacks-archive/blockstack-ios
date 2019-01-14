@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class Gaia {
+class Gaia {
 
     // TODO: Utilize promise pattern/other way of preventing simultaneous requests
     static func getOrSetLocalHubConnection(callback: @escaping (GaiaHubSession?, GaiaError?) -> Void) {
@@ -17,17 +17,21 @@ public class Gaia {
             self.session = GaiaHubSession(with: config)
             callback(self.session, nil)
         } else {
-            let userData = ProfileHelper.retrieveProfile()
-            let hubURL = userData?.hubURL ?? BlockstackConstants.DefaultGaiaHubURL
-            guard let appPrivateKey = userData?.privateKey else {
-                // TODO: Return appropriate error
-                callback(nil, nil)
-                return
-            }
-            self.connectToHub(hubURL: hubURL, challengeSignerHex: appPrivateKey) { session, error in
-                self.session = session
-                callback(session, error)
-            }
+            self.setLocalGaiaHubConnection(callback: callback)
+        }
+    }
+    
+    static func setLocalGaiaHubConnection(callback: @escaping (GaiaHubSession?, GaiaError?) -> Void) {
+        let userData = ProfileHelper.retrieveProfile()
+        let hubURL = userData?.hubURL ?? BlockstackConstants.DefaultGaiaHubURL
+        guard let appPrivateKey = userData?.privateKey else {
+            // TODO: Return appropriate error
+            callback(nil, nil)
+            return
+        }
+        self.connectToHub(hubURL: hubURL, challengeSignerHex: appPrivateKey) { session, error in
+            self.session = session
+            callback(session, error)
         }
     }
     
@@ -54,7 +58,6 @@ public class Gaia {
                 completion(nil, GaiaError.connectionError)
                 return
             }
-            
             let bitcoinJS = BitcoinJS()
             let signature = bitcoinJS.signChallenge(privateKey: challengeSignerHex, challengeText: hubInfo!.challengeText!)
             let publicKey = Keys.getPublicKeyFromPrivate(challengeSignerHex, compressed: true)
@@ -110,10 +113,17 @@ public class Gaia {
 }
 
 public struct GaiaConfig: Codable {
-    let URLPrefix: String?
-    let address: String?
-    let token: String?
-    let server: String?
+    public let URLPrefix: String?
+    public let address: String?
+    public let token: String?
+    public let server: String?
+    
+    public init(URLPrefix: String?, address: String?, token: String?, server: String?) {
+        self.URLPrefix = URLPrefix
+        self.address = address
+        self.token = token
+        self.server = server
+    }
 }
 
 public struct GaiaHubInfo: Codable {

@@ -4,6 +4,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2018-01-11
+
+### Added
+- `Blockstack.clearGaiaSession`
+
+### Changed
+- `Blockstack.putFile` has been modified to retry in the case of a configuration error. This may be the case if there have been any token revocations. This new logic will catch the first failed write, construct (and cache) a new Gaia token, and then attempt the write again. This allows tokens to be revoked without any hiccups from a user experience standpoint.
+
+
+## [0.4.0] - 2018-10-29
+
+### Added
+- A lot more methods from Blockstack.js are now supported in Swift. Specifically...
+- `Blockstack.encryptContent`
+- `Blockstack.decryptContent`
+- `Blockstack.extractProfile`
+- `Blockstack.wrapProfileToken`
+- `Blockstack.signProfileToken`
+- `Blockstack.verifyProfileToken`
+- `Blockstack.lookupProfile`
+- `Blockstack.getUserAppFileURL`
+- Objective-C bindings for all methods exposed by the SDK.
+
+### Changed
+- Vastly improved and much more detailed tutorial.
+- Exposed key generation utilities, specifically: `Keys.getEntropy`, `Keys.getPublicKeyFromPrivate`, `Keys.makeECPrivateKey`
+- The `Profile` object now supports an `image` field, which contains an object of type `Content`.
+- `Blockstack.promptClearDeviceKeychain` has been simplified, no longer requiring a redirectURI or completion handler.
+- `Blockstack.signOut` -> `Blockstack.signUserOut`
+- `Blockstack.isSignedIn` -> `Blockstack.isUserSignedIn`
+- Example app has been cleaned up, error states have been fixed, and shows off more functionality.
+
 ## [0.3.0] - 2018-08-27
 
 ### Added
