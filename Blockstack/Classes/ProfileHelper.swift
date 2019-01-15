@@ -8,7 +8,7 @@
 import Foundation
 
 public class ProfileHelper {
-    static func fetch(profileURL: URL, completion: @escaping (Profile?, Error?) -> Void) {
+    open static func fetch(profileURL: URL, completion: @escaping (Profile?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: profileURL) { data, response, error in
             guard let data = data, error == nil else {
                 print("Error fetching profile")

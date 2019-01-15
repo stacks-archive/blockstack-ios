@@ -330,7 +330,6 @@ public enum BlockstackConstants {
             publicKeyOrAddress == compressedAddress {
             // pass
         } else {
-            // TODO: FAIL
             throw NSError.create(description: "Token verification failed")
         }
         
@@ -343,8 +342,37 @@ public enum BlockstackConstants {
         }
         return decodedToken
     }
+
+    /**
+     Validates the social proofs in a user's profile. Currently supports validation of Facebook, Twitter, GitHub, Instagram, LinkedIn and HackerNews accounts.
+     - parameter profile: The Profile to be validated.
+     - parameter ownerAddress: The owner bitcoin address to be validated.
+     - parameter completion: Callback with an array of validated proof objects, or nil if there was an error.
+     */
+    public func validateProofs(profile: Profile, ownerAddress: String, completion: @escaping ([ExternalAccountProof]?) -> ()) {
+        guard let profileData = try? JSONEncoder().encode(profile),
+            let profileJSON = String(data: profileData, encoding: .utf8) else {
+                return
+        }
+        ProfileProofsJS().validateProofs(profile: profileJSON, ownerAddress: ownerAddress, name: nil) { proofs in
+            completion(proofs)
+        }
+    }
     
-    public func validateProofs(profile: Profile, ownerAddress: String) {
+    /**
+     Validates the social proofs in a user's profile. Currently supports validation of Facebook, Twitter, GitHub, Instagram, LinkedIn and HackerNews accounts.
+     - parameter profile: The Profile to be validated.
+     - parameter name: The Blockstack name to be validated
+     - parameter completion: Callback with an array of validated proof objects, or nil if there was an error.
+     */
+    public func validateProofs(profile: Profile, name: String, completion: @escaping ([ExternalAccountProof]?) -> ()) {
+        guard let profileData = try? JSONEncoder().encode(profile),
+            let profileJSON = String(data: profileData, encoding: .utf8) else {
+                return
+        }
+        ProfileProofsJS().validateProofs(profile: profileJSON, ownerAddress: nil, name: name) { proofs in
+            completion(proofs)
+        }
     }
     
     // - MARK: Storage
