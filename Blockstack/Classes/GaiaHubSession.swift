@@ -15,6 +15,68 @@ public class GaiaHubSession {
         self.config = config
     }
 
+    /**
+     Loop over the list of files in a Gaia hub, and run a callback on each entry. Not meant to be called by external clients.
+     - parameter page: The page ID.
+     - parameter callCount: The loop count.
+     - parameter fileCount: The number of files listed so far.
+     - parameter callback: The callback to invoke on each file. If it returns a falsey value, then the loop stops. If it returns a truthy value, the loop continues.
+     - parameter completion: Final callback that contains the number of files listed, or any error encountered.
+     */
+    func listFilesLoop(page: String?, callCount: Int, fileCount: Int, callback: @escaping (_ filename: String) -> (Bool), completion: @escaping (_ fileCount: Int, _ gaiaError: GaiaError?) -> Void) {
+        guard let server = self.config.server,
+            let address = self.config.address,
+            let token = self.config.token,
+            let url = URL(string: "\(server)/list-files/\(address)") else {
+                return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("bearer \(token)", forHTTPHeaderField: "Authorization")
+        if let jsonData = page?.data(using: .utf8),
+            let body = try? JSONSerialization.jsonObject(with: jsonData, options: .allowFragments),
+            let pageRequest = body as? [String: Any] {
+            request.httpBody = jsonData
+            if let pageLength = pageRequest["length"] as? String {
+                request.addValue(pageLength, forHTTPHeaderField: "Content-Length")
+            }
+        } else {
+            let pageRequest: [String: Any] = ["page": NSNull()]
+            let body = try? JSONSerialization.data(withJSONObject: pageRequest, options: [])
+            request.httpBody = body
+        }
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard error == nil,
+                let data = data,
+                let jsonObject = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                let result = jsonObject as? [String: Any],
+                let entries = result["entries"] as? [String],
+                result.keys.contains("page") else {
+                    completion(-1, GaiaError.invalidResponse)
+                    return
+            }
+
+            var fileCount = fileCount
+            for entry in entries {
+                fileCount += 1
+                // Run callback on each entry; negative response means we're done.
+                if !callback(entry) {
+                    completion(fileCount, nil)
+                    return
+                }
+            }
+            
+            if !entries.isEmpty, let nextPage = result["page"] as? String {
+                self.listFilesLoop(page: nextPage, callCount: callCount + 1, fileCount: fileCount, callback: callback, completion: completion)
+            } else {
+                completion(fileCount, nil)
+            }
+        }
+        task.resume()
+    }
+    
     func getFile(at path: String, decrypt: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
         let fetch: (URL?) -> () = { fullReadURL in
             guard let url = fullReadURL else {

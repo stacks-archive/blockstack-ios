@@ -426,7 +426,24 @@ public enum BlockstackConstants {
             completion(url)
         }
     }
-
+    
+    /**
+     List the set of files in this application's Gaia storage bucket.
+     - parameter callback: A callback to invoke on each named file that returns `true` to continue the listing operation or `false` to end it.
+     - parameter completion: Final callback that contains the number of files listed, or any error encountered.
+     */
+    @objc public func listFiles(callback: @escaping (_ filename: String) -> (Bool),
+                                completion: @escaping (_ fileCount: Int, _ error: Error?) -> Void) {
+        Gaia.getOrSetLocalHubConnection() { session, error in
+            guard let session = session, error == nil else {
+                print("gaia connection error")
+                completion(-1, GaiaError.connectionError)
+                return
+            }
+            session.listFilesLoop(page: nil, callCount: 0, fileCount: 0, callback: callback, completion: completion)
+        }
+    }
+    
     /**
      Stores the data provided in the app's data store to to the file specified.
      - parameter to: The path to store the data in
