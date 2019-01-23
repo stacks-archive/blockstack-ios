@@ -150,7 +150,21 @@ class GaiaSpec: QuickSpec {
                     expect(bucketUrl).toEventually(equal("https://gaia.blockstack.org/hub/1Fgr2UhX4rZntKuGALJhR2c51LDMNDsrfq/"), timeout: 10, pollInterval: 1)
                 }
             }
-            
+            context("list files") {
+                it("does encounter specific file") {
+                    var fileFound = false
+                    Blockstack.shared.listFiles(callback: {
+                        if $0 == fileName {
+                            fileFound = true
+                            return false
+                        }
+                        return true
+                    }, completion: { fileCount, error in
+                        expect(error).to(beNil())
+                    })
+                    expect(fileFound).toEventually(beTrue(), timeout: 10, pollInterval: 1)
+                }
+            }
         }
     }
     
