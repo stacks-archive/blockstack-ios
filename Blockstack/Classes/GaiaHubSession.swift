@@ -24,6 +24,11 @@ public class GaiaHubSession {
      - parameter completion: Final callback that contains the number of files listed, or any error encountered.
      */
     func listFilesLoop(page: String?, callCount: Int, fileCount: Int, callback: @escaping (_ filename: String) -> (Bool), completion: @escaping (_ fileCount: Int, _ gaiaError: GaiaError?) -> Void) {
+        if callCount > 65536 {
+            // This is ridiculously huge, and probably indicates a faulty Gaia hub anyway (e.g. on that serves endless data).
+            completion(-1, GaiaError.invalidResponse)
+        }
+
         guard let server = self.config.server,
             let address = self.config.address,
             let token = self.config.token,
