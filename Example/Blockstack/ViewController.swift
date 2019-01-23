@@ -12,7 +12,7 @@ import SafariServices
 class ViewController: UIViewController {
 
     @IBOutlet var nameLabel: UILabel!
-    @IBOutlet weak var optionsContainerView: UIView!
+    @IBOutlet weak var optionsContainerView: UIScrollView!
     @IBOutlet weak var resetKeychainButton: UIButton!
     @IBOutlet var signInButton: UIButton!
 
@@ -125,6 +125,8 @@ class ViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
+    @IBAction func listFiles(_ sender: Any) {
+    }
     private func saveInvalidGaiaConfig() -> Bool {
         // Ensure existing hub connection
 //        Blockstack.shared.putFile(to: "test", text: "hello") { _, _ in
