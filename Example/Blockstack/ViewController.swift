@@ -151,6 +151,7 @@ class ViewController: UIViewController {
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(sheet, animated: true, completion: nil)
     }
+    
     private func saveInvalidGaiaConfig() -> Bool {
         // Ensure existing hub connection
 //        Blockstack.shared.putFile(to: "test", text: "hello") { _, _ in
