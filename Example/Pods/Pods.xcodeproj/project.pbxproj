@@ -63,6 +63,7 @@
 		44F6B7EB2EAF73218A16F56D45C877A4 /* MatcherFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AEE52697E21B4078E6AC869D77729D /* MatcherFunc.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		463EFBF821EE5782002D16E6 /* ProfileProofsJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463EFBF721EE5782002D16E6 /* ProfileProofsJS.swift */; };
 		465E3C39434A3D19E1C34AC98D0B3D49 /* PKCS7Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D86C5F7E6B362380CD8D1A75B6D49B /* PKCS7Padding.swift */; };
+		467482A321FA2E57006634C4 /* profileProofs.js in Resources */ = {isa = PBXBuildFile; fileRef = 467482A221FA2E57006634C4 /* profileProofs.js */; };
 		46A98E80DB93AB7F5922D40F6CD984ED /* Padding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE05BFAA2C830625B1C38616CE10E47 /* Padding.swift */; };
 		47C58E04E3559DDDF99391C53CFF4052 /* CBC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC3C0C43C63D2392FBFCCEE15666608B /* CBC.swift */; };
 		4925E04C8C56DAE5CAE00AFA2AFA5301 /* SHA3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C58FA4F613671D888425D39A89DA450 /* SHA3.swift */; };
@@ -376,6 +377,7 @@
 		463EFBF721EE5782002D16E6 /* ProfileProofsJS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileProofsJS.swift; path = Blockstack/Classes/ProfileProofsJS.swift; sourceTree = "<group>"; };
 		464443FC180E248881EBBC669DCE9439 /* Nimble-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Nimble-prefix.pch"; sourceTree = "<group>"; };
 		464AC1EF87433482FB9C53A209BA771E /* LICENSE.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		467482A221FA2E57006634C4 /* profileProofs.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = profileProofs.js; path = Javascript/profileProofs.js; sourceTree = "<group>"; };
 		47B2480D90E21B38DA16461493169D07 /* mach_excServer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mach_excServer.h; path = Carthage/Checkouts/CwlPreconditionTesting/Sources/CwlMachBadInstructionHandler/mach_excServer.h; sourceTree = "<group>"; };
 		47BB9E20F5FE9F562FE7AD51E774A000 /* Pods-Blockstack_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Blockstack_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		484D2F1BBD6A679F0D18E926BF2C35B2 /* Pods-Blockstack_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Blockstack_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -680,6 +682,7 @@
 		3947B95E168E3CF84AAF624148035D0E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				467482A221FA2E57006634C4 /* profileProofs.js */,
 				EB1FE302635E6CE13A2AB285DAA5ED43 /* bigi.js */,
 				7325C9FACF2087E6EB710DC3C4A1CBA1 /* bitcoinjs.js */,
 				6EB9CED777588D975A42BE1C3B79D43E /* blockstack.js */,
@@ -1317,6 +1320,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7C126D2E661304CF617F253D882AF6B5 /* Blockstack.bundle in Resources */,
+				467482A321FA2E57006634C4 /* profileProofs.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

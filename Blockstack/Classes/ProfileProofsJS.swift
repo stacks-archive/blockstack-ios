@@ -101,7 +101,6 @@ open class ProfileProofsJS {
         }
         context.setObject(unsafeBitCast(callback, to: AnyObject.self), forKeyedSubscript: "callback" as NSCopying & NSObjectProtocol)
         
-        
         var arguments: String
         if let address = ownerAddress {
             arguments = "JSON.parse('\(profile)'),'\(address)'"
@@ -141,5 +140,4 @@ class ResponseJS: NSObject, ResponseJSProtocol {
     func text() -> String? {
         return self.bodyText
     }
-    
 }
