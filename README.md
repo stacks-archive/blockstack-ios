@@ -10,7 +10,7 @@ applications for this new internet using the Blockstack platform.
 
 This repository contains a pre-release for iOS developers:
 
-- the Blockstack iOS SDK ([`/blockstack-sdk`](blockstack-sdk/))
+- the Blockstack iOS SDK ([`/blockstack-sdk`](Blockstack/))
 - tools that assist development ([`/Tools`](Tools/Blockstack-webapp/))
 - a tutorial that teaches you [how to use the SDK](docs/tutorial.md)
 

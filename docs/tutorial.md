@@ -2,36 +2,34 @@
 layout: learn
 permalink: /:collection/:path.html
 ---
-# Android SDK Tutorial (Pre-release)
+# iOS SDK Tutorial (Pre-release)
 {:.no_toc}
 
-This tutorial is written for readers who are new to either or both Blockstack
-and Android to create a decentralized application. It contains the following
-content:
+This tutorial teaches you how to create a decentralized application using
+Blockstack's iOS SDK using the following content:
 
 * TOC
 {:toc}
 
-This tutorial was extensively tested using Android Studio 3.1 on a MacBook Air
-running High Sierra 10.13.4. If your environment is different, you may encounter
+This tutorial was extensively tested using Xcode Version 9.3 (9E145) on a MacBook Pro
+running Mojave 10.14. If your environment is different, you may encounter
 slight or even major discrepancies when performing the procedures in this
-tutorial. Please [join the Blockstack community
-Slack](https://slofile.com/slack/blockstack) and post questions or comments to
+tutorial. Please [join the Blockstack community Slack](https://slofile.com/slack/blockstack) and post questions or comments to
 the `#support` channel.
 
 Finally, this tutorial is written for all levels from the beginner to the most
 experienced. For best results, beginners should follow the guide as written. It
 is expected that the fast or furiously brilliant will skip ahead and improvise
-on this material at will. Fair journey one and all.
+on this material at will. God speed one and all.
 
 If you prefer, you can skip working through the tutorial all together. Instead,
-you can [download the final project code](images/helloandroid.zip) and import it
-into Android Studio to review it.
+you can [download the final project code](images/hello-blockstack.zip) and import it
+into XCode to review it.
 
 ## Understand the sample application flow
 
-When complete, the sample application is a simple `hello-world` display. It is
-intended for user on an Android phone.
+When complete, the sample application is a simple `hello-world` intended for use
+on an iOS phone.
 
 ![](images/final-app.png)
 
@@ -43,22 +41,22 @@ application by doing the following:
 
 ## Set up your environment
 
-This sample application has two code bases, a Blockstack `hello-blockstack`
-application and a `hello-andriod` Android application. Before you start
-developing the sample, there are a few elements you need in your environment.
+This sample application requires two code bases, a BlockStack `hello-blockstack` web
+application and a `hello-ios` iOS application. You use the iOS application to run the
+web application on an iOS device.
 
-### Install Android Studio
+Before you start developing the sample, there are a few elements you need in
+your environment.
 
-If you are an experienced Android developer and already have an Android
+### Install XCode
+
+If you are an experienced iOS developer and already have an iOS
 development environment on your workstation, you can use that and skip this
-step. However, you will need to adjust the remaining instructions for your
+step. However, you may need to adjust the remaining instructions for your
 environment.
 
-Follow the installation instructions to download and [Android Studio
-3.1](https://developer.android.com/studio/install) for your operating system.
+Follow the installation instructions to [download and XCode](https://developer.apple.com/xcode/) for your operating system.
 Depending on your network connection, this can take between 15-30 minutes.
-
-![](images/studio-download.png)
 
 ### Do you have npm?
 
@@ -74,23 +72,27 @@ $ which npm
 If you don't find `npm` in your system, [install
 it](https://www.npmjs.com/get-npm).
 
-### Install the Blockstack test rig
+### Install the CocoaPods 1.6.0.beta.1 dependency manager
 
-Users interact with Blockstack-enabled applications through a web browser. You
-can Blockstack in test mode, on `localhost` or you can interact with completed
-apps through the Blockstack webapp which is available at
-[https://browser.blockstack.org/].
+The sample application only runs on devices with iOS 11.0 or higher. You install
+the Blockstack iOS SDK through the CocoaPods. Cocoapods is a dependency manager
+for Swift and Objective-C Cocoa projects. It’s a simple, user friendly way to
+use libraries from the community in your project.
 
-If you have already installed Blockstack for testing locally and have an
-existing Blockstack ID, skip this section.  Otherwise, continue onto install
-Blockstack.
+You must use the `1.6.0.beta.1` version of CocoaPods or newer to avoid an
+incapability between Cocoapods and XCode. Before starting the tutorial, confirm
+you have installed CocoaPods.
 
-1. Go to  [Blockstack](https://blockstack.org/install)
+```bash
+$ pod --version
+1.6.0.beta.2
+```
 
-    ![](images/blockstack-install.png)
+If you don't have the CocoaPods beta version, install it:
 
-2. Install the version appropriate for your operating system.
-
+```bash
+sudo gem install cocoapods -v 1.6.0.beta.2
+```
 
 ### Use npm to install Yeoman and the Blockstack App Generator
 
@@ -109,12 +111,10 @@ existing projects.
     ```bash
     npm install -g generator-blockstack
     ```
-
-
 ## Build the Blockstack hello-world
 
 In this section, you build a Blockstack `hello-world` application. Then, you
-modify the `hello-world` to interact with the Android app via a redirect.
+modify the `hello-world` to interact with the iOS app via a redirect.
 
 ### Generate and launch your hello-blockstack application
 
@@ -152,12 +152,12 @@ In this section, you build an initial React.js application called
          _-----_     ╭──────────────────────────╮
         |       |    │      Welcome to the      │
         |--(o)--|    │      Blockstack app      │
-        ---------    │        generator!        │
-        ( _U_ )      ╰──────────────────────────╯
+        ---------   │        generator!        │
+        ( _´U`_ )    ╰──────────────────────────╯
         /___A___\   /
          |  ~  |
        __'.___.'__
-            |°  Y
+     ´   `  |° ´ Y `
 
     ? Are you ready to build a Blockstack app in React? (Y/n)
     ```
@@ -176,7 +176,7 @@ In this section, you build an initial React.js application called
 5. Run the initial application.
 
     ```bash
-    $ npm start
+    npm start
 
     > hello-blockstack@0.0.0 start /Users/moxiegirl/repos/hello-blockstack
     > webpack-dev-server
@@ -198,20 +198,22 @@ In this section, you build an initial React.js application called
      webpack: Compiled successfully.
      ```
 
-   The system opens a browser displaying your running application.
+   At this point, the browser is running a Blockstack server on your local host.
+
+6. Navigate to `http://localhost:8080` with your browser to display the
+   application.
 
    ![](images/blockstack-signin.png)
 
-   At this point, the browser is running a Blockstack server on your local host.
-   This is for testing your applications only.
+   This local instances is for testing your applications only.
 
-6. Choose **Sign in with Blockstack**
+7. Choose **Sign in with Blockstack**
 
    The system displays a prompt allowing you to create a new Blockstack ID or restore an existing one.
 
     ![](images/create-restore.png)
 
-7. Follow the prompts appropriate to your situation.
+8. Follow the prompts appropriate to your situation.
 
     If you are restoring an existing ID, you may see a prompt about your user
     being nameless, ignore it. At this point you have only a single application
@@ -223,17 +225,23 @@ In this section, you build an initial React.js application called
 
 ### Add a redirect end point to your application
 
-When a user opens the webapp from the Blockstack browser on an Android phone,
-you want the web app to redirect the user to your Android application. The work
+When a user opens the webapp from the Blockstack browser on an iOS phone,
+you want the web app to redirect the user to your iOS application. The work
 you do here will allow it.
 
-1. From the terminal command line, change directory to the root of your sample
+1. From the terminal command line, change directory to your web
 application directory.
+
+2. Create a `public` directory.
+
+    ```bash
+    $ mkdir public
+    ```
 
 2. Use the `touch` command to add a redirect endpoint to your application.
 
-    This endpoint on the web version of your app will redirect Android users back
-    to your mobile app.
+   This endpoint on the web version of your app will redirect iOS users back
+   to your mobile app.
 
     ```bash
     $ touch public/redirect.html
@@ -241,7 +249,7 @@ application directory.
 
 3. Open `redirect.html` and add code to the endpoint.
 
-    ```html
+    ```
     <!DOCTYPE html>
     <html>
     <head>
@@ -253,7 +261,7 @@ application directory.
       }
 
       var authResponse = getParameterByName('authResponse')
-      window.location="myblockstackapp:" + authResponse
+      window.location="myblockstackapp://?authResponse=" + authResponse
       </script>
     <body>
     </body>
@@ -266,467 +274,433 @@ application directory.
 
     `myblockstackapp:` is custom protocol handler. The handler should be unique
     to your application. Your app's web-based authentication uses this handler
-    to redirect the user back to your Android app. Later, you'll add a reference
-    to this handler in your Android application.
+    to redirect the user back to your iOS app. Later, you'll add a reference
+    to this handler in your iOS application.
 
 5. Close and save the `redirect.html` file.
-6. Ensure your Blockstack compiles successfully.
+6. Ensure your Blockstack app compiles successfully.
 
-## Create the hello-android project
+   The `npm` process should detect and compile your change.
 
-In this section, you'll create an Android application in Android Studio.  You'll
-run the application in the emulator to test it.
+## Build the hello-blockstack-ios
 
-### Create a simple project
+Now, you build an iOS application that can access and run your Blockstack web
+application on a mobile device.
 
-In this section, you create an inital project. You'll validate the application's
-iniatial state by creating an emulator to run it in. Open Android Studio and do the following:
+### Create an XCode Project
 
+This tutorial uses XCode 9.3, you can use another version but be aware that some
+menu items and therefore these procedures may be differœent on your version.
 
-1. Open Android Studio and choose **Start a new Andriod Studio project**.
+1. Launch the XCode interface.
+2. Choose **Create new XCode project**.
+3. Select **iOS**.
+4. Select **Single View App**.
 
-   If studio is already started, choose **File > New > New Project**.
+   ![](images/single-view-app.png)
 
-2. Enter these fields in the **Create Android Project** page.
+5. **Choose options for your new project** for your project.
 
-    <table class="uk-table">
-    <tr>
-      <th>Application Name</th>
-      <td><code>hello-android</code></td>
-    </tr>
-    <tr>
-      <th>Company domain</th>
-      <td><code><i>USERNAME</i>.example.com</code></td>
-    </tr>
-    <tr>
-      <th>Project location</th>
-      <td><code>/Users/<i>USERNAME</i>/AndroidStudioProjects/helloandroid</code></td>
-    </tr>
-    <tr>
-      <th>Include Kotlin support</th>
-      <td>Set (checked)</td>
-    </tr>
-    </table>
+	 ![](images/choose-new-options.png)
 
-3. Press **Next** to display **Target Android Devices**.
-4. Check **Phone and Tablet**.
-5. Choose API 27: Andriod 8.1 (Oreo) for the target version.
 6. Press **Next**.
-7. Choose **Empty Activity** and press **Next**.
-8. Leave the **Configure Activity** dialog with its defaults.
 
-   ![](images/configure-activity.png)
+   The system prompts you for a location to store your code.
 
-9. Press **Finish**.
+7. Save your project in your `hello-blockstack` directory.
 
-   Android studio builds your initial project. This can take a bit the first time you do it.
+   When you are done, you will have a `hello-blockstack/hello-blockstack-ios` subdirectory.
 
-   ![](images/initial-build.png)
-
-### Run the app in an emulator
-
-In this section, you run the appliation and create an emulator when prompted.
-
-1. Once the project is imported into studio, click the `app` module in the **Project** window.
-
-2. Then, select **Run > Run** (or click the green arrow  in the toolbar).
-
-   Studio prompts you to **Select Deployment Target**.
-
-3. Choose **Create New Virtual Device** and press **OK**.
-
-    Studio prompts you to **Select Hardware**.
-
-4. Choose a Phone running Pixel XL.
-
-    ![](images/select-hdw.png)
-
-    Studio prompts you for a system image.
-
-5. Choose **Oreo** which is API level 27 and press **Next**.
-
-    ![](images/oreo-api.png)
-
-    Studio asks you to verify your new emulator configuration.
-
-6. Press **Finish**.
-
-    The emulation takes a moment to build. Then, studio launches the emulation and opens your application.
-
-    ![](images/hello-andriod-1.png)
+8. Close XCode.
 
 
-### Configure your application with the Blockstack SDK
+### Add and edit a Podfile
 
-Now that you have created your initial project and verified it running in an emulator, you are ready to begin configuring the application for use with Blockstack.
+To use CocoaPods you need to define the XCode target to link them to.
+So, for exampleM if you are writing an iOS app, it would be the name of your app.
+Create a target section by writing target `$TARGET_NAME do` and an `end` a few
+lines after.
 
-1. In studio, open the `AndroidManifest.xml` file.
+1. Open a terminal window on your workstation.
+2. Navigate to and change directory into the root of your project directory.
 
-2. Add an `<intent-filter>` with the custom handler for Blockstack.
+	 ```swift
+	 $ cd hello-blockstack-ios
+	 ```
+3. Create a Podfile.
 
-    ```XML
-    <intent-filter>
-      <action android:name="android.intent.action.VIEW" />
-      <category android:name="android.intent.category.DEFAULT" />
-      <category android:name="android.intent.category.BROWSABLE" />
-      <data android:scheme="myblockstackapp" />
-     </intent-filter>
+	 ```bash
+	 $ pod init
+	 ```
+
+	 The command creates a `Podfile` in the directory.
+
+4. Open the `Podfile` for editing.
+5. Add a line stating the Blockstack dependency.
+
+   ```
+   # Uncomment the next line to define a global platform for your project
+   # platform :ios, '9.0'
+
+   target 'hello-blockstack-ios' do
+		 # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+		 use_frameworks!
+
+		 # Pods for hello-blockstack-ios
+		 pod 'Blockstack'
+
+		 target 'hello-blockstack-iosTests' do
+		   inherit! :search_paths
+		   # Pods for testing
+		 end
+   end
+   ```
+
+8. Save and close the `Podfile`.
+
+### Install Blockstack SDK and open the pod project
+
+1. Close your new XCode project.
+2. Change to the root of your `hello-blockstack-ios` project.
+3. Initialize the project with Cocoapods.
+
+	 ```bash
+	 $ pod install
+	 Analyzing dependencies
+	 Downloading dependencies
+	 Installing Blockstack (0.2.0)
+	 Installing CryptoSwift (0.11.0)
+	 Generating Pods project
+	 Integrating client project
+
+	 [!] Please close any current XCode sessions and use `hello-blockstack-ios.xcworkspace` for this project from now on.
+	 Sending stats
+	 Pod installation complete! There is 1 dependency from the Podfile and 2 total pods installed.
+
+	 [!] Automatically assigning platform `ios` with version `11.4` on target `hello-blockstack-ios` because no platform was specified. Please specify a platform for this target in your Podfile. See `https://guides.cocoapods.org/syntax/podfile.html#platform`.
+	 ```
+
+	This command creates a number of files
+
+4. Review the files that the `pod` installation created:
+
+   ```bash
+   $ ls
+   Podfile                hello-blockstack-ios                    hello-blockstack-iosTests
+   Podfile.lock           hello-blockstack-ios.xcodeproj
+   Pods                   hello-blockstack-ios.xcworkspace
+   ```
+5. Start XCode and choose **Open another project**.
+6. Choose the `.xcworkspace` file created in your project folder.
+
+	 ![](images/open-xcworkspace.png)
+
+	 When you open the workspace, the system will begin indexing the project. Then, after indexing, you may see a warning indicator at the top in the
+	 project title. If you see the warning, continue to step 7. Otherwise, go to the next section.
+
+7. Click the signal to reveal the warning.
+8. Click **Update to recommended settings**.
+
+	 ![](images/indicator.png)
+
+9. Choose **Perform Changes** and **Continue** when prompted.
+
+	 The indicator disappears.
+
+### Choose a custom protocol handler
+
+You'll need to choose a custom protocol handler that is unique to your app. This
+is so that your app's web-based authentication `redirect.html` endpoint can redirect
+the user back to your iOS app. In this example, you use `myblockstackapp://`.
+
+1. Open the `.xcworkspace` file in XCode if it isn't open already.
+2. Select the top node of your project.
+1. Select the **Info** tab in XCode.
+2. Scroll to **URL Types** and press **+** (plus) sign.
+3. Enter an **Identifier** and **URL Schemes** value.
+
+   | **Identifier** | `MyBlockstackApp` |
+   | **URL Schemes** | `myblockstackapp` |
+
+4. Set the **Role** to **Editor**.
+
+   When you are done the **URL Types** appears as follows:
+
+	 ![](images/url-type.png)
+
+### Add a splash screen
+
+All iOS applications require a splash page.
+
+1. Select `Assets.xcassets`
+2. Move your cursor into the area below Appicon.
+3. Right click and choose **New Image Set**
+
+   ![](images/image-set-0.png)
+
+4. Download the Blockstack icon.
+
+   ![](images/blockstack-icon.png)
+
+5. Drag the downloaded file into the **3X** position in your new Images folder.
+
+    ![](images/image-set-1.png)
+
+6. Select the `LaunchScreen.storyboard`.
+7. Choose **Open As > Source Code**.
+
+	![](images/open-as.png)
+
+8. Replace the content of the `<scenes>` element with the following:
+
+   ```
+   <scenes>
+       <!--View Controller-->
+       <scene sceneID="EHf-IW-A2E">
+           <objects>
+               <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                   <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                       <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                       <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                       <subviews>
+                           <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="SpU-hA-y2f">
+                               <rect key="frame" x="155.5" y="273" width="64" height="64"/>
+                           </imageView>
+                           <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello Blockstack iOS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wfj-A6-BZM">
+                               <rect key="frame" x="108" y="432" width="158" height="21"/>
+                               <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                               <nil key="textColor"/>
+                               <nil key="highlightedColor"/>
+                           </label>
+                       </subviews>
+                       <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                       <constraints>
+                           <constraint firstItem="Wfj-A6-BZM" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="AZy-qf-xHq"/>
+                           <constraint firstItem="Wfj-A6-BZM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="412" id="SwP-qV-1RP"/>
+                           <constraint firstItem="SpU-hA-y2f" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="XdI-Db-fDo"/>
+                           <constraint firstItem="SpU-hA-y2f" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="253" id="xc5-po-W1E"/>
+                       </constraints>
+                       <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                   </view>
+               </viewController>
+               <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+           </objects>
+           <point key="canvasLocation" x="52" y="374.66266866566718"/>
+       </scene>
+   </scenes>
+   ```
+
+9. Immediately after scenes but before the close of the `</document>` tag add the following `<resources>`.
+
+   ```xml
+		   <resources>
+         <image name="Image" width="64" height="64"/>
+		   </resources>
+		</document>
+   ```
+
+10. Choose **Run > Run app** in the emulator.
+
+	  The emulator now contains a new splash screen.
+
+	  ![](images/splash.png)
+
+
+### Update the Main.storyboard
+
+Rather than have you build up your own UI, this section has you copy and paste a layout into the XML file source code for the **Main.storyboard** file.
+
+1.  Select the `Main.storyboard` file.
+2.  Choose **Open As > Source Code**
+
+    The `blockstack-example/blockstack-example/Base.lproj/Main.storyboard` file
+    defines the graphical elements. Some elements are required before you can
+    functionality to your  code.
+
+3. Within the `<viewController>`  element, replace the existing `<view>` subelement with the following:
+
+   ```xml
+   <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+        <subviews>
+            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hello-blockstack-ios" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9eE-ZS-LU9">
+                <rect key="frame" x="0.0" y="101" width="375" height="50"/>
+                <color key="backgroundColor" red="0.44735813140000003" green="0.1280144453" blue="0.57268613580000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstAttribute="height" constant="50" id="U5v-13-4Ux"/>
+                </constraints>
+                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <nil key="highlightedColor"/>
+            </label>
+            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lfp-KX-BDb">
+                <rect key="frame" x="100" y="382" width="175" height="40"/>
+                <color key="backgroundColor" red="0.1215686275" green="0.12941176469999999" blue="0.14117647059999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstAttribute="height" constant="40" id="8fN-Ro-Krn"/>
+                </constraints>
+                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                <state key="normal" title="Sign into Blocksack">
+                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </state>
+                <connections>
+                    <action selector="signIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nV7-rt-euZ"/>
+                </connections>
+            </button>
+        </subviews>
+        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <constraints>
+            <constraint firstItem="9eE-ZS-LU9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="2ZP-tU-h9Y"/>
+            <constraint firstItem="9eE-ZS-LU9" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="81" id="DBh-q0-pAV"/>
+            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Lfp-KX-BDb" secondAttribute="trailing" constant="100" id="MHO-ew-4Bd"/>
+            <constraint firstItem="Lfp-KX-BDb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="100" id="Rsm-LP-ya7"/>
+            <constraint firstItem="Lfp-KX-BDb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="362" id="chE-B7-ya6"/>
+            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9eE-ZS-LU9" secondAttribute="trailing" id="j0x-8j-04u"/>
+        </constraints>
+        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+    </view>
+	 ```
+
+### Add the UI variables to the ViewController file.
+
+In this section, you edit the `ViewController.swift` file using the storyboard as a starting point.
+
+1. Select the **Main.storyboard** and choose **Open As > Interface Builder - storyboard**.
+
+	 ![](images/main-storyboard.png)
+
+2. With the interface builder open, display the `ViewController.swift` file in the right panel.
+
+   ![](images/view-editors.gif)
+
+4. In the storyboard, select the **Sign into Blockstack** button.
+
+5. Control-drag from the button to the code display in the editor on the right, stopping the drag at the line below controller's opening statement.
+
+   ![](images/add-action.gif)
+
+6. Repeat this process with the storyboard's purple **hello-blockstack-ios** label.
+
+    When you are done, your 'ViewController' file contains the following variables:
+
+    ```swift
+    class ViewController: UIViewController {
+
+    @IBOutlet var nameLabel: UILabel!
+    @IBOutlet var signInButton: UIButton!
     ```
 
-2. Open the Project's `build.gradle` file.
-3. Add the Jitpack repository `maven { url 'https://jitpack.io' }` to the `repositories` section.
+    And XCode has added two outlines to the `Main.storyboard` source.
 
-    When you finish, that section looks like this:
-
-    ```JS
-    allprojects {
-      repositories {
-          google()
-          jcenter()
-          maven { url 'https://jitpack.io' }
-      }
-    }
+    ```xml
+    <connections>
+    <outlet property="nameLabel" destination="9eE-ZS-LU9" id="Ahv-Te-ZZo"/>
+    <outlet property="signInButton" destination="Lfp-KX-BDb" id="yef-Jj-uPt"/>
+    </connections>
     ```
 
-4. Open the Module `build.gradle` file.
-5. Set the `defaultConfig minSdkVersion` to `19`.
+    Your connectors will have their own `destination` and `id` values.
 
-   When you are done, you should see (within your own username not `moxiegirl`):
 
-   ```JS
-   android {
-       compileSdkVersion 27
-           defaultConfig {
-               applicationId "com.example.moxiegirl.hello_android"
-               minSdkVersion 19
-               targetSdkVersion 27
-               versionCode 1
-               versionName "1.0"
-               testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+### Edit the ViewController.swift file
+
+Now, you are ready to connect your application with your Blockstack Web
+Application. Normally, after building your Web application you would have
+registred it with Blockstack and the app would be available on the Web. This
+example skips this registration step and uses an example application we've
+already created for you:
+
+`https://heuristic-brown-7a88f8.netlify.com/redirect.html`
+
+This web application already has a redirect in place for you. You'll reference
+this application in your mobile add for now. In XCode, do the following;
+
+
+1. Open the `ViewController.swift` file.
+2. Add an import both for `Blockstack`.
+
+   ```
+	 import UIKit
+	 import Blockstack
+	 ```
+
+3. Add a private `updateUI()` function.
+
+   This function takes care of loading the user data from Blockstack.
+
+   ```swift
+   private func updateUI() {
+       DispatchQueue.main.async {
+           if Blockstack.shared.isUserSignedIn() {
+               // Read user profile data
+               let retrievedUserData = Blockstack.shared.loadUserData()
+               print(retrievedUserData?.profile?.name as Any)
+               let name = retrievedUserData?.profile?.name ?? "Nameless Person"
+               self.nameLabel?.text = "Hello, \(name)"
+               self.nameLabel?.isHidden = false
+               self.signInButton?.setTitle("Sign Out", for: .normal)
+               print("UI update SIGNED_IN")
+           } else {
+               self.nameLabel?.text = "hello-blockstack-ios"
+               self.signInButton?.setTitle("Sign into Blockstack", for: .normal)
+               print("UI update SIGNED_OUT")
            }
-      ...
+       }
    }
     ```
 
-7. Below this, add the Blockstack Android SDK dependency to your project's `dependencies` list:
+   The function uses the `Blockstack.shared.isUserSignedIn()` method to determine if
+   the user is already logged into Blockstack or not. It then uses the
+   `Blockstack.shared.loadUserData()` method to load the user data and update
+   the application display with the username.
 
-    When you are done you should see:
+5. Replace the content of the `viewDidLoad()` function so that it calls this private function.
 
-    ```JS
-    dependencies {
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-        implementation 'com.android.support:appcompat-v7:27.1.1'
-        implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-        implementation 'com.android.support:design:27.1.1'
-        testImplementation 'junit:junit:4.12'
-        androidTestImplementation 'com.android.support.test:runner:1.0.2'
-        androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-        implementation 'com.github.blockstack:blockstack-android:0.4.0'
-    }
+   ```swift
+   override func viewDidLoad() {
+       super.viewDidLoad()
+       // Do any additional setup after loading the view, typically from a nib.
+       self.updateUI()
+   }
+	 ```
 
-    ```
+9. Create a 'signIn()' function that handles both sign in and out.
 
-    **NOTE**: Ignore the warning on the appcompat` dependencies.
+   The function uses the `Blockstack.shared.signIn()` and
+   `Blockstack.shared.signUserOut()` methods to sign the user into the application.
 
-8. Sync your project.
-
-    ![](images/sync-project.png)
-
-    Be sure to check the sync completed successfully.
-
-    ![](images/sync-success.png)
-
-10. Run your app in the emulator.
-
-    You've made a lot of changes, make sure the emulator is still running
-    correctly.
-
-### Add a simple interface
-
-1.  Open the `app/res/layout/activity_main.xml` file.
-
-    The `activity_main.xml` file defines the graphical elements. Some elements are required before you can functionality to your `MainActivity.kt` code.
-
-3. Replace the entire content of the file with the following code:
-
-   The new interface includes a `BlockstackSignInButton` which is provided by
-   the SDK. This SDK includes a themed "Sign in with Blockstack" button
-   (`BlockstackSignInButton`). You use this button here with the
-   `org.blockstack.android.sdk.ui.BlockstackSignInButton` class.
-
-    ```XML
-    <?xml version="1.0" encoding="utf-8"?>
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <org.blockstack.android.sdk.ui.BlockstackSignInButton
-        android:id="@+id/signInButton"
-        android:layout_width="307dp"
-        android:layout_height="45dp"
-        android:layout_margin="4dp"
-        android:layout_marginEnd="185dp"
-        android:layout_marginStart="39dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <TextView
-        android:id="@+id/userDataTextView"
-        android:layout_width="370dp"
-        android:layout_height="27dp"
-        tools:layout_editor_absoluteX="6dp"
-        tools:layout_editor_absoluteY="70dp" />
-
-    </android>
-    ```
-
-    This codes adds a button and some text to your application.
-
-4. Choose **Run > Apply changes**.
-
-5. Choose **Run > Run app** in the emulator.
-
-    The emulator now contains a new interface with a button:
-
-    ![](images/new-interface.png)
-
-### Add session & authentication code
-
-1. Open the `MainActivity.kt` file.
-2. Add some additional imports to the top below the `android.os.Bundle` import.
-
-    When you are done, your imports should appear as follows:
-
-    ```kotlin
-    import android.content.Intent
-    import android.os.Bundle
-    import android.support.v7.app.AppCompatActivity
-    import android.view.View
-    import kotlinx.android.synthetic.main.activity_main.*
-    import org.blockstack.android.sdk.BlockstackSession
-    import org.blockstack.android.sdk.Scope
-    import org.blockstack.android.sdk.UserData
-    import org.blockstack.android.sdk.toBlockstackConfig
-    ```
-3. Add a variable for the Blockstack session before `onCreate`.
-
-   ```kotlin
-   class MainActivity : AppCompatActivity() {
-
-       private var _blockstackSession: BlockstackSession? = null
-
-       override fun onCreate(savedInstanceState: Bundle?) {
-         super.onCreate(savedInstanceState)
-         setContentView(R.layout.activity_main)
-       }
-    }
-   ```
-
-4. Replace the existing the `onCreate` function with the following:
-
-    ```kotlin
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-      
-        val scopes = arrayOf(Scope.StoreWrite)
-	    val config = "https://flamboyant-darwin-d11c17.netlify.com"
-                        .toBlockstackConfig(scopes)
-
-        _blockstackSession = BlockstackSession(this, config)
-     
-        signInButton.isEnabled = true                
-
-        signInButton.setOnClickListener { view: View ->
-            blockstackSession().redirectUserToSignIn {
-               // only called on error
-          }
-        }
-        if (intent?.action == Intent.ACTION_VIEW) {
-            // handle the redirect from sign in
-            handleAuthResponse(intent)
-        }
-    }
-    ```
-
-    This new `onCreate` does several things:
-
-    * Define the initial state for the `signInButton`.
-    * Supply authentication information for connecting to your Blockstack app: `appDomain` and `scopes` (for `redirectURI`, `manifestURI` the default values are used) 
-    * Add a listener for the button click.
-
-    Notice that the application in this example is a URI you have not set up.
-    Registering and application name takes time, so in time's interest you'll
-    use an existing app that is identical to the `hello-world` you created
-    earlier. For a production version, you'll need to replace `appDomain`,
-    `redirectURI`, `manifestURI` and `scopes` with values appropriate for your
-    app.
-
-5. Add a private function to reflect when a user successfully signs in.
-
-    ```kotlin
-    private fun onSignIn(userData: UserData) {
-    		userDataTextView.text = "Signed in as ${userData.decentralizedID}"
-    		signInButton.isEnabled = false
-    }
-    ```
-
-6. Handle sign in requests with an `onNewIntent` function if the activity was already opened when signing in
-
-    Retrieve the authentication token from the custom protocol handler call and
-    send it to the Blockstack session.
-
-    ```kotlin
-    override fun onNewIntent(intent: Intent?) {
-      super.onNewIntent(intent)
-
-      if (intent?.action == Intent.ACTION_VIEW) {
-          handleAuthResponse(intent)
-      }
-    }
-    ```
-
-7. Create a handler for the authentication response.
-
-    ```kotlin
-    private fun handleAuthResponse(intent: Intent) {
-       val response = intent.dataString
-       if (response != null) {
-           val authResponseTokens = response.split(':')
-
-           if (authResponseTokens.size > 1) {
-               val authResponse = authResponseTokens[1]
-
-               blockstackSession().handlePendingSignIn(authResponse, { userData ->
-                   if (userData.hasValue) {
-                      // The user is now signed in!
-                      runOnUiThread {
-                         onSignIn(userData.value!!)
-                      }
-                   }
-               })
+    ```swift
+    @IBAction func signIn(_ sender: UIButton) {
+       if Blockstack.shared.isUserSignedIn() {
+           print("Currently signed in so signing out.")
+           Blockstack.shared.signUserOut()
+           self.updateUI()
+       } else {
+           print("Currently signed out so signing in.")
+           // Address of deployed example web app
+           Blockstack.shared.signIn(redirectURI: "https://heuristic-brown-7a88f8.netlify.com/redirect.html",
+                                    appDomain: URL(string: "https://heuristic-brown-7a88f8.netlify.com")!) { authResult in
+                                       switch authResult {
+                                       case .success(let userData):
+                                           print("Sign in SUCCESS", userData.profile?.name as Any)
+                                           self.updateUI()
+                                       case .cancelled:
+                                           print("Sign in CANCELLED")
+                                       case .failed(let error):
+                                           print("Sign in FAILED, error: ", error ?? "n/a")
+                                       }
            }
        }
+
     }
     ```
 
-8. Add the convenience method to access the blockstack session.
+## Troubleshooting your build in XCode
 
-    ```kotlin
-    fun blockstackSession() : BlockstackSession {
-      val session = _blockstackSession
-       if(session != null) {
-          return session
-       } else {
-        throw IllegalStateException("No session.")
-      }
-    }
-    ```
+XCode builds can retain old data. To ensure your builds are clean, try the following:
 
-9. Verify your final `MainActivity.kt` code looks like this:
-
-    ```kotlin
-    class MainActivity : AppCompatActivity() {
-
-        private var _blockstackSession: BlockstackSession? = null
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_main)
-
-            signInButton.isEnabled = false
-
-            val scopes = arrayOf(Scope.StoreWrite)
-	        val config = "https://flamboyant-darwin-d11c17.netlify.com"
-                        .toBlockstackConfig(scopes)
-
-            _blockstackSession = BlockstackSession(this, config)
-            signInButton.isEnabled = true                    
-
-            signInButton.setOnClickListener { view: View ->
-                blockstackSession().redirectUserToSignIn { 
-                   // only called on error
-                }
-            }
-            if (intent?.action == Intent.ACTION_VIEW) {
-                handleAuthResponse(intent)
-            }
-        }
-
-        private fun onSignIn(userData: UserData) {
-            userDataTextView.text = "Signed in as ${userData.decentralizedID}"
-
-            signInButton.isEnabled = false
-        }
-
-        override fun onNewIntent(intent: Intent?) {
-            super.onNewIntent(intent)
-
-            if (intent?.action == Intent.ACTION_VIEW) {
-                handleAuthResponse(intent)
-            }
-        }
-
-        private fun handleAuthResponse(intent: Intent) {
-            val response = intent.dataString
-            if (response != null) {
-                val authResponseTokens = response.split(':')
-
-                if (authResponseTokens.size > 1) {
-                    val authResponse = authResponseTokens[1]
-
-                    blockstackSession().handlePendingSignIn(authResponse, { userData ->
-                        if (userData.hasValue) {
-                            // The user is now signed in!
-                            runOnUiThread {
-                                onSignIn(userData.value!!)
-                            }
-                        }
-                    })
-                }
-            }
-        }
-
-        fun blockstackSession() : BlockstackSession {
-            val session = _blockstackSession
-            if(session != null) {
-                return session
-            } else {
-                throw IllegalStateException("No session.")
-            }
-        }
-    }
-    ```
-
-### Run the final app in the emulator
-
-1. Choose **Run > Apply changes**.
-2. Choose **Run > Run app** in the emulator.
-3. When you see the application open, choose **Sign in with Blockstack**.
-
-    The system prompts you how to open.
-
-    ![](images/chrome-prompt.png)
-
-4. Choose **Chrome** and click **ALWAYS**.
-5. Move through the rest of the Chrome prompts.
-
-   The system presents you with your final application.
-
-   ![](images/final-app.png)
-
-6. Work through the Blockstack prompts to login.
-
-
-## Where to go next
-
-Congratulations, you've completed your Android app using the new, pre-release
-Blockstack Android SDK. Thank you for trying this pre-release. Please let us
-know about your experience by tweeting to
-[@blockstack](https://twitter.com/blockstack).
-
-Learn more about Blockstack by [trying another tutorial](https://blockstack.org/tutorials).
+1. Reset the simulator by choosing **Hardware -> Erase all content and settings** from the menu.
+2. In XCode, clean the project by choosing **Product > Clean** from the menu or  press 'Command + Shift + K' on your keyboard.
+3. Clean the build folder by pressing 'Command + Option + Shift + K' on your keyboard.
+4. Run the code on the simulator again.
