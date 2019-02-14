@@ -378,6 +378,30 @@ public enum BlockstackConstants {
     // - MARK: Storage
     
     /**
+     Get the app storage bucket URL
+     - parameter gaiaHubURL: The Gaia hub URL.
+     - parameter: appPrivateKey: The app private key used to generate the app address.
+     */
+    @objc public func getAppBucketUrl(gaiaHubURL: URL, appPrivateKey: String, completion: @escaping (String?) -> ()) {
+        guard let privateKey = Blockstack.shared.loadUserData()?.privateKey,
+            let publicKey = Keys.getPublicKeyFromPrivate(privateKey),
+            let challengeSignerAddress = Keys.getAddressFromPublicKey(publicKey) else {
+                return
+        }
+        let task = URLSession.shared.dataTask(with: gaiaHubURL.appendingPathComponent("hub_info")) { data, response, error in
+            guard error == nil,
+                let data = data,
+                let jsonObject = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                let readURLPrefix = (jsonObject as? [String: Any])?["read_url_prefix"] else {
+                    completion(nil)
+                    return
+            }
+            completion("\(readURLPrefix)\(challengeSignerAddress)/")
+        }
+        task.resume()
+    }
+    
+    /**
      Fetch the public read URL of a user file for the specified app.
      - parameter path: The path to the file to read
      - parameter username: The Blockstack ID of the user to look up
@@ -385,7 +409,11 @@ public enum BlockstackConstants {
      - parameter zoneFileLookupURL: The URL to use for zonefile lookup. Defaults to 'http://localhost:6270/v1/names/'.
      - parameter completion: Callback with public read URL of the file, if one was found.
      */
-    @objc public func getUserAppFileURL(at path: String, username: String, appOrigin: String, zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!, completion: @escaping (URL?) -> ()) {
+    @objc public func getUserAppFileURL(at path: String,
+                                        username: String,
+                                        appOrigin: String,
+                                        zoneFileLookupURL: URL = URL(string: "http://localhost:6270/v1/names/")!,
+                                        completion: @escaping (URL?) -> ()) {
         // TODO: Return errors in completion handler
         Blockstack.shared.lookupProfile(username: username, zoneFileLookupURL: zoneFileLookupURL) { profile, error in
             guard error == nil,
@@ -398,7 +426,24 @@ public enum BlockstackConstants {
             completion(url)
         }
     }
-
+    
+    /**
+     List the set of files in this application's Gaia storage bucket.
+     - parameter callback: A callback to invoke on each named file that returns `true` to continue the listing operation or `false` to end it.
+     - parameter completion: Final callback that contains the number of files listed, or any error encountered.
+     */
+    @objc public func listFiles(callback: @escaping (_ filename: String) -> (Bool),
+                                completion: @escaping (_ fileCount: Int, _ error: Error?) -> Void) {
+        Gaia.getOrSetLocalHubConnection() { session, error in
+            guard let session = session, error == nil else {
+                print("gaia connection error")
+                completion(-1, GaiaError.connectionError)
+                return
+            }
+            session.listFilesLoop(page: nil, callCount: 0, fileCount: 0, callback: callback, completion: completion)
+        }
+    }
+    
     /**
      Stores the data provided in the app's data store to to the file specified.
      - parameter to: The path to store the data in

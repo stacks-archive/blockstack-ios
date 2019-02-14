@@ -141,6 +141,30 @@ class GaiaSpec: QuickSpec {
                     expect(url).toEventuallyNot(beNil(), timeout: 10, pollInterval: 1)
                 }
             }
+            context("hub info") {
+                it("can retrieve app storage bucket URL") {
+                    var bucketUrl: String? = nil
+                    Blockstack.shared.getAppBucketUrl(gaiaHubURL: URL(string: "https://hub.blockstack.org")!, appPrivateKey: bob.privateKey) {
+                        bucketUrl = $0
+                    }
+                    expect(bucketUrl).toEventually(equal("https://gaia.blockstack.org/hub/1Fgr2UhX4rZntKuGALJhR2c51LDMNDsrfq/"), timeout: 10, pollInterval: 1)
+                }
+            }
+            context("list files") {
+                it("does encounter specific file") {
+                    var fileFound = false
+                    Blockstack.shared.listFiles(callback: {
+                        if $0 == fileName {
+                            fileFound = true
+                            return false
+                        }
+                        return true
+                    }, completion: { fileCount, error in
+                        expect(error).to(beNil())
+                    })
+                    expect(fileFound).toEventually(beTrue(), timeout: 10, pollInterval: 1)
+                }
+            }
         }
     }
     

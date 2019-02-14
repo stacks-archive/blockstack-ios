@@ -12,7 +12,7 @@ import SafariServices
 class ViewController: UIViewController {
 
     @IBOutlet var nameLabel: UILabel!
-    @IBOutlet weak var optionsContainerView: UIView!
+    @IBOutlet weak var optionsContainerView: UIScrollView!
     @IBOutlet weak var resetKeychainButton: UIButton!
     @IBOutlet var signInButton: UIButton!
 
@@ -123,6 +123,33 @@ class ViewController: UIViewController {
             }
         })
         self.present(alert, animated: true)
+    }
+    
+    @IBAction func listFiles(_ sender: Any) {
+        let sheet = UIAlertController(title: "List Files", message: "List all of your files in this application's Gaia storage bucket?", preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+            var files = [String]()
+            Blockstack.shared.listFiles(callback: {
+                // Continue until there are no more files
+                files.append($0)
+                return true
+            }, completion: { fileCount, error in
+                var message = "\(fileCount) files.\n"
+                for i in 0..<fileCount {
+                    if i < 50 {
+                        message += "\n\(files[i])"
+                    } else {
+                        message += "\n...and \(fileCount - i + 1) more!"
+                        break
+                    }
+                }
+                let alert = UIAlertController(title: "List Files", message: message, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            })
+        })
+        sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(sheet, animated: true, completion: nil)
     }
     
     private func saveInvalidGaiaConfig() -> Bool {
