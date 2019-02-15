@@ -39,7 +39,7 @@ class Encryption {
             let cipherObject: [String: Any?] = [
                 "iv": initializationVector.toHexString(),
                 "ephemeralPK": compressedEphemeralPKHex,
-                "cipherText": cipherText.toHexString(),
+                "cipherText": Data(bytes: cipherText).hexEncodedString(),
                 "mac": mac.toHexString(),
                 "wasString": isString
             ]
