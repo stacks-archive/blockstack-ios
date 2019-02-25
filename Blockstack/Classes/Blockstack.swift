@@ -11,11 +11,19 @@ import JavaScriptCore
 
 public typealias Bytes = Array<UInt8>
 
+fileprivate var betaBrowserDefaultsKey = "isBetaBrowserEnabled"
+
 public enum BlockstackConstants {
+
+    public static var BrowserWebAppURL: String {
+        return UserDefaults.standard.bool(forKey: betaBrowserDefaultsKey) ?
+            "https://beta.browser.blockstack.org" :
+        "https://browser.blockstack.org"
+    }
+
     public static let DefaultCoreAPIURL = "https://core.blockstack.org"
-    public static let BrowserWebAppURL = "https://browser.blockstack.org"
-    public static let BrowserWebAppAuthEndpoint = "https://browser.blockstack.org/auth"
-    public static let BrowserWebClearAuthEndpoint = "https://browser.blockstack.org/clear-auth"
+    public static let BrowserWebAppAuthEndpoint = "\(BrowserWebAppURL)/auth"
+    public static let BrowserWebClearAuthEndpoint = "\(BrowserWebAppURL)/clear-auth"
     public static let NameLookupEndpoint = "https://core.blockstack.org/v1/names/"
     public static let AuthProtocolVersion = "1.1.0"
     public static let DefaultGaiaHubURL = "https://hub.blockstack.org"
@@ -27,6 +35,12 @@ public enum BlockstackConstants {
 @objc open class Blockstack: NSObject {
 
     @objc public static let shared = Blockstack()
+    
+    @objc public var isBetaBrowserEnabled = false {
+        didSet {
+            UserDefaults.standard.set(self.isBetaBrowserEnabled, forKey: betaBrowserDefaultsKey)
+        }
+    }
     
     var sfAuthSession : SFAuthenticationSession?
 
@@ -41,10 +55,10 @@ public enum BlockstackConstants {
      - parameter completion: Callback with an AuthResult object.
      */
     public func signIn(redirectURI: String,
-                    appDomain: URL,
-                     manifestURI: URL? = nil,
-                     scopes: Array<String> = ["store_write"],
-                     completion: @escaping (AuthResult) -> ()) {
+                       appDomain: URL,
+                       manifestURI: URL? = nil,
+                       scopes: Array<String> = ["store_write"],
+                       completion: @escaping (AuthResult) -> ()) {
         print("signing in")
         
         guard let transitKey = Keys.makeECPrivateKey() else {
