@@ -1,5 +1,5 @@
 PODS:
-  - Blockstack (0.5.0):
+  - Blockstack (0.5.2):
     - CryptoSwift
   - CryptoSwift (0.14.0)
   - Nimble (7.3.4)
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Blockstack: 1975d43901358cf9551a683a7cbcd933c032b63b
+  Blockstack: b1b0a16cb35d526cae6dbe7cb9ea140703bc35e8
   CryptoSwift: 35a10419f4dbf0619c13f8c1c180037e115323fa
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   Quick: f4f7f063c524394c73ed93ac70983c609805d481
