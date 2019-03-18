@@ -134,4 +134,18 @@ open class EllipticJS {
         }
         return SignatureObject(signature: signatureString, publicKey: publicKey, cipherText: nil)
     }
+    
+    public func verifyECDSA(content: Bytes, publicKey: String, signature: String) -> Bool? {
+        guard let context = self.context else {
+            print("JSContext not found.")
+            return nil
+        }
+        let contentHash = content.sha256()
+        context.evaluateScript("const curve = new ec('secp256k1');")
+        guard let ecPublic = context.evaluateScript("curve.keyFromPublic('\(publicKey)', 'hex')"),
+            let isSignatureValid = ecPublic.invokeMethod("verify", withArguments: [contentHash, signature])?.toBool() else {
+                return nil
+        }
+        return isSignatureValid
+    }
 }
