@@ -58,7 +58,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func putFileTapped(_ sender: Any) {
-        Blockstack.shared.promptClearDeviceKeychain()
 //        guard self.saveInvalidGaiaConfig() else {
 //            return
 //        }
