@@ -120,5 +120,18 @@ open class EllipticJS {
         return publicKeyJS?.toString()
     }
 
+    public func signECDSA(privateKey: String, content: Bytes) -> SignatureObject? {
+        guard let context = self.context else {
+            print("JSContext not found.")
+            return nil
+        }
+        context.evaluateScript("const curve = new ec('secp256k1');")
+        guard let ecPrivate = context.evaluateScript("curve.keyFromPrivate('\(privateKey)', 'hex')"),
+            let signature = ecPrivate.invokeMethod("sign", withArguments: [content.sha256()]),
+            let signatureString = signature.invokeMethod("toDER", withArguments: ["hex"])?.toString(),
+            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
+            return nil
+        }
+        return SignatureObject(signature: signatureString, publicKey: publicKey, cipherText: nil)
+    }
 }
-
