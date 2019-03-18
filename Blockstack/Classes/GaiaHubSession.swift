@@ -8,6 +8,8 @@
 import Foundation
 import CryptoSwift
 
+fileprivate let signatureFileSuffix = ".sig"
+
 public class GaiaHubSession {
     let config: GaiaConfig
 
@@ -125,35 +127,27 @@ public class GaiaHubSession {
             fetch(URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)"))
         }
     }
-    
-    func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> ()) {
-        if encrypt {
-            guard let data = self.encrypt(content: .bytes(content)) else {
-                // TODO: Error for invalid app public key?
+
+    func putFile(to path: String, content: Bytes, encrypt: Bool, encryptionKey: String?, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
+        guard let data = encrypt ?
+            self.encrypt(content: .bytes(content), with: encryptionKey) :
+            Data(bytes: content) else {
+                // TODO: Throw error
                 completion(nil, nil)
                 return
-            }
-            self.upload(path: path, contentType: "application/json", data: data, completion: completion)
-        } else {
-            self.upload(path: path, contentType: "application/octet-stream", data: Data(bytes: content), completion: completion)
         }
+        self.signAndPutData(to: path, content: data, originalContentType: "application/octet-stream", encrypted: encrypt, sign: sign, signingKey: signingKey, completion: completion)
     }
     
-    func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> ()) {
-        if encrypt {
-            guard let data = self.encrypt(content: .text(content)) else {
-                // TODO: Error for invalid app public key?
+    func putFile(to path: String, content: String, encrypt: Bool, encryptionKey: String?, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
+        guard let data = encrypt ?
+            self.encrypt(content: .text(content), with: encryptionKey) :
+            content.data(using: .utf8) else {
+                // TODO: Throw error
                 completion(nil, nil)
                 return
-            }
-            self.upload(path: path, contentType: "application/json", data: data, completion: completion)
-        } else {
-            guard let data = content.data(using: .utf8) else {
-                completion(nil, nil)
-                return
-            }
-            self.upload(path: path, contentType: "text/plain", data: data, completion: completion)
         }
+        self.signAndPutData(to: path, content: data, originalContentType: "text/plain", encrypted: encrypt, sign: sign, signingKey: signingKey, completion: completion)
     }
     
     // MARK: - Private
@@ -163,26 +157,71 @@ public class GaiaHubSession {
         case bytes(Bytes)
     }
     
-    private func encrypt(content: Content) -> Data? {
-        // Encrypt to Gaia using the app public key
-        guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey,
-            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
-                return nil
+    private func encrypt(content: Content, with key: String? = nil) -> Data? {
+        var publicKey = key
+        if publicKey == nil {
+            // Encrypt to Gaia using the app public key
+            guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
+                    return nil
+            }
+            publicKey = Keys.getPublicKeyFromPrivate(privateKey)
+        }
+        
+        guard let recipientPublicKey = publicKey else {
+            return nil
         }
 
         // Encrypt and serialize to JSON
         var cipherObjectJSON: String?
         switch content {
         case let .bytes(bytes):
-            cipherObjectJSON = Encryption.encryptECIES(content: bytes, recipientPublicKey: publicKey, isString: false)
+            cipherObjectJSON = Encryption.encryptECIES(content: bytes, recipientPublicKey: recipientPublicKey, isString: false)
         case let .text(text):
-            cipherObjectJSON = Encryption.encryptECIES(content: text, recipientPublicKey: publicKey)
+            cipherObjectJSON = Encryption.encryptECIES(content: text, recipientPublicKey: recipientPublicKey)
         }
         
         guard let cipher = cipherObjectJSON else {
             return nil
         }
         return cipher.data(using: .utf8)
+    }
+    
+    private func signAndPutData(to path: String, content: Data, originalContentType: String, encrypted: Bool, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
+        if encrypted && !sign {
+            self.upload(path: path, contentType: "application/json", data: content, completion: completion)
+        } else if encrypted && sign {
+            guard let privateKey = signingKey ?? Blockstack.shared.loadUserData()?.privateKey,
+                let signatureObject = EllipticJS().signECDSA(privateKey: privateKey, content: content.bytes) else {
+                    // Handle error
+                    completion(nil, nil)
+                    return
+            }
+            let signedCipherObject = SignatureObject(
+                signature: signatureObject.signature,
+                publicKey: signatureObject.publicKey,
+                cipherText: String(data: content, encoding: .utf8))
+            guard let jsonData = try?  JSONEncoder().encode(signedCipherObject) else {
+                // Handle error
+                completion(nil, nil)
+                return
+            }
+            self.upload(path: path, contentType: "application/json", data: jsonData, completion: completion)
+        }  else if !encrypted && sign {
+            // If signing but not encryption, 2 uploads are needed
+            guard let privateKey = signingKey ?? Blockstack.shared.loadUserData()?.privateKey,
+                let signatureObject = EllipticJS().signECDSA(privateKey: privateKey, content: content.bytes),
+                let jsonData = try?  JSONEncoder().encode(signatureObject) else {
+                    // Handle error
+                    completion(nil, nil)
+                    return
+            }
+            self.upload(path: path, contentType: originalContentType, data: content) { _, _ in
+                self.upload(path: "\(path)\(signatureFileSuffix)", contentType: "application/json", data: jsonData, completion: completion)
+            }
+        } else {
+            // Not encrypting or signing
+            self.upload(path: path, contentType: originalContentType, data: content, completion: completion)
+        }
     }
     
     private func upload(path: String, contentType: String, data: Data, completion: @escaping (String?, GaiaError?) -> ()) {

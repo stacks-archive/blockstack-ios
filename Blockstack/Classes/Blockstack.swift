@@ -467,14 +467,20 @@ public enum BlockstackConstants {
      - parameter publicURL: The publicly accessible url of the file
      - parameter error: Error returned by Gaia
      */
-    @objc public func putFile(to path: String, text: String, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
+    @objc public func putFile(
+        to path: String,
+        text: String,
+        encrypt: Bool = false,
+        sign: Bool = false,
+        signingKey: String? = nil,
+        completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: text, encrypt: encrypt) { url, error in
+            session.putFile(to: path, content: text, encrypt: encrypt, encryptionKey: nil, sign: sign, signingKey: signingKey) { url, error in
                 guard error != .configurationError else {
                     // Retry with a new config
                     Gaia.setLocalGaiaHubConnection() { session, error in
@@ -483,7 +489,7 @@ public enum BlockstackConstants {
                             completion(nil, error)
                             return
                         }
-                        session.putFile(to: path, content: text, encrypt: encrypt, completion: completion)
+                        session.putFile(to: path, content: text, encrypt: encrypt, encryptionKey: nil, sign: sign, signingKey: signingKey, completion: completion)
                     }
                     return
                 }
@@ -497,18 +503,26 @@ public enum BlockstackConstants {
      - parameter to: The path to store the data in
      - parameter bytes: The Bytes data to store in the file
      - parameter encrypt: The data with the app private key
+     - parameter sign: sign the data using ECDSA on SHA256 hashes
+     - parameter signingKey: The key with which to sign the data. Defaults to the app private key.
      - parameter completion: Callback with the public url and any error
      - parameter publicURL: The publicly accessible url of the file
      - parameter error: Error returned by Gaia
      */
-    @objc public func putFile(to path: String, bytes: Bytes, encrypt: Bool = false, completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
+    @objc public func putFile(
+        to path: String,
+        bytes: Bytes,
+        encrypt: Bool = false,
+        sign: Bool = false,
+        signingKey: String? = nil,
+        completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
                 completion(nil, error)
                 return
             }
-            session.putFile(to: path, content: bytes, encrypt: encrypt) { url, error in
+            session.putFile(to: path, content: bytes, encrypt: encrypt, encryptionKey: nil, sign: sign, signingKey: signingKey) { url, error in
                 guard error != .configurationError else {
                     // Retry with a new config
                     Gaia.setLocalGaiaHubConnection() { session, error in
@@ -517,7 +531,7 @@ public enum BlockstackConstants {
                             completion(nil, error)
                             return
                         }
-                        session.putFile(to: path, content: bytes, encrypt: encrypt, completion: completion)
+                        session.putFile(to: path, content: bytes, encrypt: encrypt, encryptionKey: nil, sign: sign, signingKey: signingKey, completion: completion)
                     }
                     return
                 }
