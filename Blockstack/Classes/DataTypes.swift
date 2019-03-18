@@ -93,6 +93,12 @@ public struct ExternalAccountProof: Codable {
     }
 }
 
+public struct SignatureObject: Codable {
+    public let signature: String
+    public let publicKey: String
+    public let cipherText: String?
+}
+
 // Special structs to handle profile.json tokens - which returns iat and exp in datetime string format instead of timestamp
 
 public struct ProfileTokenFile: Codable {
