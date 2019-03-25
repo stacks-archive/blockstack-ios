@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AuthenticationServices
 import SafariServices
 import JavaScriptCore
 
@@ -42,8 +43,6 @@ public enum BlockstackConstants {
         }
     }
     
-    var sfAuthSession : SFAuthenticationSession?
-
     // - MARK: Authentication
     
     /**
@@ -80,16 +79,18 @@ public enum BlockstackConstants {
         var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
         urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest), URLQueryItem(name: "client", value: "ios_secure")]
         let url = urlComps.url!
-        
-        // TODO: Use ASWebAuthenticationSession for iOS 12
-        var responded = false
-        self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI) { (url, error) in
-            guard !responded else {
+
+        var didRespond = false
+        let completion: (URL?, Error?) -> () = { url, error in
+            guard !didRespond else {
                 return
             }
-            responded = true
-            
+            didRespond = true
+
+            // Discard auth session
+            self.asWebAuthSession = nil
             self.sfAuthSession = nil
+            
             guard error == nil, let queryParams = url?.queryParameters, let authResponse = queryParams["authResponse"] else {
                 completion(AuthResult.failed(error))
                 return
@@ -102,7 +103,16 @@ public enum BlockstackConstants {
                                     transitPrivateKey: transitKey,
                                     completion: completion)
         }
-        self.sfAuthSession?.start()
+        
+        if #available(iOS 12.0, *) {
+            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: redirectURI, completionHandler: completion)
+            authSession.start()
+            self.asWebAuthSession = authSession
+        } else {
+            // Fallback on earlier versions
+            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI, completionHandler: completion)
+            self.sfAuthSession?.start()
+        }
     }
     
     /**
@@ -180,11 +190,19 @@ public enum BlockstackConstants {
      WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
      */
     @objc public func promptClearDeviceKeychain() {
-        // TODO: Use ASWebAuthenticationSession for iOS 12
-        self.sfAuthSession = SFAuthenticationSession(url: URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!, callbackURLScheme: nil) { _, error in
-            self.sfAuthSession = nil
+        let url = URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!
+        if #available(iOS 12.0, *) {
+            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
+                self.asWebAuthSession = nil
+            }
+            authSession.start()
+            self.asWebAuthSession = authSession
+        } else {
+            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
+                self.sfAuthSession = nil
+            }
+            self.sfAuthSession?.start()
         }
-        self.sfAuthSession?.start()
     }
     
     // - MARK: Profiles
@@ -636,4 +654,10 @@ public enum BlockstackConstants {
         }
         return Encryption.decryptECIES(cipherObjectJSONString: content, privateKey: key)
     }
+
+    // MARK: - Private
+    
+    
+    private var asWebAuthSession: Any? // ASWebAuthenticationSession
+    private var sfAuthSession : SFAuthenticationSession?
 }
