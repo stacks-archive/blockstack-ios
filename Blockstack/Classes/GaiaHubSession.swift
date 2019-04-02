@@ -8,7 +8,7 @@
 import Foundation
 import CryptoSwift
 
-public class GaiaHubSession {
+class GaiaHubSession {
     let config: GaiaConfig
 
     init(with config: GaiaConfig) {
