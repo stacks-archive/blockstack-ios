@@ -1,0 +1,5 @@
+exclude:
+- './Blockstack/Classes/JS\ Bridge/*'
+- './Blockstack/Classes/ObjC\ Bridge/*'
+
+undocumented_text: ''
