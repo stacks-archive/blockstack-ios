@@ -554,13 +554,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Extensions.swift",
-      "line": 99,
-      "symbol": "URL.queryParameters",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
       "line": 115,
       "symbol": "GaiaConfig",

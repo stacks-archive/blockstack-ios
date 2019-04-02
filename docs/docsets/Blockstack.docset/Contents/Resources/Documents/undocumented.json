@@ -134,20 +134,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 38,
-      "symbol": "Blockstack.shared",
-      "symbol_kind": "source.lang.swift.decl.var.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 40,
-      "symbol": "Blockstack.isBetaBrowserEnabled",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
       "line": 10,
       "symbol": "UserDataToken",
