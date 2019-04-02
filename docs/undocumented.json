@@ -1,0 +1,656 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Auth.swift",
+      "line": 10,
+      "symbol": "AuthResult",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Auth.swift",
+      "line": 11,
+      "symbol": "AuthResult.success(userData:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Auth.swift",
+      "line": 12,
+      "symbol": "AuthResult.cancelled",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Auth.swift",
+      "line": 13,
+      "symbol": "AuthResult.failed(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/BigInt.swift",
+      "line": 717,
+      "symbol": "_BigInt.quotientAndRemainder(dividingBy:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/BigInt.swift",
+      "line": 827,
+      "symbol": "_BigInt.-(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 13,
+      "symbol": "Bytes",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 17,
+      "symbol": "BlockstackConstants",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 19,
+      "symbol": "BlockstackConstants.BrowserWebAppURL",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 25,
+      "symbol": "BlockstackConstants.DefaultCoreAPIURL",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 26,
+      "symbol": "BlockstackConstants.BrowserWebAppAuthEndpoint",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 27,
+      "symbol": "BlockstackConstants.BrowserWebClearAuthEndpoint",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 28,
+      "symbol": "BlockstackConstants.NameLookupEndpoint",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 29,
+      "symbol": "BlockstackConstants.AuthProtocolVersion",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 30,
+      "symbol": "BlockstackConstants.DefaultGaiaHubURL",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 31,
+      "symbol": "BlockstackConstants.ProfileUserDefaultLabel",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 32,
+      "symbol": "BlockstackConstants.GaiaHubConfigUserDefaultLabel",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 33,
+      "symbol": "BlockstackConstants.AppOriginUserDefaultLabel",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
+      "line": 36,
+      "symbol": "Blockstack",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 10,
+      "symbol": "UserDataToken",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 16,
+      "symbol": "Header",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 20,
+      "symbol": "UserData",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 21,
+      "symbol": "UserData.jti",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 22,
+      "symbol": "UserData.iat",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 23,
+      "symbol": "UserData.iss",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 24,
+      "symbol": "UserData.privateKey",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 25,
+      "symbol": "UserData.publicKeys",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 26,
+      "symbol": "UserData.username",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 27,
+      "symbol": "UserData.claim",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 28,
+      "symbol": "UserData.profile",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 43,
+      "symbol": "Profile",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 44,
+      "symbol": "Profile.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 45,
+      "symbol": "Profile.context",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 46,
+      "symbol": "Profile.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 47,
+      "symbol": "Profile.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 48,
+      "symbol": "Profile.apps",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 49,
+      "symbol": "Profile.account",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 50,
+      "symbol": "Profile.image",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 59,
+      "symbol": "Content",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 60,
+      "symbol": "Content.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 61,
+      "symbol": "Content.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 62,
+      "symbol": "Content.contentUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 70,
+      "symbol": "ExternalAccount",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 71,
+      "symbol": "ExternalAccount.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 72,
+      "symbol": "ExternalAccount.placeholder",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 73,
+      "symbol": "ExternalAccount.service",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 74,
+      "symbol": "ExternalAccount.identifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 75,
+      "symbol": "ExternalAccount.proofType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 76,
+      "symbol": "ExternalAccount.proofUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 84,
+      "symbol": "ExternalAccountProof",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 85,
+      "symbol": "ExternalAccountProof.service",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 86,
+      "symbol": "ExternalAccountProof.proofUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 87,
+      "symbol": "ExternalAccountProof.identifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 88,
+      "symbol": "ExternalAccountProof.valid",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 98,
+      "symbol": "ProfileTokenFile",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 99,
+      "symbol": "ProfileTokenFile.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 100,
+      "symbol": "ProfileTokenFile.decodedToken",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 103,
+      "symbol": "ProfileToken",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 104,
+      "symbol": "ProfileToken.header",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 105,
+      "symbol": "ProfileToken.payload",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 106,
+      "symbol": "ProfileToken.signature",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 109,
+      "symbol": "ProfileTokenPayload",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 110,
+      "symbol": "ProfileTokenPayload.jti",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 111,
+      "symbol": "ProfileTokenPayload.iat",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 112,
+      "symbol": "ProfileTokenPayload.subject",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 113,
+      "symbol": "ProfileTokenPayload.issuer",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 114,
+      "symbol": "ProfileTokenPayload.claim",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/DataTypes.swift",
+      "line": 117,
+      "symbol": "NameInfo",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Encryption.swift",
+      "line": 62,
+      "symbol": "DecryptedValue",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Encryption.swift",
+      "line": 63,
+      "symbol": "DecryptedValue.plainText",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Encryption.swift",
+      "line": 64,
+      "symbol": "DecryptedValue.bytes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Encryption.swift",
+      "line": 66,
+      "symbol": "DecryptedValue.isString",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Errors.swift",
+      "line": 10,
+      "symbol": "AuthError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Errors.swift",
+      "line": 11,
+      "symbol": "AuthError.invalidResponse",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Errors.swift",
+      "line": 14,
+      "symbol": "GaiaError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Errors.swift",
+      "line": 15,
+      "symbol": "GaiaError.requestError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Errors.swift",
+      "line": 16,
+      "symbol": "GaiaError.invalidResponse",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Errors.swift",
+      "line": 17,
+      "symbol": "GaiaError.connectionError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Errors.swift",
+      "line": 18,
+      "symbol": "GaiaError.configurationError",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Extensions.swift",
+      "line": 99,
+      "symbol": "URL.queryParameters",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
+      "line": 115,
+      "symbol": "GaiaConfig",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
+      "line": 116,
+      "symbol": "GaiaConfig.URLPrefix",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
+      "line": 117,
+      "symbol": "GaiaConfig.address",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
+      "line": 118,
+      "symbol": "GaiaConfig.token",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
+      "line": 119,
+      "symbol": "GaiaConfig.server",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
+      "line": 121,
+      "symbol": "GaiaConfig.init(URLPrefix:address:token:server:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Gaia.swift",
+      "line": 129,
+      "symbol": "GaiaHubInfo",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/GaiaHubSession.swift",
+      "line": 221,
+      "symbol": "MultiplayerOptions",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/GaiaHubSession.swift",
+      "line": 227,
+      "symbol": "PutFileResponse",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/GaiaHubSession.swift",
+      "line": 231,
+      "symbol": "PutFileOptions",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Keys.swift",
+      "line": 20,
+      "symbol": "Keys",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/ProfileHelper.swift",
+      "line": 10,
+      "symbol": "ProfileHelper",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/ProfileHelper.swift",
+      "line": 11,
+      "symbol": "ProfileHelper.fetch(profileURL:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios"
+}
