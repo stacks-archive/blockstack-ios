@@ -1,5 +1,6 @@
 exclude:
-- './Blockstack/Classes/JS\ Bridge/*'
-- './Blockstack/Classes/ObjC\ Bridge/*'
+  - './Blockstack/Classes/JS\ Bridge/*'
+  - './Blockstack/Classes/ObjC\ Bridge/*'
+  - "./Blockstack/Classes/Extensions.swift"
 
-undocumented_text: ''
+undocumented_text: ""
