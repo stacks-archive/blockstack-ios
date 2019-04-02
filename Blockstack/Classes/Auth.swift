@@ -63,7 +63,7 @@ class Auth {
     static func handleAuthResponse(authResponse: String, transitPrivateKey: String, completion: @escaping (AuthResult) -> ()) {
         let response = Auth.decodeResponse(authResponse, transitPrivateKey: transitPrivateKey)
         
-        if let userData = response?.payload {
+        if var userData = response?.payload {
             userData.privateKey = Encryption.decryptPrivateKey(privateKey: transitPrivateKey, hexedEncrypted: userData.privateKey!)
             
             if let profileURL = userData.profileURL {

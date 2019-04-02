@@ -17,7 +17,7 @@ public struct Header: Codable {
     let typ, alg: String?
 }
 
-public class UserData: Codable {
+public struct UserData: Codable {
     public let jti: String?
     public let iat, exp: Int?
     public let iss: String?
