@@ -35,8 +35,14 @@ public enum BlockstackConstants {
 
 @objc open class Blockstack: NSObject {
 
+    /**
+     A shared instance of Blockstack that exists for the lifetime of your app. Use this instance instead of creating your own.
+     */
     @objc public static let shared = Blockstack()
     
+    /**
+     Use the latest, beta version of the Blockstack browser (https://beta.browser.blockstack.org) for authentication.
+    */
     @objc public var isBetaBrowserEnabled = false {
         didSet {
             UserDefaults.standard.set(self.isBetaBrowserEnabled, forKey: betaBrowserDefaultsKey)

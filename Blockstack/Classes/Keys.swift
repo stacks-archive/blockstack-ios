@@ -68,18 +68,30 @@ public class Keys {
         return d?.toString(radix: 16, lowercase: true).paddingLeft(to: keyLength * 2, with: "0")
     }
     
+    /**
+     Get the corresponding address from a public key.
+     */
     @objc public static func getAddressFromPublicKey(_ publicKey: String) -> String? {
         return KeysJS().getAddressFromPublicKey(publicKey)
     }
     
+    /**
+     Derive a shared cryptographic secret from the specified keys. Typically, this is used between a newly generated, temporary key and a previously known publicKey to create an encryption key.
+     */
     @objc public static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) -> String? {
         return EllipticJS().computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
     }
 
+    /**
+     Get the compressed version of the specified publicKey.
+     */
     @objc public static func getCompressed(publicKey: String) -> String? {
         return EllipticJS().encodeCompressed(publicKey: publicKey)
     }
     
+    /**
+     Get the uncompressed version of the specified publicKey.
+     */
     @objc public static func getUncompressed(publicKey: String) -> String? {
         return EllipticJS().getUncompressed(publicKey: publicKey)
     }
