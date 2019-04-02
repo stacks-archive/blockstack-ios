@@ -40,12 +40,19 @@ pod 'Blockstack'
 Add `import Blockstack` to the top of any file you wish to
 invoke the SDK's functionality.
 
-## Authentication
+## How to use
+
+Utilize Blockstack functionality in your app via the shared instance:
+`Blockstack.shared.*some_method()*`.
+
+Some of the essentials are described below, but have a look at the documentation for the `Blockstack` class to get a better understanding of what's possible. Happy coding!
+
+### Authentication
 
 Authenticate users using their Blockstack ID by calling  `Blockstack.shared.signIn`. 
 A web view will pop up to request their credentials and grant access to your app.
 
-## Storage
+### Storage
 
 Store content to the user's Gaia hub as a file, via the `putFile` method:
 
