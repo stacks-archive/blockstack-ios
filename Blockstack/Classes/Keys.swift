@@ -17,6 +17,9 @@ enum secp256k1Curve {
     static let Gy = "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
 }
 
+/**
+ A helper class for cryoptgraphic key operations.
+ */
 public class Keys {
     
     /**

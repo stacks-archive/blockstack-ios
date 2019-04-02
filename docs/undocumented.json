@@ -58,79 +58,72 @@
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 19,
+      "line": 18,
       "symbol": "BlockstackConstants.BrowserWebAppURL",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 25,
+      "line": 24,
       "symbol": "BlockstackConstants.DefaultCoreAPIURL",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 26,
+      "line": 25,
       "symbol": "BlockstackConstants.BrowserWebAppAuthEndpoint",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 27,
+      "line": 26,
       "symbol": "BlockstackConstants.BrowserWebClearAuthEndpoint",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 28,
+      "line": 27,
       "symbol": "BlockstackConstants.NameLookupEndpoint",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 29,
+      "line": 28,
       "symbol": "BlockstackConstants.AuthProtocolVersion",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 30,
+      "line": 29,
       "symbol": "BlockstackConstants.DefaultGaiaHubURL",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 31,
+      "line": 30,
       "symbol": "BlockstackConstants.ProfileUserDefaultLabel",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 32,
+      "line": 31,
       "symbol": "BlockstackConstants.GaiaHubConfigUserDefaultLabel",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 33,
+      "line": 32,
       "symbol": "BlockstackConstants.AppOriginUserDefaultLabel",
       "symbol_kind": "source.lang.swift.decl.var.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 36,
-      "symbol": "Blockstack",
-      "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"
     },
     {
@@ -628,20 +621,6 @@
       "line": 20,
       "symbol": "Keys",
       "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/ProfileHelper.swift",
-      "line": 10,
-      "symbol": "ProfileHelper",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/ProfileHelper.swift",
-      "line": 11,
-      "symbol": "ProfileHelper.fetch(profileURL:completion:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     }
   ],

@@ -15,7 +15,6 @@ public typealias Bytes = Array<UInt8>
 fileprivate var betaBrowserDefaultsKey = "isBetaBrowserEnabled"
 
 public enum BlockstackConstants {
-
     public static var BrowserWebAppURL: String {
         return UserDefaults.standard.bool(forKey: betaBrowserDefaultsKey) ?
             "https://beta.browser.blockstack.org" :
@@ -33,6 +32,9 @@ public enum BlockstackConstants {
     public static let AppOriginUserDefaultLabel = "BLOCKSTACK_APP_ORIGIN"
 }
 
+/**
+ A class that contains the native swift implementations of Blockstack.js methods and Blockstack network operations.
+ */
 @objc open class Blockstack: NSObject {
 
     /**
