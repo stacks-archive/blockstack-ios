@@ -8,7 +8,7 @@
 import Foundation
 import JavaScriptCore
 
-open class JSONTokens {
+open class JSONTokensJS {
     
     lazy var context: JSContext? = {
         let context = JSContext()

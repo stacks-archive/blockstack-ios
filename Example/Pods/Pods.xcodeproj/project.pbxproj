@@ -25,7 +25,7 @@
 		19291565899B5113A5355002CF9C8F2F /* Equal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3C29CC5DF78E5706DEFA8CEA6839764 /* Equal.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		19A4732ECED42463117E8CEBA2854D39 /* ExampleGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA580CE0336A72EC072EC07254E6798 /* ExampleGroup.swift */; };
 		1AC5D2CE6FA79327468F53B53D0A9418 /* AllPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985B7C0AECB274990A9F959C81D573AC /* AllPass.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
-		1C4F5C76B81F786B3B29194589106BFF /* JSONTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EE590471029250D6967C33B0202EA0 /* JSONTokens.swift */; };
+		1C4F5C76B81F786B3B29194589106BFF /* JSONTokensJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42EE590471029250D6967C33B0202EA0 /* JSONTokensJS.swift */; };
 		1E2AE2B6202B65E712FE05FB2699BD2C /* ExpectationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0677D5238FC821392626EBA69D3DE21E /* ExpectationMessage.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		2037549A6C82A6422CB5331CE3B6F65E /* Closures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06C64ACA86BDEE824053941C646FE6C8 /* Closures.swift */; };
 		20A4976C8AD568EA15759F08BE37EBA9 /* UInt64+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6F96E04F86AE663B5EA4689E179148 /* UInt64+Extension.swift */; };
@@ -374,7 +374,7 @@
 		3E8B65368A28D352963270F8519A409B /* BatchedCollection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BatchedCollection.swift; path = Sources/CryptoSwift/BatchedCollection.swift; sourceTree = "<group>"; };
 		3F35BFBD1A96B3BD99A2055C4B4556CF /* Quick-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Quick-umbrella.h"; sourceTree = "<group>"; };
 		3FBCB6D007036E87E1442392FB116C5A /* Generics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Generics.swift; path = Sources/CryptoSwift/Generics.swift; sourceTree = "<group>"; };
-		42EE590471029250D6967C33B0202EA0 /* JSONTokens.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = JSONTokens.swift; path = Blockstack/Classes/JSONTokens.swift; sourceTree = "<group>"; };
+		42EE590471029250D6967C33B0202EA0 /* JSONTokensJS.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JSONTokensJS.swift; sourceTree = "<group>"; };
 		439934F05FA6AF814B761C4B05BE42B2 /* Blockstack.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Blockstack.modulemap; sourceTree = "<group>"; };
 		444D0FF9654954E9D26811ECBC24D0A1 /* Blowfish.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Blowfish.swift; path = Sources/CryptoSwift/Blowfish.swift; sourceTree = "<group>"; };
 		448F5AF29E979E747551022E50D106FD /* Expression.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Expression.swift; path = Sources/Nimble/Expression.swift; sourceTree = "<group>"; };
@@ -704,6 +704,7 @@
 		46979E102253B58C00107744 /* JS Bridge */ = {
 			isa = PBXGroup;
 			children = (
+				42EE590471029250D6967C33B0202EA0 /* JSONTokensJS.swift */,
 				14ED850F28CEE2E8A793AEE44265F8CE /* BitcoinJS.swift */,
 				88C694ED8CDB84AEDBAE98394957AD4E /* BlockstackJS.swift */,
 				6719D90C3EECAB4DAB8B187A3CD20F60 /* EllipticJS.swift */,
@@ -727,7 +728,6 @@
 				9B7B85A84CB5AEF511E9139AE95E2080 /* Extensions.swift */,
 				C111748024F9A0B96030F5C02BA46A49 /* Gaia.swift */,
 				0038B46E2FC7970FFEF9FC5E61BBB85F /* GaiaHubSession.swift */,
-				42EE590471029250D6967C33B0202EA0 /* JSONTokens.swift */,
 				2ED7D2EE1564ADA21833233BD7A84882 /* Keys.swift */,
 				D8485D3001312B91712E4E2A12FDDF6D /* ProfileHelper.swift */,
 				46979E102253B58C00107744 /* JS Bridge */,
@@ -1470,7 +1470,7 @@
 				E894E04C48AE86F9D5B84D91E72A6B47 /* Extensions.swift in Sources */,
 				91CAD18392D662E7CED4BA16515205C9 /* Gaia.swift in Sources */,
 				D7D95F00FFA1E045B5009C3A90D015DB /* GaiaHubSession.swift in Sources */,
-				1C4F5C76B81F786B3B29194589106BFF /* JSONTokens.swift in Sources */,
+				1C4F5C76B81F786B3B29194589106BFF /* JSONTokensJS.swift in Sources */,
 				6BD5699E413BBD045AFC5ACA9C43B0C1 /* Keys.swift in Sources */,
 				09CF999E21E9506A91D4C7C737FC9288 /* KeysJS.swift in Sources */,
 				B09EDD676D6D1A4E06D4F5D7DFE77916 /* ProfileHelper.swift in Sources */,

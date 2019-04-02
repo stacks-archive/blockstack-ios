@@ -42,12 +42,12 @@ class Auth {
             "scopes": scopes
         ]
         
-        request = JSONTokens().signToken(payload: payload, privateKey: transitPrivateKey)!
+        request = JSONTokensJS().signToken(payload: payload, privateKey: transitPrivateKey)!
         return request
     }
     
     static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> UserDataToken? {
-        let decodedTokenJsonString = JSONTokens().decodeToken(token: authResponse)
+        let decodedTokenJsonString = JSONTokensJS().decodeToken(token: authResponse)
         var token: UserDataToken?
         
         do {

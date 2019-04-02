@@ -253,7 +253,7 @@ public enum BlockstackConstants {
                 throw error
             }
         } else {
-            guard let jsonString = JSONTokens().decodeToken(token: token),
+            guard let jsonString = JSONTokensJS().decodeToken(token: token),
                 let data = jsonString.data(using: .utf8) else {
                     return nil
             }
@@ -268,7 +268,7 @@ public enum BlockstackConstants {
      - returns: WrappedToken object containing `token` and `decodedToken`
      */
     public func wrapProfileToken(token: String) -> ProfileTokenFile? {
-        guard let jsonString = JSONTokens().decodeToken(token: token),
+        guard let jsonString = JSONTokensJS().decodeToken(token: token),
             let data = jsonString.data(using: .utf8) else {
                 return nil
         }
@@ -319,7 +319,7 @@ public enum BlockstackConstants {
             let payloadJSON = payloadJSONObject as? [String: Any] else {
                 return nil
         }
-        return JSONTokens().signToken(payload: payloadJSON, privateKey: privateKey, algorithm: signingAlgorithm)
+        return JSONTokensJS().signToken(payload: payloadJSON, privateKey: privateKey, algorithm: signingAlgorithm)
     }
     
     /**
@@ -330,7 +330,7 @@ public enum BlockstackConstants {
      - throws: Throws an error if token verification fails
      */
     public func verifyProfileToken(token: String, publicKeyOrAddress: String) throws -> ProfileToken {
-        let jsonTokens = JSONTokens()
+        let jsonTokens = JSONTokensJS()
         guard let jsonString = jsonTokens.decodeToken(token: token),
             let data = jsonString.data(using: .utf8),
             let decodedToken = try? JSONDecoder().decode(ProfileToken.self, from: data),
