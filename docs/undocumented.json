@@ -30,14 +30,14 @@
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/BigInt.swift",
-      "line": 717,
+      "line": 725,
       "symbol": "_BigInt.quotientAndRemainder(dividingBy:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/BigInt.swift",
-      "line": 827,
+      "line": 835,
       "symbol": "_BigInt.-(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
@@ -74,20 +74,6 @@
       "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
       "line": 25,
       "symbol": "BlockstackConstants.BrowserWebAppAuthEndpoint",
-      "symbol_kind": "source.lang.swift.decl.var.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 26,
-      "symbol": "BlockstackConstants.BrowserWebClearAuthEndpoint",
-      "symbol_kind": "source.lang.swift.decl.var.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Blockstack.swift",
-      "line": 27,
-      "symbol": "BlockstackConstants.NameLookupEndpoint",
       "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
@@ -614,13 +600,6 @@
       "line": 231,
       "symbol": "PutFileOptions",
       "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/shreyasthiagaraj/Documents/GitHub/blockstack-ios/Blockstack/Classes/Keys.swift",
-      "line": 20,
-      "symbol": "Keys",
-      "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"
     }
   ],
