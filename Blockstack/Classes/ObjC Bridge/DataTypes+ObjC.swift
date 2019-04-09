@@ -22,21 +22,6 @@ import Foundation
     }
 }
 
-@objc(Profile)
-@objcMembers public class ObjCProfile: NSObject {
-    public let type: String?
-    public let context: String?
-    public let name: String?
-    public let profileDescription: String?
-    
-    public init(_ profile: Profile) {
-        self.type = profile.type
-        self.context = profile.context
-        self.name = profile.name
-        self.profileDescription = profile.description
-    }
-}
-
 @objc(Payload)
 @objcMembers public class ObjCUserData: NSObject {
     public let jti: String?
@@ -73,3 +58,57 @@ import Foundation
         }
     }
 }
+
+@objc(Profile)
+@objcMembers public class ObjCProfile: NSObject {
+    public let type: String?
+    public let context: String?
+    public let name: String?
+    public let profileDescription: String?
+    public let apps: [String: String]?
+    public let account: [ObjCExternalAccount]?
+    public let image: [ObjCContent]?
+    
+    public init(_ profile: Profile) {
+        self.type = profile.type
+        self.context = profile.context
+        self.name = profile.name
+        self.profileDescription = profile.description
+        self.apps = profile.apps
+        self.account = profile.account?.compactMap { ObjCExternalAccount($0) }
+        self.image = profile.image?.compactMap { ObjCContent($0) }
+    }
+}
+
+@objc(Content)
+@objcMembers public class ObjCContent: NSObject {
+    public let type: String?
+    public let name: String?
+    public let contentUrl: String?
+
+    public init(_ content: Content) {
+        self.type = content.type
+        self.name = content.name
+        self.contentUrl = content.contentUrl
+    }
+}
+
+@objc(ExternalAccount)
+@objcMembers public class ObjCExternalAccount: NSObject {
+    public let type: String?
+    public let placeholder: Bool?
+    public let service: String?
+    public let identifier: String?
+    public let proofType: String?
+    public let proofUrl: String?
+    
+    init(_ account: ExternalAccount) {
+        self.type = account.type
+        self.placeholder = account.placeholder
+        self.service = account.service
+        self.identifier = account.identifier
+        self.proofType = account.proofType
+        self.proofUrl = account.proofUrl
+    }
+}
+
