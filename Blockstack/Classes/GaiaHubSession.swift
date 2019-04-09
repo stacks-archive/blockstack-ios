@@ -84,13 +84,18 @@ class GaiaHubSession {
         task.resume()
     }
     
-    func getFile(at path: String, decrypt: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
+    func getFile(at path: String, decrypt: Bool, verify: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
         let fetch: (URL?) -> () = { fullReadURL in
             guard let url = fullReadURL else {
                 completion(nil, GaiaError.configurationError)
                 return
             }
             
+            // In the case of signature verification, but no decryption, we need to fetch two files.
+            if verify && !decrypt {
+//                return getFileSignedUnencrypted(caller, path, opt)
+            }
+
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard let data = data, error == nil else {
                     print("Gaia hub store request error")
@@ -98,23 +103,43 @@ class GaiaHubSession {
                     return
                 }
                 let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
-                if contentType == "application/octet-stream" && !decrypt {
-                    completion(data.bytes, nil)
+                
+                if !verify && !decrypt {
+                    let content: Any? =
+                        contentType == "application/octet-stream" ?
+                            data.bytes :
+                            String(data: data, encoding: .utf8)
+                    return completion(content, nil)
                 } else {
-                    // Handle text/plain and application/json content types
-                    guard let text = String(data: data, encoding: .utf8) else {
-                        return
-                    }
-                    if decrypt {
-                        guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
+                    // Handle decrypt scenarios
+                    guard let text = String(data: data, encoding: .utf8),
+                        let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
                             completion(nil, nil)
                             return
-                        }
-                        let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: text, privateKey: privateKey)
-                        completion(decryptedValue, nil)
-                    } else {
-                        completion(text, nil)
                     }
+                    if verify {
+                        guard let publicKey = Keys.getPublicKeyFromPrivate(privateKey),
+                            let address = Keys.getAddressFromPublicKey(publicKey),
+                            let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data),
+                            let cipherText = signatureObject.cipherText else {
+                                completion(nil, nil)
+                                return
+                        }
+                        let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey)
+                        guard signerAddress == address else {
+                            completion(nil, GaiaError.signatureVerificationError)
+                            return
+                        }
+                        guard let isSignatureValid = EllipticJS().verifyECDSA(
+                            content: data.bytes,
+                            publicKey: signatureObject.publicKey,
+                            signature: signatureObject.signature), isSignatureValid else {
+                                completion(nil, GaiaError.signatureVerificationError)
+                                return
+                        }
+                    }
+                    let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: text, privateKey: privateKey)
+                    completion(decryptedValue, nil)
                 }
             }
             task.resume()
