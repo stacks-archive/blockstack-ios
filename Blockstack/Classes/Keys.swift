@@ -17,14 +17,17 @@ enum secp256k1Curve {
     static let Gy = "483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"
 }
 
-open class Keys {
+/**
+ A helper class for cryoptgraphic key operations.
+ */
+public class Keys {
     
     /**
      Generates a string from a set of random bytes.
      - parameter numberOfBytes: Byte count of the resulting hex string.
      - returns: Hex string cmoprised of random bytes of the given length.
     */
-    @objc open static func getEntropy(numberOfBytes: Int = 32) -> String? {
+    @objc public static func getEntropy(numberOfBytes: Int = 32) -> String? {
         var randomData = Data(count: numberOfBytes)
         let count = randomData.count
         let result = randomData.withUnsafeMutableBytes {
@@ -44,14 +47,14 @@ open class Keys {
      - parameter compressed: Boolean indicating whether the returned public key should be compressed.
      - returns: Complementing, optionally compressed public key for given private key.
      */
-    @objc open static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
+    @objc public static func getPublicKeyFromPrivate(_ privateKey: String, compressed: Bool = false) -> String? {
         return EllipticJS().getPublicKeyFromPrivate(privateKey, compressed: compressed)
     }
 
     /**
      Generate an elliptic curve private key for secp256k1.
      */
-    @objc open static func makeECPrivateKey() -> String? {
+    @objc public static func makeECPrivateKey() -> String? {
         let keyLength = 32
         let n = secp256k1Curve.n
         let nBigInt = _BigInt<UInt>(n, radix: 16)
@@ -68,19 +71,31 @@ open class Keys {
         return d?.toString(radix: 16, lowercase: true).paddingLeft(to: keyLength * 2, with: "0")
     }
     
-    static func getAddressFromPublicKey(_ publicKey: String) -> String? {
+    /**
+     Get the corresponding address from a public key.
+     */
+    @objc public static func getAddressFromPublicKey(_ publicKey: String) -> String? {
         return KeysJS().getAddressFromPublicKey(publicKey)
     }
     
-    static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) -> String? {
+    /**
+     Derive a shared cryptographic secret from the specified keys. Typically, this is used between a newly generated, temporary key and a previously known publicKey to create an encryption key.
+     */
+    @objc public static func deriveSharedSecret(ephemeralSecretKey: String, recipientPublicKey: String) -> String? {
         return EllipticJS().computeSecret(privateKey: ephemeralSecretKey, publicKey: recipientPublicKey)
     }
 
-    static func getCompressed(publicKey: String) -> String? {
+    /**
+     Get the compressed version of the specified publicKey.
+     */
+    @objc public static func getCompressed(publicKey: String) -> String? {
         return EllipticJS().encodeCompressed(publicKey: publicKey)
     }
     
-    static func getUncompressed(publicKey: String) -> String? {
+    /**
+     Get the uncompressed version of the specified publicKey.
+     */
+    @objc public static func getUncompressed(publicKey: String) -> String? {
         return EllipticJS().getUncompressed(publicKey: publicKey)
     }
 }

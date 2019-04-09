@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Blockstack Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Blockstack" class="dashAnchor"></a>
+    <a title="Blockstack Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">Blockstack Docs</a> (50% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">Blockstack Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Blockstack Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Blockstack.html">Blockstack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Keys.html">Keys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ProfileHelper.html">ProfileHelper</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/AuthError.html">AuthError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/AuthResult.html">AuthResult</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BlockstackConstants.html">BlockstackConstants</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/GaiaError.html">GaiaError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Content.html">Content</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DecryptedValue.html">DecryptedValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ExternalAccount.html">ExternalAccount</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ExternalAccountProof.html">ExternalAccountProof</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GaiaConfig.html">GaiaConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:10Blockstack11GaiaHubInfoV">GaiaHubInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:10Blockstack6HeaderV">Header</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:10Blockstack18MultiplayerOptionsV">MultiplayerOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:10Blockstack8NameInfoV">NameInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Profile.html">Profile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ProfileToken.html">ProfileToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ProfileTokenFile.html">ProfileTokenFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ProfileTokenPayload.html">ProfileTokenPayload</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:10Blockstack14PutFileOptionsV">PutFileOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:10Blockstack15PutFileResponseV">PutFileResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UserData.html">UserData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:10Blockstack13UserDataTokenV">UserDataToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/_BigInt.html">_BigInt</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10Blockstack5Bytesa">Bytes</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Blockstack</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">open</span> <span class="kd">class</span> <span class="kt">Blockstack</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>A class that contains the native swift implementations of Blockstack.js methods and Blockstack network operations.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(cpy)shared"></a>
+                    <a name="//apple_ref/swift/Variable/shared" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(cpy)shared">shared</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A shared instance of Blockstack that exists for the lifetime of your app. Use this instance instead of creating your own.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">shared</span><span class="p">:</span> <span class="kt">Blockstack</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(py)isBetaBrowserEnabled"></a>
+                    <a name="//apple_ref/swift/Property/isBetaBrowserEnabled" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(py)isBetaBrowserEnabled">isBetaBrowserEnabled</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Use the latest, beta version of the Blockstack browser (<a href="https://beta.browser.blockstack.org">https://beta.browser.blockstack.org</a>) for authentication.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="k">var</span> <span class="nv">isBetaBrowserEnabled</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Authentication"></a>
+                <a name="//apple_ref/swift/Section/Authentication" class="dashAnchor"></a>
+                <a href="#/Authentication">
+                  <h3 class="section-name">Authentication</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC6signIn11redirectURI9appDomain08manifestE06scopes10completionySS_10Foundation3URLVAKSgSaySSGyAA10AuthResultOctF"></a>
+                    <a name="//apple_ref/swift/Method/signIn(redirectURI:appDomain:manifestURI:scopes:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC6signIn11redirectURI9appDomain08manifestE06scopes10completionySS_10Foundation3URLVAKSgSaySSGyAA10AuthResultOctF">signIn(redirectURI:appDomain:manifestURI:scopes:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generates an authentication request and redirects the user to the Blockstack browser to approve the sign in request.     </p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">signIn</span><span class="p">(</span><span class="nv">redirectURI</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                   <span class="nv">appDomain</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                   <span class="nv">manifestURI</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+                   <span class="nv">scopes</span><span class="p">:</span> <span class="kt">Array</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span><span class="s">"store_write"</span><span class="p">],</span>
+                   <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/AuthResult.html">AuthResult</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>redirectURI</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The location to which the identity provider will redirect the user after the user approves sign in.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>appDomain</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The app origin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>manifestURI</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Location of the manifest file; defaults to &lsquo;[appDomain]/manifest.json&rsquo;.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>scopes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of strings indicating which permissions this app is requesting; defaults to requesting write access to this app&rsquo;s data store (<q>store_write</q>)/</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with an AuthResult object.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC15makeAuthRequest17transitPrivateKey17redirectURLScheme11manifestURI9appDomain0L8BundleID6scopes9expiresAtSSSgSS_SS10Foundation3URLVANSSSaySSGAL4DateVtF"></a>
+                    <a name="//apple_ref/swift/Method/makeAuthRequest(transitPrivateKey:redirectURLScheme:manifestURI:appDomain:appBundleID:scopes:expiresAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC15makeAuthRequest17transitPrivateKey17redirectURLScheme11manifestURI9appDomain0L8BundleID6scopes9expiresAtSSSgSS_SS10Foundation3URLVANSSSaySSGAL4DateVtF">makeAuthRequest(transitPrivateKey:redirectURLScheme:manifestURI:appDomain:appBundleID:scopes:expiresAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generates an authentication request that can be sent to the Blockstack
+browser for the user to approve sign in. This authentication request can
+then be used for sign in by passing it to the <code>redirectToSignInWithAuthRequest</code>
+method.</p>
+
+<p>Note: This method should only be used if you want to roll your own authentication
+flow. Typically you&rsquo;d use <code>redirectToSignIn</code> which takes care of this
+under the hood.*</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">makeAuthRequest</span><span class="p">(</span><span class="nv">transitPrivateKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                <span class="nv">redirectURLScheme</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                <span class="nv">manifestURI</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                <span class="nv">appDomain</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span>
+                <span class="nv">appBundleID</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                <span class="nv">scopes</span><span class="p">:</span> <span class="kt">Array</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span><span class="p">,</span>
+                <span class="nv">expiresAt</span><span class="p">:</span> <span class="kt">Date</span> <span class="o">=</span> <span class="kt">Date</span><span class="p">()</span><span class="o">.</span><span class="nf">addingTimeInterval</span><span class="p">(</span><span class="kt">TimeInterval</span><span class="p">(</span><span class="mf">60.0</span> <span class="o">*</span> <span class="mf">60.0</span><span class="p">)))</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>redirectURI</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Location to redirect user to after sign in approval</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>manifestURI</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Location of this app&rsquo;s manifest file</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>scopes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The permissions this app is requesting</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>appDomain</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The origin of this app</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>expiresAt</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The time at which this request is no longer valid</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The authentication request</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC18generateTransitKeySSSgyF"></a>
+                    <a name="//apple_ref/swift/Method/generateTransitKey()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC18generateTransitKeySSSgyF">generateTransitKey()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generates a ECDSA keypair and stores the hex value of the private key in local storage.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">generateTransitKey</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The hex encoded private key, or nil if key generation failed.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC12loadUserDataAA0cD0VSgyF"></a>
+                    <a name="//apple_ref/swift/Method/loadUserData()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC12loadUserDataAA0cD0VSgyF">loadUserData()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the user data object. The user&rsquo;s profile is stored in the key <code>profile</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">loadUserData</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/UserData.html">UserData</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)isUserSignedIn"></a>
+                    <a name="//apple_ref/swift/Method/isUserSignedIn()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)isUserSignedIn">isUserSignedIn()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Check if a user is currently signed in.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">isUserSignedIn</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)signUserOut"></a>
+                    <a name="//apple_ref/swift/Method/signUserOut()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)signUserOut">signUserOut()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sign the user out.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">signUserOut</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)clearGaiaSession"></a>
+                    <a name="//apple_ref/swift/Method/clearGaiaSession()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)clearGaiaSession">clearGaiaSession()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Clear Gaia session.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">clearGaiaSession</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)promptClearDeviceKeychain"></a>
+                    <a name="//apple_ref/swift/Method/promptClearDeviceKeychain()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)promptClearDeviceKeychain">promptClearDeviceKeychain()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Prompt web flow to clear the keychain and all settings for this device.
+WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">promptClearDeviceKeychain</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Profiles"></a>
+                <a name="//apple_ref/swift/Section/Profiles" class="dashAnchor"></a>
+                <a href="#/Profiles">
+                  <h3 class="section-name">Profiles</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC13lookupProfile8username17zoneFileLookupURL10completionySS_10Foundation0H0VyAA0C0VSg_s5Error_pSgtctF"></a>
+                    <a name="//apple_ref/swift/Method/lookupProfile(username:zoneFileLookupURL:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC13lookupProfile8username17zoneFileLookupURL10completionySS_10Foundation0H0VyAA0C0VSg_s5Error_pSgtctF">lookupProfile(username:zoneFileLookupURL:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Look up a user profile by Blockstack ID.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">lookupProfile</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">zoneFileLookupURL</span><span class="p">:</span> <span class="kt">URL</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="kt"><a href="../Enums/BlockstackConstants.html">BlockstackConstants</a></span><span class="o">.</span><span class="kt">NameLookupEndpoint</span><span class="p">)</span><span class="o">!</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/Profile.html">Profile</a></span><span class="p">?,</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>username</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Blockstack ID of the profile to look up</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>zoneFileLookupURL</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The URL to use for zonefile lookup</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback containing a Profile object, if one was found.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC14extractProfile5token18publicKeyOrAddressAA0C0VSgSS_SSSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/extractProfile(token:publicKeyOrAddress:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC14extractProfile5token18publicKeyOrAddressAA0C0VSgSS_SSSgtKF">extractProfile(token:publicKeyOrAddress:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Extracts a profile from an encoded token and optionally verifies it, if <code>publicKeyOrAddress</code> is provided.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    If the token isn&rsquo;t signed by the provided <code>publicKeyOrAddress</code>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">extractProfile</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">publicKeyOrAddress</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Profile.html">Profile</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token to be extracted</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKeyOrAddress</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The public key or address of the keypair that is thought to have signed the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The profile extracted from the encoded token</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC16wrapProfileToken5tokenAA0cD4FileVSgSS_tF"></a>
+                    <a name="//apple_ref/swift/Method/wrapProfileToken(token:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC16wrapProfileToken5tokenAA0cD4FileVSgSS_tF">wrapProfileToken(token:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Wraps a token for a profile token file</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">wrapProfileToken</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ProfileTokenFile.html">ProfileTokenFile</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the token to be wrapped</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>WrappedToken object containing <code>token</code> and <code>decodedToken</code></p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC16signProfileToken7profile10privateKey7subject6issuer8issuedAt07expiresK0SSSgAA0C0V_SSSDyS2SGSgAN10Foundation4DateVAQtF"></a>
+                    <a name="//apple_ref/swift/Method/signProfileToken(profile:privateKey:subject:issuer:issuedAt:expiresAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC16signProfileToken7profile10privateKey7subject6issuer8issuedAt07expiresK0SSSgAA0C0V_SSSDyS2SGSgAN10Foundation4DateVAQtF">signProfileToken(profile:privateKey:subject:issuer:issuedAt:expiresAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Signs a profile token. Issued by default today, and expires by default in 1 year (31557600 seconds).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">signProfileToken</span><span class="p">(</span>
+    <span class="nv">profile</span><span class="p">:</span> <span class="kt"><a href="../Structs/Profile.html">Profile</a></span><span class="p">,</span>
+    <span class="nv">privateKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+    <span class="nv">subject</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">issuer</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt">String</span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+    <span class="nv">issuedAt</span><span class="p">:</span> <span class="kt">Date</span> <span class="o">=</span> <span class="kt">Date</span><span class="p">(),</span>
+    <span class="nv">expiresAt</span><span class="p">:</span> <span class="kt">Date</span> <span class="o">=</span> <span class="kt">Date</span><span class="p">()</span><span class="o">.</span><span class="nf">addingTimeInterval</span><span class="p">(</span><span class="mi">31557600</span><span class="p">)</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>profile</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The profile to be signed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>privateKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The signing private key</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>subject</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The entity that the information is about, defaults to [<q>publicKey</q>: the associated publicKey of the signing privateKey].</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>issuer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The entity that is issuing the token, defaults to [<q>publicKey</q>: the associated publicKey of the signing privateKey].</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>issuedAt</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The time of issuance of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>expiresAt</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The time of expiration of the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The signed profile token</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC18verifyProfileToken5token18publicKeyOrAddressAA0cD0VSS_SStKF"></a>
+                    <a name="//apple_ref/swift/Method/verifyProfileToken(token:publicKeyOrAddress:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC18verifyProfileToken5token18publicKeyOrAddressAA0cD0VSS_SStKF">verifyProfileToken(token:publicKeyOrAddress:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Verifies a profile token.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    Throws an error if token verification fails
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">verifyProfileToken</span><span class="p">(</span><span class="nv">token</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">publicKeyOrAddress</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ProfileToken.html">ProfileToken</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>token</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The token to be verified</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKeyOrAddress</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The public key or address of the keypair that is thought to have signed the token</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The verified, decoded profile token</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC14validateProofs7profile12ownerAddress10completionyAA7ProfileV_SSySayAA20ExternalAccountProofVGSgctF"></a>
+                    <a name="//apple_ref/swift/Method/validateProofs(profile:ownerAddress:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC14validateProofs7profile12ownerAddress10completionyAA7ProfileV_SSySayAA20ExternalAccountProofVGSgctF">validateProofs(profile:ownerAddress:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Validates the social proofs in a user&rsquo;s profile. Currently supports validation of Facebook, Twitter, GitHub, Instagram, LinkedIn and HackerNews accounts.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">validateProofs</span><span class="p">(</span><span class="nv">profile</span><span class="p">:</span> <span class="kt"><a href="../Structs/Profile.html">Profile</a></span><span class="p">,</span> <span class="nv">ownerAddress</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt"><a href="../Structs/ExternalAccountProof.html">ExternalAccountProof</a></span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>profile</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Profile to be validated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ownerAddress</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The owner bitcoin address to be validated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with an array of validated proof objects, or nil if there was an error.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC14validateProofs7profile4name10completionyAA7ProfileV_SSySayAA20ExternalAccountProofVGSgctF"></a>
+                    <a name="//apple_ref/swift/Method/validateProofs(profile:name:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC14validateProofs7profile4name10completionyAA7ProfileV_SSySayAA20ExternalAccountProofVGSgctF">validateProofs(profile:name:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Validates the social proofs in a user&rsquo;s profile. Currently supports validation of Facebook, Twitter, GitHub, Instagram, LinkedIn and HackerNews accounts.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">validateProofs</span><span class="p">(</span><span class="nv">profile</span><span class="p">:</span> <span class="kt"><a href="../Structs/Profile.html">Profile</a></span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt"><a href="../Structs/ExternalAccountProof.html">ExternalAccountProof</a></span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>profile</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Profile to be validated.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Blockstack name to be validated</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with an array of validated proof objects, or nil if there was an error.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Storage"></a>
+                <a name="//apple_ref/swift/Section/Storage" class="dashAnchor"></a>
+                <a href="#/Storage">
+                  <h3 class="section-name">Storage</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)getAppBucketUrlWithGaiaHubURL:appPrivateKey:completion:"></a>
+                    <a name="//apple_ref/swift/Method/getAppBucketUrl(gaiaHubURL:appPrivateKey:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)getAppBucketUrlWithGaiaHubURL:appPrivateKey:completion:">getAppBucketUrl(gaiaHubURL:appPrivateKey:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get the app storage bucket URL</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">getAppBucketUrl</span><span class="p">(</span><span class="nv">gaiaHubURL</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">appPrivateKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">String</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>gaiaHubURL</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Gaia hub URL.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)getUserAppFileURLAt:username:appOrigin:zoneFileLookupURL:completion:"></a>
+                    <a name="//apple_ref/swift/Method/getUserAppFileURL(at:username:appOrigin:zoneFileLookupURL:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)getUserAppFileURLAt:username:appOrigin:zoneFileLookupURL:completion:">getUserAppFileURL(at:username:appOrigin:zoneFileLookupURL:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Fetch the public read URL of a user file for the specified app.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">getUserAppFileURL</span><span class="p">(</span><span class="n">at</span> <span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                              <span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                              <span class="nv">appOrigin</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                              <span class="nv">zoneFileLookupURL</span><span class="p">:</span> <span class="kt">URL</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"http://localhost:6270/v1/names/"</span><span class="p">)</span><span class="o">!</span><span class="p">,</span>
+                              <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">URL</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>path</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The path to the file to read</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>username</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Blockstack ID of the user to look up</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>appOrigin</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The app origin</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>zoneFileLookupURL</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The URL to use for zonefile lookup. Defaults to &lsquo;<a href="http://localhost:6270/v1/names/">http://localhost:6270/v1/names/</a>&rsquo;.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with public read URL of the file, if one was found.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)listFilesWithCallback:completion:"></a>
+                    <a name="//apple_ref/swift/Method/listFiles(callback:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)listFilesWithCallback:completion:">listFiles(callback:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>List the set of files in this application&rsquo;s Gaia storage bucket.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">listFiles</span><span class="p">(</span><span class="nv">callback</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">filename</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">Bool</span><span class="p">),</span>
+                      <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">fileCount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>callback</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A callback to invoke on each named file that returns <code>true</code> to continue the listing operation or <code>false</code> to end it.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Final callback that contains the number of files listed, or any error encountered.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)putFileTo:text:encrypt:completion:"></a>
+                    <a name="//apple_ref/swift/Method/putFile(to:text:encrypt:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)putFileTo:text:encrypt:completion:">putFile(to:text:encrypt:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Stores the data provided in the app&rsquo;s data store to to the file specified.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">putFile</span><span class="p">(</span><span class="n">to</span> <span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">encrypt</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">publicURL</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>to</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The path to store the data in</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>text</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The String data to store in the file</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>encrypt</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data with the app private key</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with the public url and any error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicURL</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The publicly accessible url of the file</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Error returned by Gaia</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)putFileTo:bytes:encrypt:completion:"></a>
+                    <a name="//apple_ref/swift/Method/putFile(to:bytes:encrypt:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)putFileTo:bytes:encrypt:completion:">putFile(to:bytes:encrypt:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Stores the data provided in the app&rsquo;s data store to to the file specified.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">putFile</span><span class="p">(</span><span class="n">to</span> <span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">bytes</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:10Blockstack5Bytesa">Bytes</a></span><span class="p">,</span> <span class="nv">encrypt</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">publicURL</span><span class="p">:</span> <span class="kt">String</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>to</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The path to store the data in</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bytes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Bytes data to store in the file</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>encrypt</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data with the app private key</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with the public url and any error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicURL</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The publicly accessible url of the file</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Error returned by Gaia</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)getFileAt:decrypt:completion:"></a>
+                    <a name="//apple_ref/swift/Method/getFile(at:decrypt:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)getFileAt:decrypt:completion:">getFile(at:decrypt:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the specified file from the app&rsquo;s data store.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">getFile</span><span class="p">(</span><span class="n">at</span> <span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">decrypt</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">content</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>path</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The path to the file to read</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>decrypt</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Try to decrypt the data with the app private key</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with retrieved content and any error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The retrieved content as either Bytes, String, or DecryptedContent</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Error returned by Gaia</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)getFileAt:decrypt:username:app:zoneFileLookupURL:completion:"></a>
+                    <a name="//apple_ref/swift/Method/getFile(at:decrypt:username:app:zoneFileLookupURL:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)getFileAt:decrypt:username:app:zoneFileLookupURL:completion:">getFile(at:decrypt:username:app:zoneFileLookupURL:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves the specified file from the app&rsquo;s data store.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">getFile</span><span class="p">(</span><span class="n">at</span> <span class="nv">path</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+              <span class="nv">decrypt</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+              <span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+              <span class="nv">app</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+              <span class="nv">zoneFileLookupURL</span><span class="p">:</span> <span class="kt">URL</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
+              <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">content</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>path</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The path to the file to read</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>decrypt</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Try to decrypt the data with the app private key</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>username</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Blockstack ID to lookup for multi-player storage</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>app</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The app to lookup for multi-player storage. Defaults to current origin.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>zoneFileLookupURL</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The Blockstack core endpoint URL to use for zonefile lookup, defaults to <q>https://core.blockstack.org/v1/names/</q></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback with retrieved content and any error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The retrieved content as either Bytes, String, or DecryptedContent</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Error returned by Gaia</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)encryptContentWithBytes:publicKey:"></a>
+                    <a name="//apple_ref/swift/Method/encryptContent(bytes:publicKey:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)encryptContentWithBytes:publicKey:">encryptContent(bytes:publicKey:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encrypts the data provided with the app public key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">encryptContent</span><span class="p">(</span><span class="nv">bytes</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:10Blockstack5Bytesa">Bytes</a></span><span class="p">,</span> <span class="nv">publicKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bytes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Bytes (Array<UInt8>) data to encrypt.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user&rsquo;s appPrivateKey.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Stringified JSON ciphertext object</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@Blockstack@objc(cs)Blockstack(im)encryptContentWithText:publicKey:"></a>
+                    <a name="//apple_ref/swift/Method/encryptContent(text:publicKey:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@Blockstack@objc(cs)Blockstack(im)encryptContentWithText:publicKey:">encryptContent(text:publicKey:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encrypts the data provided with the app public key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">encryptContent</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">publicKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>text</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>String data to encrypt</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>publicKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user&rsquo;s appPrivateKey.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Stringified JSON ciphertext object</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10BlockstackAAC14decryptContent7content10privateKeyAA14DecryptedValueVSgSS_SSSgtF"></a>
+                    <a name="//apple_ref/swift/Method/decryptContent(content:privateKey:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10BlockstackAAC14decryptContent7content10privateKeyAA14DecryptedValueVSgSS_SSSgtF">decryptContent(content:privateKey:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Decrypts data encrypted with <code>encryptContent</code> with the transit private key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">decryptContent</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">privateKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/DecryptedValue.html">DecryptedValue</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>content</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Encrypted, JSON stringified content.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>privateKey</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The hex string of the ECDSA private key to use for decryption. If not provided, will use user&rsquo;s appPrivateKey.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>DecryptedValue object containing Byte or String content.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

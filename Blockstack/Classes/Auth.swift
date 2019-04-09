@@ -42,12 +42,12 @@ class Auth {
             "scopes": scopes
         ]
         
-        request = JSONTokens().signToken(payload: payload, privateKey: transitPrivateKey)!
+        request = JSONTokensJS().signToken(payload: payload, privateKey: transitPrivateKey)!
         return request
     }
     
     static func decodeResponse(_ authResponse: String, transitPrivateKey: String) -> UserDataToken? {
-        let decodedTokenJsonString = JSONTokens().decodeToken(token: authResponse)
+        let decodedTokenJsonString = JSONTokensJS().decodeToken(token: authResponse)
         var token: UserDataToken?
         
         do {
@@ -63,7 +63,7 @@ class Auth {
     static func handleAuthResponse(authResponse: String, transitPrivateKey: String, completion: @escaping (AuthResult) -> ()) {
         let response = Auth.decodeResponse(authResponse, transitPrivateKey: transitPrivateKey)
         
-        if let userData = response?.payload {
+        if var userData = response?.payload {
             userData.privateKey = Encryption.decryptPrivateKey(privateKey: transitPrivateKey, hexedEncrypted: userData.privateKey!)
             
             if let profileURL = userData.profileURL {

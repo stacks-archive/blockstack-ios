@@ -7,8 +7,16 @@
 
 import Foundation
 
+/**
+ A helper class for Profile related operations.
+ */
 public class ProfileHelper {
-    open static func fetch(profileURL: URL, completion: @escaping (Profile?, Error?) -> Void) {
+    /**
+     Fetch a Profile object from the specified URL.
+     - parameter profileURL: The profile URL.
+     - parameter completion: Callback with the fetched Profile object, or an error.
+     */
+    public static func fetch(profileURL: URL, completion: @escaping (Profile?, Error?) -> Void) {
         let task = URLSession.shared.dataTask(with: profileURL) { data, response, error in
             guard let data = data, error == nil else {
                 print("Error fetching profile")

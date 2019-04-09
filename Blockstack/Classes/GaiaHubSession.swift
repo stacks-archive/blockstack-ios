@@ -10,7 +10,7 @@ import CryptoSwift
 
 fileprivate let signatureFileSuffix = ".sig"
 
-public class GaiaHubSession {
+class GaiaHubSession {
     let config: GaiaConfig
 
     init(with config: GaiaConfig) {
