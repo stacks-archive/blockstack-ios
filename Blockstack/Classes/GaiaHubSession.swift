@@ -85,22 +85,6 @@ class GaiaHubSession {
         task.resume()
     }
     
-    func getFileContents(at url: URL) -> Promise<(Data, String)> {
-        return Promise<(Data, String)>() { resolve, reject in
-            let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                guard error == nil,
-                    let data = data else {
-                        print("Gaia hub store request error")
-                        reject(GaiaError.requestError)
-                        return
-                }
-                let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
-                resolve((data, contentType))
-            }
-            task.resume()
-        }
-    }
-    
     func getFile(at path: String, decrypt: Bool, verify: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
         // In the case of signature verification, but no decryption, we need to fetch two files.
         // First, fetch the unencrypted file. Then fetch the signature file and validate it.
@@ -109,20 +93,7 @@ class GaiaHubSession {
             return
         }
         
-        var url: URL!
-        if let options = multiplayerOptions {
-            Blockstack.shared.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
-                guard let fetchURL = $0?.appendingPathComponent(path) else {
-                    completion(nil, GaiaError.configurationError)
-                    return
-                }
-                url = fetchURL
-            }
-        } else {
-            url = URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)")!
-        }
-        
-        self.getFileContents(at: url).then({ (data, contentType) in
+        self.getFileContents(at: path, multiplayerOptions: multiplayerOptions).then({ (data, contentType) in
             if !verify && !decrypt {
                 // Simply fetch data if there is no verify or decrypt
                 let content: Any? =
@@ -236,6 +207,39 @@ class GaiaHubSession {
         return cipher.data(using: .utf8)
     }
     
+    private func getFileContents(at path: String, multiplayerOptions: MultiplayerOptions?) -> Promise<(Data, String)> {
+        let getReadURL = Promise<URL> { resolve, reject in
+            if let options = multiplayerOptions {
+                Blockstack.shared.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
+                    guard let fetchURL = $0?.appendingPathComponent(path) else {
+                        reject(GaiaError.requestError)
+                        return
+                    }
+                    resolve(fetchURL)
+                }
+            } else {
+                resolve(URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)")!)
+            }
+        }
+        return Promise<(Data, String)>() { resolve, reject in
+            getReadURL.then({ url in
+                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                    guard error == nil,
+                        let data = data else {
+                            print("Gaia hub store request error")
+                            reject(GaiaError.requestError)
+                            return
+                    }
+                    let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
+                    resolve((data, contentType))
+                }
+                task.resume()
+            }).catch { error in
+                reject(error)
+            }
+        }
+    }
+
     private func signAndPutData(to path: String, content: Data, originalContentType: String, encrypted: Bool, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
         if encrypted && !sign {
             self.upload(path: path, contentType: "application/json", data: content, completion: completion)
