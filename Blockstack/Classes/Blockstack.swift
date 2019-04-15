@@ -601,6 +601,7 @@ public enum BlockstackConstants {
      */
     @objc public func getFile(at path: String,
                         decrypt: Bool = false,
+                        verify: Bool = false,
                         username: String,
                         app: String? = nil,
                         zoneFileLookupURL: URL? = nil,
@@ -621,6 +622,7 @@ public enum BlockstackConstants {
             session.getFile(
                 at: path,
                 decrypt: decrypt,
+                verify: verify,
                 multiplayerOptions: MultiplayerOptions(
                     username: username,
                     app: appOrigin,

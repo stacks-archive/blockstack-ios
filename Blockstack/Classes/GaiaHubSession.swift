@@ -7,6 +7,7 @@
 
 import Foundation
 import CryptoSwift
+import Promises
 
 fileprivate let signatureFileSuffix = ".sig"
 
@@ -84,72 +85,96 @@ class GaiaHubSession {
         task.resume()
     }
     
-    func getFile(at path: String, decrypt: Bool, verify: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
-        let fetch: (URL?) -> () = { fullReadURL in
-            guard let url = fullReadURL else {
-                completion(nil, GaiaError.configurationError)
-                return
-            }
-            
-            // In the case of signature verification, but no decryption, we need to fetch two files.
-            if verify && !decrypt {
-//                return getFileSignedUnencrypted(caller, path, opt)
-            }
-
+    func getFileContents(at url: URL) -> Promise<(Data, String)> {
+        return Promise<(Data, String)>() { resolve, reject in
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                guard let data = data, error == nil else {
-                    print("Gaia hub store request error")
-                    completion(nil, GaiaError.requestError)
-                    return
+                guard error == nil,
+                    let data = data else {
+                        print("Gaia hub store request error")
+                        reject(GaiaError.requestError)
+                        return
                 }
                 let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
-                
-                if !verify && !decrypt {
-                    let content: Any? =
-                        contentType == "application/octet-stream" ?
-                            data.bytes :
-                            String(data: data, encoding: .utf8)
-                    return completion(content, nil)
-                } else {
-                    // Handle decrypt scenarios
-                    guard let text = String(data: data, encoding: .utf8),
-                        let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
-                            completion(nil, nil)
-                            return
-                    }
-                    if verify {
-                        guard let publicKey = Keys.getPublicKeyFromPrivate(privateKey),
-                            let address = Keys.getAddressFromPublicKey(publicKey),
-                            let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data),
-                            let cipherText = signatureObject.cipherText else {
-                                completion(nil, nil)
-                                return
-                        }
-                        let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey)
-                        guard signerAddress == address else {
-                            completion(nil, GaiaError.signatureVerificationError)
-                            return
-                        }
-                        guard let isSignatureValid = EllipticJS().verifyECDSA(
-                            content: data.bytes,
-                            publicKey: signatureObject.publicKey,
-                            signature: signatureObject.signature), isSignatureValid else {
-                                completion(nil, GaiaError.signatureVerificationError)
-                                return
-                        }
-                    }
-                    let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: text, privateKey: privateKey)
-                    completion(decryptedValue, nil)
-                }
+                resolve((data, contentType))
             }
             task.resume()
         }
+    }
+    
+    func getFile(at path: String, decrypt: Bool, verify: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
+        // In the case of signature verification, but no decryption, we need to fetch two files.
+        // First, fetch the unencrypted file. Then fetch the signature file and validate it.
+        if verify && !decrypt {
+            // return getFileSignedUnencrypted(caller, path, opt)
+            return
+        }
+        
+        var url: URL!
         if let options = multiplayerOptions {
-            Blockstack.shared.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) { url in
-                fetch(url?.appendingPathComponent(path))
+            Blockstack.shared.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
+                guard let fetchURL = $0?.appendingPathComponent(path) else {
+                    completion(nil, GaiaError.configurationError)
+                    return
+                }
+                url = fetchURL
             }
         } else {
-            fetch(URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)"))
+            url = URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)")!
+        }
+        
+        self.getFileContents(at: url).then({ (data, contentType) in
+            if !verify && !decrypt {
+                // Simply fetch data if there is no verify or decrypt
+                let content: Any? =
+                    contentType == "application/octet-stream" ?
+                        data.bytes :
+                        String(data: data, encoding: .utf8)
+                completion(content, nil)
+                return
+            } else if decrypt {
+                // Handle decrypt scenarios
+                guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
+                    completion(nil, nil)
+                    return
+                }
+                var cipherText: String!
+                if verify {
+                    // Decrypt && verify
+                    guard let publicKey = Keys.getPublicKeyFromPrivate(privateKey),
+                        let address = Keys.getAddressFromPublicKey(publicKey),
+                        let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data) else {
+                            completion(nil, nil)
+                            return
+                    }
+                    let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey)
+                    guard signerAddress == address,
+                        let isSignatureValid = EllipticJS().verifyECDSA(
+                            content: data.bytes,
+                            publicKey: signatureObject.publicKey,
+                            signature: signatureObject.signature),
+                        isSignatureValid else {
+                            completion(nil, GaiaError.signatureVerificationError)
+                            return
+                    }
+                    guard let encryptedText = signatureObject.cipherText else {
+                        completion(nil, GaiaError.invalidResponse)
+                        return
+                    }
+                    cipherText = encryptedText
+                } else {
+                    // Decrypt, but not verify
+                    cipherText = String(data: data, encoding: .utf8)
+                }
+                let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: cipherText, privateKey: privateKey)
+                completion(decryptedValue, nil)
+                return
+            } else {
+                // We should not be here.
+                completion(nil, GaiaError.requestError)
+                return
+            }
+        }).catch { error in
+            completion(nil, error as? GaiaError ?? GaiaError.requestError)
         }
     }
 
