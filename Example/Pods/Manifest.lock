@@ -1,8 +1,12 @@
 PODS:
   - Blockstack (0.5.4):
     - CryptoSwift
+    - PromisesSwift
   - CryptoSwift (1.0.0)
   - Nimble (8.0.1)
+  - PromisesObjC (1.2.7)
+  - PromisesSwift (1.2.7):
+    - PromisesObjC (= 1.2.7)
   - Quick (2.0.0)
 
 DEPENDENCIES:
@@ -14,6 +18,8 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - CryptoSwift
     - Nimble
+    - PromisesObjC
+    - PromisesSwift
     - Quick
 
 EXTERNAL SOURCES:
@@ -21,9 +27,11 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Blockstack: 872c6a86c8fe80487f439966303dd2cb8d888603
+  Blockstack: e83f94a02d3760435b1c7c0fbc048ee26adc6db8
   CryptoSwift: d81eeaa59dc5a8d03720fe919a6fd07b51f7439f
   Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
+  PromisesObjC: 7b28ddd1e78cce8f80f1ada927d2217663a9c672
+  PromisesSwift: b27f410f9ea693753cfd4cfd8ac1c60a471f137b
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
 
 PODFILE CHECKSUM: 6ba8a47a79a7bc3d2f4566ad9b7946295d68a2ac

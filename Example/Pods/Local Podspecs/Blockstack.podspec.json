@@ -29,6 +29,9 @@
   "dependencies": {
     "CryptoSwift": [
 
+    ],
+    "PromisesSwift": [
+
     ]
   }
 }
