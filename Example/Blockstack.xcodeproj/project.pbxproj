@@ -281,6 +281,7 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
+				"${BUILT_PRODUCTS_DIR}/STRegex/Regex.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
 			);
@@ -290,6 +291,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Regex.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quick.framework",
 			);
@@ -327,6 +329,7 @@
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
+				"${BUILT_PRODUCTS_DIR}/STRegex/Regex.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -334,6 +337,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Regex.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -37,4 +37,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'CryptoSwift'
   s.dependency 'PromisesSwift'
+  s.dependency 'STRegex'
 end
