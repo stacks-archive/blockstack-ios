@@ -8,6 +8,7 @@
 import Foundation
 import CryptoSwift
 import Promises
+import Regex
 
 fileprivate let signatureFileSuffix = ".sig"
 
@@ -89,7 +90,31 @@ class GaiaHubSession {
         // In the case of signature verification, but no decryption, we need to fetch two files.
         // First, fetch the unencrypted file. Then fetch the signature file and validate it.
         if verify && !decrypt {
-            // return getFileSignedUnencrypted(caller, path, opt)
+            all(
+                self.getFileContents(at: path, multiplayerOptions: multiplayerOptions),
+                self.getFileContents(at: "\(path)\(signatureFileSuffix)", multiplayerOptions: multiplayerOptions),
+                self.getGaiaAddress(multiplayerOptions: multiplayerOptions)
+                ).then({ fileContents, sigContents, gaiaAddress in
+                    guard let signatureObject =
+                        try? JSONDecoder().decode(SignatureObject.self, from: sigContents.0),
+                        let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey),
+                        signerAddress == gaiaAddress,
+                        let isSignatureValid = EllipticJS().verifyECDSA(
+                            content: fileContents.0.bytes,
+                            publicKey: signatureObject.publicKey,
+                            signature: signatureObject.signature),
+                        isSignatureValid else {
+                            completion(nil, GaiaError.signatureVerificationError)
+                            return
+                    }
+                    let content: Any? =
+                        fileContents.1 == "application/octet-stream" ?
+                            fileContents.0.bytes :
+                            String(data: fileContents.0, encoding: .utf8)
+                    completion(content, nil)
+                }).catch { error in
+                    completion(nil, error as? GaiaError ?? GaiaError.signatureVerificationError)
+            }
             return
         }
         
@@ -108,36 +133,59 @@ class GaiaHubSession {
                     completion(nil, nil)
                     return
                 }
-                var cipherText: String!
-                if verify {
-                    // Decrypt && verify
-                    guard let publicKey = Keys.getPublicKeyFromPrivate(privateKey),
-                        let address = Keys.getAddressFromPublicKey(publicKey),
-                        let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data) else {
-                            completion(nil, nil)
+                let verifyAndGetCipherText = Promise<String>() { resolve, reject in
+                    if !verify {
+                        // Decrypt, but not verify
+                        guard let encryptedText = String(data: data, encoding: .utf8) else {
+                            reject(GaiaError.invalidResponse)
                             return
+                        }
+                        resolve(encryptedText)
+                    } else {
+                        // Decrypt && verify
+                        guard let userPublicKey = Keys.getPublicKeyFromPrivate(privateKey),
+                            let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data) else {
+                                reject(GaiaError.invalidResponse)
+                                return
+                        }
+                        let getUserAddress = Promise<String> { resolveAddress, rejectAddress in
+                            if multiplayerOptions == nil {
+                                guard let address = Keys.getAddressFromPublicKey(userPublicKey) else {
+                                    reject(GaiaError.signatureVerificationError)
+                                    return
+                                }
+                                resolveAddress(address)
+                            } else {
+                                self.getGaiaAddress(multiplayerOptions: multiplayerOptions!).then({
+                                    resolve($0)
+                                }).catch(rejectAddress)
+                            }
+                        }
+                        getUserAddress.then({ userAddress in
+                            let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey)
+                            guard signerAddress == userAddress,
+                                let isSignatureValid = EllipticJS().verifyECDSA(
+                                    content: data.bytes,
+                                    publicKey: signatureObject.publicKey,
+                                    signature: signatureObject.signature),
+                                isSignatureValid else {
+                                    completion(nil, GaiaError.signatureVerificationError)
+                                    return
+                            }
+                            guard let encryptedText = signatureObject.cipherText else {
+                                reject(GaiaError.invalidResponse)
+                                return
+                            }
+                            resolve(encryptedText)
+                        }).catch(reject)
                     }
-                    let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey)
-                    guard signerAddress == address,
-                        let isSignatureValid = EllipticJS().verifyECDSA(
-                            content: data.bytes,
-                            publicKey: signatureObject.publicKey,
-                            signature: signatureObject.signature),
-                        isSignatureValid else {
-                            completion(nil, GaiaError.signatureVerificationError)
-                            return
-                    }
-                    guard let encryptedText = signatureObject.cipherText else {
-                        completion(nil, GaiaError.invalidResponse)
-                        return
-                    }
-                    cipherText = encryptedText
-                } else {
-                    // Decrypt, but not verify
-                    cipherText = String(data: data, encoding: .utf8)
                 }
-                let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: cipherText, privateKey: privateKey)
-                completion(decryptedValue, nil)
+                verifyAndGetCipherText.then({ cipherText in
+                    let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: cipherText, privateKey: privateKey)
+                    completion(decryptedValue, nil)
+                }).catch { error in
+                    completion(nil, error as? GaiaError ?? GaiaError.signatureVerificationError)
+                }
                 return
             } else {
                 // We should not be here.
