@@ -142,10 +142,10 @@ open class EllipticJS {
         }
         let contentHash = content.sha256()
         context.evaluateScript("const curve = new ec('secp256k1');")
-        guard let ecPublic = context.evaluateScript("curve.keyFromPublic('\(publicKey)', 'hex')"),
-            let isSignatureValid = ecPublic.invokeMethod("verify", withArguments: [contentHash, signature])?.toBool() else {
-                return nil
+        guard let ecPublic = context.evaluateScript("curve.keyFromPublic('\(publicKey)', 'hex')") else {
+            return nil
         }
-        return isSignatureValid
+        let isSignatureValid = ecPublic.invokeMethod("verify", withArguments: [contentHash, signature])
+        return isSignatureValid?.toBool()
     }
 }

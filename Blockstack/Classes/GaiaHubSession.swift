@@ -144,7 +144,8 @@ class GaiaHubSession {
                     } else {
                         // Decrypt && verify
                         guard let userPublicKey = Keys.getPublicKeyFromPrivate(privateKey),
-                            let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data) else {
+                            let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data),
+                            let encryptedText = signatureObject.cipherText else {
                                 reject(GaiaError.invalidResponse)
                                 return
                         }
@@ -165,16 +166,12 @@ class GaiaHubSession {
                             let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey)
                             guard signerAddress == userAddress,
                                 let isSignatureValid = EllipticJS().verifyECDSA(
-                                    content: data.bytes,
+                                    content: encryptedText.bytes,
                                     publicKey: signatureObject.publicKey,
                                     signature: signatureObject.signature),
                                 isSignatureValid else {
                                     completion(nil, GaiaError.signatureVerificationError)
                                     return
-                            }
-                            guard let encryptedText = signatureObject.cipherText else {
-                                reject(GaiaError.invalidResponse)
-                                return
                             }
                             resolve(encryptedText)
                         }).catch(reject)
@@ -343,8 +340,18 @@ class GaiaHubSession {
                     completion(nil, nil)
                     return
             }
-            self.upload(path: path, contentType: originalContentType, data: content) { _, _ in
-                self.upload(path: "\(path)\(signatureFileSuffix)", contentType: "application/json", data: jsonData, completion: completion)
+            self.upload(path: path, contentType: originalContentType, data: content) { fileURL, error in
+                guard let url = fileURL, error == nil else {
+                    completion(nil, error)
+                    return
+                }
+                self.upload(path: "\(path)\(signatureFileSuffix)", contentType: "application/json", data: jsonData) { _, error in
+                    guard error == nil else {
+                        completion(nil, error)
+                        return
+                    }
+                    completion(url, nil)
+                }
             }
         } else {
             // Not encrypting or signing
