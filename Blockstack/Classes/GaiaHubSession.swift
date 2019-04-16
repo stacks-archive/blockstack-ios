@@ -240,6 +240,32 @@ class GaiaHubSession {
         }
     }
 
+    private func getGaiaAddress(multiplayerOptions: MultiplayerOptions? = nil) -> Promise<String> {
+        return Promise<String>() { resolve, reject in
+            guard let options = multiplayerOptions else {
+                guard let prefix = self.config.URLPrefix,
+                    let address = self.config.address else {
+                    return
+                }
+                resolve("\(prefix)\(address)/")
+                return
+            }
+            Blockstack.shared.getUserAppFileURL(at: "/", username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
+                guard let url = $0 else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                let pattern = Regex("/([13][a-km-zA-HJ-NP-Z0-9]{26,35})/")
+                let matches = pattern.allMatches(in: url.absoluteString)
+                guard let last = matches.last else {
+                        reject(GaiaError.requestError)
+                        return
+                }
+                resolve(last.matchedString)
+            }
+        }
+    }
+    
     private func signAndPutData(to path: String, content: Data, originalContentType: String, encrypted: Bool, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
         if encrypted && !sign {
             self.upload(path: path, contentType: "application/json", data: content, completion: completion)
