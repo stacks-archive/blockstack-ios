@@ -88,12 +88,13 @@ class ViewController: UIViewController {
                 print("get file error")
             } else {
                 print("get file success")
-                print(response as Any)
-
-                let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
-                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                guard response != nil else {
+                    let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
+                    let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
             }
         }
     }
