@@ -286,27 +286,28 @@ class GaiaHubSession {
     }
 
     private func getGaiaAddress(multiplayerOptions: MultiplayerOptions? = nil) -> Promise<String> {
+        let parseUrl: (String) -> (String?) = { urlString in
+            let pattern = Regex("([13][a-km-zA-HJ-NP-Z0-9]{26,35})")
+            let matches = pattern.allMatches(in: urlString)
+            return matches.last?.matchedString
+        }
         return Promise<String>() { resolve, reject in
             guard let options = multiplayerOptions else {
                 guard let prefix = self.config.URLPrefix,
-                    let address = self.config.address else {
-                    return
-                }
-                resolve("\(prefix)\(address)/")
-                return
-            }
-            Blockstack.shared.getUserAppFileURL(at: "/", username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
-                guard let url = $0 else {
-                    reject(GaiaError.requestError)
-                    return
-                }
-                let pattern = Regex("/([13][a-km-zA-HJ-NP-Z0-9]{26,35})/")
-                let matches = pattern.allMatches(in: url.absoluteString)
-                guard let last = matches.last else {
+                    let hubAddress = self.config.address,
+                    let gaiaAddress = parseUrl("\(prefix)\(hubAddress)/") else {
                         reject(GaiaError.requestError)
                         return
                 }
-                resolve(last.matchedString)
+                resolve(gaiaAddress)
+                return
+            }
+            Blockstack.shared.getUserAppFileURL(at: "/", username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
+                guard let readUrl = $0, let gaiaAddress = parseUrl(readUrl.absoluteString) else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                resolve(gaiaAddress)
             }
         }
     }
