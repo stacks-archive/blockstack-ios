@@ -129,7 +129,7 @@ open class EllipticJS {
         guard let ecPrivate = context.evaluateScript("curve.keyFromPrivate('\(privateKey)', 'hex')"),
             let signature = ecPrivate.invokeMethod("sign", withArguments: [content.sha256()]),
             let signatureString = signature.invokeMethod("toDER", withArguments: ["hex"])?.toString(),
-            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
+            let publicKey = Keys.getPublicKeyFromPrivate(privateKey, compressed: true) else {
             return nil
         }
         return SignatureObject(signature: signatureString, publicKey: publicKey, cipherText: nil)
