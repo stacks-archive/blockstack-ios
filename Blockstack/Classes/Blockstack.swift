@@ -560,7 +560,7 @@ public enum BlockstackConstants {
      - parameter content: The retrieved content as either Bytes, String, or DecryptedContent
      - parameter error: Error returned by Gaia
      */
-    @objc public func getFile(at path: String, decrypt: Bool = false, completion: @escaping (_ content: Any?, _ error: Error?) -> Void) {
+    @objc public func getFile(at path: String, decrypt: Bool = true, completion: @escaping (_ content: Any?, _ error: Error?) -> Void) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
@@ -583,7 +583,7 @@ public enum BlockstackConstants {
      - parameter error: Error returned by Gaia
      */
     @objc public func getFile(at path: String,
-                        decrypt: Bool = false,
+                        decrypt: Bool = true,
                         username: String,
                         app: String? = nil,
                         zoneFileLookupURL: URL? = nil,
