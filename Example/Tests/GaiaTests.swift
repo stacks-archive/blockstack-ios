@@ -96,7 +96,7 @@ class GaiaSpec: QuickSpec {
             }
             context("signing") {
                 it ("can sign and verify without encryption") {
-                    let content = "Hello world"
+                    let content = "Testing123"
                     waitUntil(timeout: 10) { done in
                         self.testUpload(fileName: fileName, content: .text(content), encrypt: false, sign: true) { _ in
                             self.testRetrieve(from: fileName, decrypt: false, verify: true) { response in
@@ -107,7 +107,7 @@ class GaiaSpec: QuickSpec {
                     }
                 }
                 it ("can sign and verify with encryption") {
-                    let content = "Hello world"
+                    let content = "Testing123"
                     waitUntil(timeout: 10) { done in
                         self.testUpload(fileName: fileName, content: .text(content), encrypt: true, sign: true) { _ in
                             self.testRetrieve(from: fileName, decrypt: true, verify: true) { response in
@@ -118,6 +118,21 @@ class GaiaSpec: QuickSpec {
                         }
                     }
                 }
+                it ("can sign and verify with multiplayer") {
+                    let content = "Testing123"
+                    var result: String?
+                    self.testUpload(fileName: fileName, content: .text(content), encrypt: false, sign: true) { url in
+                        Blockstack.shared.signUserOut()
+                        // Switch users
+                        self.signIn(mary)
+                        // Retrieve Bob's file
+                        Blockstack.shared.getFile(at: fileName, verify: true, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
+                            response, _ in
+                            result = response as? String
+                        }
+                    }
+                    expect(result).toEventually(equal(content), timeout: 20, pollInterval: 1)
+                }
             }
             context("multiplayer") {
                 // MARK: - Gaia__multiplayer__can_retrieve
@@ -125,7 +140,6 @@ class GaiaSpec: QuickSpec {
                     let content = "Multiplayer Hello World"
                     var result: String?
                     self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { url in
-                        print("Uploaded URL: \(url)")
                         Blockstack.shared.signUserOut()
                         // Switch users
                         self.signIn(mary)
