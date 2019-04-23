@@ -126,7 +126,7 @@ class GaiaHubSession {
         }
     }
     
-    func putFile(to path: String, content: Bytes, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> ()) {
+    func putFile(to path: String, content: Bytes, encrypt: Bool = true, completion: @escaping (String?, GaiaError?) -> ()) {
         if encrypt {
             guard let data = self.encrypt(content: .bytes(content)) else {
                 // TODO: Error for invalid app public key?
@@ -139,7 +139,7 @@ class GaiaHubSession {
         }
     }
     
-    func putFile(to path: String, content: String, encrypt: Bool = false, completion: @escaping (String?, GaiaError?) -> ()) {
+    func putFile(to path: String, content: String, encrypt: Bool = true, completion: @escaping (String?, GaiaError?) -> ()) {
         if encrypt {
             guard let data = self.encrypt(content: .text(content)) else {
                 // TODO: Error for invalid app public key?
