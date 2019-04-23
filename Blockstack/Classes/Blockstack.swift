@@ -498,7 +498,7 @@ public enum BlockstackConstants {
     @objc public func putFile(
         to path: String,
         text: String,
-        encrypt: Bool = false,
+        encrypt: Bool = true,
         sign: Bool = false,
         signingKey: String? = nil,
         completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
@@ -540,7 +540,7 @@ public enum BlockstackConstants {
     @objc public func putFile(
         to path: String,
         bytes: Bytes,
-        encrypt: Bool = false,
+        encrypt: Bool = true,
         sign: Bool = false,
         signingKey: String? = nil,
         completion: @escaping (_ publicURL: String?, _ error: Error?) -> Void) {
@@ -577,7 +577,7 @@ public enum BlockstackConstants {
      - parameter content: The retrieved content as either Bytes, String, or DecryptedContent
      - parameter error: Error returned by Gaia
      */
-    @objc public func getFile(at path: String, decrypt: Bool = false, verify: Bool = false, completion: @escaping (_ content: Any?, _ error: Error?) -> Void) {
+    @objc public func getFile(at path: String, decrypt: Bool = true, verify: Bool = false, completion: @escaping (_ content: Any?, _ error: Error?) -> Void) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
@@ -600,7 +600,7 @@ public enum BlockstackConstants {
      - parameter error: Error returned by Gaia
      */
     @objc public func getFile(at path: String,
-                        decrypt: Bool = false,
+                        decrypt: Bool = true,
                         verify: Bool = false,
                         username: String,
                         app: String? = nil,
