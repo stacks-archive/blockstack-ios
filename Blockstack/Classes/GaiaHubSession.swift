@@ -143,17 +143,17 @@ class GaiaHubSession {
                         resolve(encryptedText)
                     } else {
                         // Decrypt && verify
-                        guard let userPublicKey = Keys.getPublicKeyFromPrivate(privateKey),
-                            let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data),
+                        guard let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data),
                             let encryptedText = signatureObject.cipherText else {
                                 reject(GaiaError.invalidResponse)
                                 return
                         }
                         let getUserAddress = Promise<String> { resolveAddress, rejectAddress in
                             if multiplayerOptions == nil {
-                                guard let address = Keys.getAddressFromPublicKey(userPublicKey) else {
-                                    reject(GaiaError.signatureVerificationError)
-                                    return
+                                guard let userPublicKey = Keys.getPublicKeyFromPrivate(privateKey, compressed: true),
+                                    let address = Keys.getAddressFromPublicKey(userPublicKey) else {
+                                        reject(GaiaError.signatureVerificationError)
+                                        return
                                 }
                                 resolveAddress(address)
                             } else {
