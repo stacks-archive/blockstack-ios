@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
 #     'Blockstack' => ['Blockstack/Assets/*.png']
    }
 
-  s.dependency 'CryptoSwift'
+  s.dependency 'CryptoSwift', '0.15.0'
   s.dependency 'PromisesSwift'
   s.dependency 'STRegex'
 end
