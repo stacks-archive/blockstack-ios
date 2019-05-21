@@ -51,6 +51,10 @@ public enum BlockstackConstants {
         }
     }
     
+    @objc public var hasSession: Bool {
+        return self.loadUserData() != nil
+    }
+    
     // - MARK: Authentication
     
     /**
