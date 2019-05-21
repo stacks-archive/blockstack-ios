@@ -85,13 +85,53 @@ class GaiaSpec: QuickSpec {
                 it("fails retrieve without decrypt") {
                     let content = "Encrypted Testing Fail"
                     waitUntil(timeout: 10) { done in
-                        self.testUpload(fileName: fileName, content: .text(content), encrypt: true) { url in
-                            self.testRetrieve(from: url, decrypt: false) { response in
+                        self.testUpload(fileName: fileName, content: .text(content), encrypt: true) { _ in
+                            self.testRetrieve(from: fileName, decrypt: false) { response in
                                 expect(response as? String).toNot(equal(content))
                                 done()
                             }
                         }
                     }
+                }
+            }
+            context("signing") {
+                it ("can sign and verify without encryption") {
+                    let content = "Testing123"
+                    waitUntil(timeout: 10) { done in
+                        self.testUpload(fileName: fileName, content: .text(content), encrypt: false, sign: true) { _ in
+                            self.testRetrieve(from: fileName, decrypt: false, verify: true) { response in
+                                expect(response as? String).to(equal(content))
+                                done()
+                            }
+                        }
+                    }
+                }
+                it ("can sign and verify with encryption") {
+                    let content = "Testing123"
+                    waitUntil(timeout: 10) { done in
+                        self.testUpload(fileName: fileName, content: .text(content), encrypt: true, sign: true) { _ in
+                            self.testRetrieve(from: fileName, decrypt: true, verify: true) { response in
+                                let result = (response as? DecryptedValue)?.plainText
+                                expect(result).to(equal(content))
+                                done()
+                            }
+                        }
+                    }
+                }
+                it ("can sign and verify with multiplayer") {
+                    let content = "Testing123"
+                    var result: String?
+                    self.testUpload(fileName: fileName, content: .text(content), encrypt: false, sign: true) { url in
+                        Blockstack.shared.signUserOut()
+                        // Switch users
+                        self.signIn(mary)
+                        // Retrieve Bob's file
+                        Blockstack.shared.getFile(at: fileName, verify: true, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
+                            response, _ in
+                            result = response as? String
+                        }
+                    }
+                    expect(result).toEventually(equal(content), timeout: 20, pollInterval: 1)
                 }
             }
             context("multiplayer") {
@@ -100,7 +140,6 @@ class GaiaSpec: QuickSpec {
                     let content = "Multiplayer Hello World"
                     var result: String?
                     self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { url in
-                        print("Uploaded URL: \(url)")
                         Blockstack.shared.signUserOut()
                         // Switch users
                         self.signIn(mary)
@@ -123,16 +162,16 @@ class GaiaSpec: QuickSpec {
                             fail()
                             return
                     }
-                    
+
                     // Create invalid config
                     let invalidConfig = GaiaConfig(URLPrefix: config.URLPrefix, address: config.address, token: "v1:invalidated", server: config.server)
-                    
+
                     // Save invalid gaia config
                     Blockstack.shared.clearGaiaSession()
                     if let encodedInvalidConfig = try? PropertyListEncoder().encode(invalidConfig) {
                         UserDefaults.standard.set(encodedInvalidConfig, forKey: BlockstackConstants.GaiaHubConfigUserDefaultLabel)
                     }
-                    
+
                     let content = "Testing upload"
                     var url: String?
                     self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { result in
@@ -190,13 +229,13 @@ class GaiaSpec: QuickSpec {
     }
     
     /// Convenience funtion to fail when presented with errors for putFile
-    private func testUpload(fileName: String, content: Content, encrypt: Bool, completion: @escaping (String) -> ()) {
+    private func testUpload(fileName: String, content: Content, encrypt: Bool, sign: Bool = false, completion: @escaping (String) -> ()) {
         let put: (Content, @escaping (String?, Error?) -> ()) -> () = { content, callback in
             switch content {
             case let .text(text):
-                Blockstack.shared.putFile(to: fileName, text: text, encrypt: encrypt, completion: callback)
+                Blockstack.shared.putFile(to: fileName, text: text, encrypt: encrypt, sign: sign, completion: callback)
             case let .bytes(bytes):
-                Blockstack.shared.putFile(to: fileName, bytes: bytes, encrypt: encrypt, completion: callback)
+                Blockstack.shared.putFile(to: fileName, bytes: bytes, encrypt: encrypt, sign: sign, completion: callback)
             }
         }
         
@@ -214,8 +253,8 @@ class GaiaSpec: QuickSpec {
     }
     
     /// Convenience funtion to fail when presented with errors for getFile
-    private func testRetrieve(from url: String, decrypt: Bool, completion: @escaping (Any) -> () ) {
-        Blockstack.shared.getFile(at: url, decrypt: decrypt) { response, error in
+    private func testRetrieve(from url: String, decrypt: Bool, verify: Bool = false, completion: @escaping (Any) -> () ) {
+        Blockstack.shared.getFile(at: url, decrypt: decrypt, verify: verify) { response, error in
             guard error == nil else {
                 fail("getFile Error: \(error!)")
                 return

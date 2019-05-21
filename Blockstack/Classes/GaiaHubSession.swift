@@ -7,6 +7,10 @@
 
 import Foundation
 import CryptoSwift
+import Promises
+import Regex
+
+fileprivate let signatureFileSuffix = ".sig"
 
 class GaiaHubSession {
     let config: GaiaConfig
@@ -82,78 +86,134 @@ class GaiaHubSession {
         task.resume()
     }
     
-    func getFile(at path: String, decrypt: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
-        let fetch: (URL?) -> () = { fullReadURL in
-            guard let url = fullReadURL else {
-                completion(nil, GaiaError.configurationError)
-                return
+    func getFile(at path: String, decrypt: Bool, verify: Bool, multiplayerOptions: MultiplayerOptions? = nil, completion: @escaping (Any?, GaiaError?) -> Void) {
+        // In the case of signature verification, but no decryption, we need to fetch two files.
+        // First, fetch the unencrypted file. Then fetch the signature file and validate it.
+        if verify && !decrypt {
+            all(
+                self.getFileContents(at: path, multiplayerOptions: multiplayerOptions),
+                self.getFileContents(at: "\(path)\(signatureFileSuffix)", multiplayerOptions: multiplayerOptions),
+                self.getGaiaAddress(multiplayerOptions: multiplayerOptions)
+                ).then({ fileContents, sigContents, gaiaAddress in
+                    guard let signatureObject =
+                        try? JSONDecoder().decode(SignatureObject.self, from: sigContents.0),
+                        let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey),
+                        signerAddress == gaiaAddress,
+                        let isSignatureValid = EllipticJS().verifyECDSA(
+                            content: fileContents.0.bytes,
+                            publicKey: signatureObject.publicKey,
+                            signature: signatureObject.signature),
+                        isSignatureValid else {
+                            completion(nil, GaiaError.signatureVerificationError)
+                            return
+                    }
+                    let content: Any? =
+                        fileContents.1 == "application/octet-stream" ?
+                            fileContents.0.bytes :
+                            String(data: fileContents.0, encoding: .utf8)
+                    completion(content, nil)
+                }).catch { error in
+                    completion(nil, error as? GaiaError ?? GaiaError.signatureVerificationError)
             }
-            
-            let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                guard let data = data, error == nil else {
-                    print("Gaia hub store request error")
-                    completion(nil, GaiaError.requestError)
+            return
+        }
+        
+        self.getFileContents(at: path, multiplayerOptions: multiplayerOptions).then({ (data, contentType) in
+            if !verify && !decrypt {
+                // Simply fetch data if there is no verify or decrypt
+                let content: Any? =
+                    contentType == "application/octet-stream" ?
+                        data.bytes :
+                        String(data: data, encoding: .utf8)
+                completion(content, nil)
+                return
+            } else if decrypt {
+                // Handle decrypt scenarios
+                guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
+                    completion(nil, nil)
                     return
                 }
-                let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
-                if contentType == "application/octet-stream" && !decrypt {
-                    completion(data.bytes, nil)
-                } else {
-                    // Handle text/plain and application/json content types
-                    guard let text = String(data: data, encoding: .utf8) else {
-                        return
-                    }
-                    if decrypt {
-                        guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
-                            completion(nil, nil)
+                let verifyAndGetCipherText = Promise<String>() { resolve, reject in
+                    if !verify {
+                        // Decrypt, but not verify
+                        guard let encryptedText = String(data: data, encoding: .utf8) else {
+                            reject(GaiaError.invalidResponse)
                             return
                         }
-                        let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: text, privateKey: privateKey)
-                        completion(decryptedValue, nil)
+                        resolve(encryptedText)
                     } else {
-                        completion(text, nil)
+                        // Decrypt && verify
+                        guard let signatureObject = try? JSONDecoder().decode(SignatureObject.self, from: data),
+                            let encryptedText = signatureObject.cipherText else {
+                                reject(GaiaError.invalidResponse)
+                                return
+                        }
+                        let getUserAddress = Promise<String> { resolveAddress, rejectAddress in
+                            if multiplayerOptions == nil {
+                                guard let userPublicKey = Keys.getPublicKeyFromPrivate(privateKey, compressed: true),
+                                    let address = Keys.getAddressFromPublicKey(userPublicKey) else {
+                                        reject(GaiaError.signatureVerificationError)
+                                        return
+                                }
+                                resolveAddress(address)
+                            } else {
+                                self.getGaiaAddress(multiplayerOptions: multiplayerOptions!).then({
+                                    resolve($0)
+                                }).catch(rejectAddress)
+                            }
+                        }
+                        getUserAddress.then({ userAddress in
+                            let signerAddress = Keys.getAddressFromPublicKey(signatureObject.publicKey)
+                            guard signerAddress == userAddress,
+                                let isSignatureValid = EllipticJS().verifyECDSA(
+                                    content: encryptedText.bytes,
+                                    publicKey: signatureObject.publicKey,
+                                    signature: signatureObject.signature),
+                                isSignatureValid else {
+                                    completion(nil, GaiaError.signatureVerificationError)
+                                    return
+                            }
+                            resolve(encryptedText)
+                        }).catch(reject)
                     }
                 }
+                verifyAndGetCipherText.then({ cipherText in
+                    let decryptedValue = Encryption.decryptECIES(cipherObjectJSONString: cipherText, privateKey: privateKey)
+                    completion(decryptedValue, nil)
+                }).catch { error in
+                    completion(nil, error as? GaiaError ?? GaiaError.signatureVerificationError)
+                }
+                return
+            } else {
+                // We should not be here.
+                completion(nil, GaiaError.requestError)
+                return
             }
-            task.resume()
-        }
-        if let options = multiplayerOptions {
-            Blockstack.shared.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) { url in
-                fetch(url?.appendingPathComponent(path))
-            }
-        } else {
-            fetch(URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)"))
+        }).catch { error in
+            completion(nil, error as? GaiaError ?? GaiaError.requestError)
         }
     }
-    
-    func putFile(to path: String, content: Bytes, encrypt: Bool = true, completion: @escaping (String?, GaiaError?) -> ()) {
-        if encrypt {
-            guard let data = self.encrypt(content: .bytes(content)) else {
-                // TODO: Error for invalid app public key?
+
+    func putFile(to path: String, content: Bytes, encrypt: Bool, encryptionKey: String?, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
+        guard let data = encrypt ?
+            self.encrypt(content: .bytes(content), with: encryptionKey) :
+            Data(bytes: content) else {
+                // TODO: Throw error
                 completion(nil, nil)
                 return
-            }
-            self.upload(path: path, contentType: "application/json", data: data, completion: completion)
-        } else {
-            self.upload(path: path, contentType: "application/octet-stream", data: Data(bytes: content), completion: completion)
         }
+        self.signAndPutData(to: path, content: data, originalContentType: "application/octet-stream", encrypted: encrypt, sign: sign, signingKey: signingKey, completion: completion)
     }
     
-    func putFile(to path: String, content: String, encrypt: Bool = true, completion: @escaping (String?, GaiaError?) -> ()) {
-        if encrypt {
-            guard let data = self.encrypt(content: .text(content)) else {
-                // TODO: Error for invalid app public key?
+    func putFile(to path: String, content: String, encrypt: Bool, encryptionKey: String?, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
+        guard let data = encrypt ?
+            self.encrypt(content: .text(content), with: encryptionKey) :
+            content.data(using: .utf8) else {
+                // TODO: Throw error
                 completion(nil, nil)
                 return
-            }
-            self.upload(path: path, contentType: "application/json", data: data, completion: completion)
-        } else {
-            guard let data = content.data(using: .utf8) else {
-                completion(nil, nil)
-                return
-            }
-            self.upload(path: path, contentType: "text/plain", data: data, completion: completion)
         }
+        self.signAndPutData(to: path, content: data, originalContentType: "text/plain", encrypted: encrypt, sign: sign, signingKey: signingKey, completion: completion)
     }
     
     // MARK: - Private
@@ -163,26 +223,141 @@ class GaiaHubSession {
         case bytes(Bytes)
     }
     
-    private func encrypt(content: Content) -> Data? {
-        // Encrypt to Gaia using the app public key
-        guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey,
-            let publicKey = Keys.getPublicKeyFromPrivate(privateKey) else {
-                return nil
+    private func encrypt(content: Content, with key: String? = nil) -> Data? {
+        var publicKey = key
+        if publicKey == nil {
+            // Encrypt to Gaia using the app public key
+            guard let privateKey = ProfileHelper.retrieveProfile()?.privateKey else {
+                    return nil
+            }
+            publicKey = Keys.getPublicKeyFromPrivate(privateKey)
+        }
+        
+        guard let recipientPublicKey = publicKey else {
+            return nil
         }
 
         // Encrypt and serialize to JSON
         var cipherObjectJSON: String?
         switch content {
         case let .bytes(bytes):
-            cipherObjectJSON = Encryption.encryptECIES(content: bytes, recipientPublicKey: publicKey, isString: false)
+            cipherObjectJSON = Encryption.encryptECIES(content: bytes, recipientPublicKey: recipientPublicKey, isString: false)
         case let .text(text):
-            cipherObjectJSON = Encryption.encryptECIES(content: text, recipientPublicKey: publicKey)
+            cipherObjectJSON = Encryption.encryptECIES(content: text, recipientPublicKey: recipientPublicKey)
         }
         
         guard let cipher = cipherObjectJSON else {
             return nil
         }
         return cipher.data(using: .utf8)
+    }
+    
+    private func getFileContents(at path: String, multiplayerOptions: MultiplayerOptions?) -> Promise<(Data, String)> {
+        let getReadURL = Promise<URL> { resolve, reject in
+            if let options = multiplayerOptions {
+                Blockstack.shared.getUserAppFileURL(at: path, username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
+                    guard let fetchURL = $0?.appendingPathComponent(path) else {
+                        reject(GaiaError.requestError)
+                        return
+                    }
+                    resolve(fetchURL)
+                }
+            } else {
+                resolve(URL(string: "\(self.config.URLPrefix!)\(self.config.address!)/\(path)")!)
+            }
+        }
+        return Promise<(Data, String)>() { resolve, reject in
+            getReadURL.then({ url in
+                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                    guard error == nil,
+                        let data = data else {
+                            print("Gaia hub store request error")
+                            reject(GaiaError.requestError)
+                            return
+                    }
+                    let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
+                    resolve((data, contentType))
+                }
+                task.resume()
+            }).catch { error in
+                reject(error)
+            }
+        }
+    }
+
+    private func getGaiaAddress(multiplayerOptions: MultiplayerOptions? = nil) -> Promise<String> {
+        let parseUrl: (String) -> (String?) = { urlString in
+            let pattern = Regex("([13][a-km-zA-HJ-NP-Z0-9]{26,35})")
+            let matches = pattern.allMatches(in: urlString)
+            return matches.last?.matchedString
+        }
+        return Promise<String>() { resolve, reject in
+            guard let options = multiplayerOptions else {
+                guard let prefix = self.config.URLPrefix,
+                    let hubAddress = self.config.address,
+                    let gaiaAddress = parseUrl("\(prefix)\(hubAddress)/") else {
+                        reject(GaiaError.requestError)
+                        return
+                }
+                resolve(gaiaAddress)
+                return
+            }
+            Blockstack.shared.getUserAppFileURL(at: "/", username: options.username, appOrigin: options.app, zoneFileLookupURL: options.zoneFileLookupURL) {
+                guard let readUrl = $0, let gaiaAddress = parseUrl(readUrl.absoluteString) else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                resolve(gaiaAddress)
+            }
+        }
+    }
+    
+    private func signAndPutData(to path: String, content: Data, originalContentType: String, encrypted: Bool, sign: Bool, signingKey: String?, completion: @escaping (String?, GaiaError?) -> ()) {
+        if encrypted && !sign {
+            self.upload(path: path, contentType: "application/json", data: content, completion: completion)
+        } else if encrypted && sign {
+            guard let privateKey = signingKey ?? Blockstack.shared.loadUserData()?.privateKey,
+                let signatureObject = EllipticJS().signECDSA(privateKey: privateKey, content: content.bytes) else {
+                    // Handle error
+                    completion(nil, nil)
+                    return
+            }
+            let signedCipherObject = SignatureObject(
+                signature: signatureObject.signature,
+                publicKey: signatureObject.publicKey,
+                cipherText: String(data: content, encoding: .utf8))
+            guard let jsonData = try?  JSONEncoder().encode(signedCipherObject) else {
+                // Handle error
+                completion(nil, nil)
+                return
+            }
+            self.upload(path: path, contentType: "application/json", data: jsonData, completion: completion)
+        }  else if !encrypted && sign {
+            // If signing but not encryption, 2 uploads are needed
+            guard let privateKey = signingKey ?? Blockstack.shared.loadUserData()?.privateKey,
+                let signatureObject = EllipticJS().signECDSA(privateKey: privateKey, content: content.bytes),
+                let jsonData = try?  JSONEncoder().encode(signatureObject) else {
+                    // Handle error
+                    completion(nil, nil)
+                    return
+            }
+            self.upload(path: path, contentType: originalContentType, data: content) { fileURL, error in
+                guard let url = fileURL, error == nil else {
+                    completion(nil, error)
+                    return
+                }
+                self.upload(path: "\(path)\(signatureFileSuffix)", contentType: "application/json", data: jsonData) { _, error in
+                    guard error == nil else {
+                        completion(nil, error)
+                        return
+                    }
+                    completion(url, nil)
+                }
+            }
+        } else {
+            // Not encrypting or signing
+            self.upload(path: path, contentType: originalContentType, data: content, completion: completion)
+        }
     }
     
     private func upload(path: String, contentType: String, data: Data, completion: @escaping (String?, GaiaError?) -> ()) {

@@ -16,4 +16,5 @@ public enum AuthError: Error {
     case invalidResponse
     case connectionError
     case configurationError
+    case signatureVerificationError
 }

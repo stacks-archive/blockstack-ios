@@ -70,8 +70,8 @@ class ViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
-            let text = alert.textFields?.first?.text ?? "Default Text"
-            Blockstack.shared.putFile(to: "testFile", text: text, encrypt: true) { (publicURL, error) in
+            let text: String = alert.textFields?.first?.text ?? "Default Text"
+            Blockstack.shared.putFile(to: "testFile", text: text, encrypt: false, sign: true, signingKey: nil) { (publicURL, error) in
                 if error != nil {
                     print("put file error")
                 } else {
@@ -82,18 +82,19 @@ class ViewController: UIViewController {
     }
     
     @IBAction func getFileTapped(_ sender: Any) {                
-        // Read data from Gaia'
-        Blockstack.shared.getFile(at: "testFile", decrypt: true) { response, error in
+        // Read data from Gaia
+        Blockstack.shared.getFile(at: "testFile", decrypt: false, verify: true) { response, error in
             if error != nil {
                 print("get file error")
             } else {
                 print("get file success")
-                print(response as Any)
-
-                let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
-                let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                guard response != nil else {
+                    let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
+                    let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
             }
         }
     }
