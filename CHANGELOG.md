@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2019-05-25
+
+### Added
+- `Blockstack.hasSession` property added. This may fix some issues with the React Native SDK.
+- Signing on `putFile` and verification on `getFile` are now supported.
+
+### Changed
+- `putFile` and `getFile` now encrypt and decrypt, respectively, by default. THis matches the behavior of blockstack.js.
+    NOTE: This may break existing applications built around the previous assumption of no encryption. Please update your apps accordingly.
+- Swift 3 is now supported, in addition to Swift 4. This removes the need to update your Mac OS as well as XCode prior to getting started, but it's still recommend to be updated :). 
+
+## [0.5.4] - 2019-04-07
+
+### Added
+- Improved documentation, visible at https://blockstack.github.io/blockstack-ios/
+
+### Changed
+- Elliptic Curve key methods (generation, shared secret derivation, etc.) are now exposed via the `Keys` object.
+- `ASWebAuthenticationSession` is now utilized for iOS 12 and above, with `SFAuthenticationSession` being the fallback for lower versions. This allows sign in state and cookies to be shared across apps and the Safari browser (sign in once, be authenticated everywhere).
+
 ## [0.5.2] - 2019-02-25
 
 ### Added
