@@ -94,7 +94,26 @@ class GaiaSpec: QuickSpec {
                         }
                     }
                 }
+                
+                it ("can delete") {
+                    let content = "Testing123"
+                    waitUntil(timeout: 20) { done in
+                        self.testUpload(filename: filename, content: .text(content), encrypt: true, sign: false) { _ in
+                            Blockstack.shared.deleteFile(at: filename) { error in
+                                guard error == nil else {
+                                    fail()
+                                    return
+                                }
+                                // If it was really deleted, this should fail.
+                                self.testRetrieve(from: filename, decrypt: true, verify: false) { response in
+                                    expect(response as? String).to(beNil())
+                                }
+                            }
+                        }
+                    }
+                }
             }
+            
             context("signing") {
                 it ("can sign and verify without encryption") {
                     let content = "Testing123"
@@ -133,6 +152,23 @@ class GaiaSpec: QuickSpec {
                         }
                     }
                     expect(result).toEventually(equal(content), timeout: 20, pollInterval: 1)
+                }
+                it ("can sign and delete") {
+                    let content = "Testing123"
+                    waitUntil(timeout: 20) { done in
+                        self.testUpload(filename: filename, content: .text(content), encrypt: false, sign: true) { _ in
+                            Blockstack.shared.deleteFile(at: filename) { error in
+                                guard error == nil else {
+                                    fail()
+                                    return
+                                }
+                                // The signature file should be deleted as well.
+                                self.testRetrieve(from: "\(filename).sig)", decrypt: false, verify: false) { response in
+                                    expect(response as? String).to(beNil())
+                                }
+                            }
+                        }
+                    }
                 }
             }
             context("multiplayer") {
