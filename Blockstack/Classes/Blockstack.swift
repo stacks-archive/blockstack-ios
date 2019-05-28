@@ -557,7 +557,7 @@ public enum BlockstackConstants {
             session.putFile(to: path, content: bytes, encrypt: encrypt, encryptionKey: nil, sign: sign, signingKey: signingKey) { url, error in
                 guard error != .configurationError else {
                     // Retry with a new config
-                    Gaia.setLocalGaiaHubConnection() { session, error in
+                    Gaia.setLocalGaiaHubConnection { session, error in
                         guard let session = session, error == nil else {
                             print("gaia connection error upon retry")
                             completion(nil, error)
