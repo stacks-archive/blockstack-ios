@@ -650,6 +650,17 @@ public enum BlockstackConstants {
             }
             session.deleteFile(at: path, wasSigned: wasSigned) { error in
                 guard error == nil else {
+                    // Retry with a new config
+                    Gaia.getOrSetLocalHubConnection { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error")
+                            completion?(error)
+                            return
+                        }
+                        session.deleteFile(at: path, wasSigned: wasSigned) {
+                            completion?($0)
+                        }
+                    }
                     return
                 }
                 completion?(nil)
