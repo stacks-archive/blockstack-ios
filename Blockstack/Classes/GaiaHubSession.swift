@@ -216,6 +216,19 @@ class GaiaHubSession {
         self.signAndPutData(to: path, content: data, originalContentType: "text/plain", encrypted: encrypt, sign: sign, signingKey: signingKey, completion: completion)
     }
     
+    func deleteFile(at path: String, wasSigned: Bool, completion: @escaping ((Error?) -> Void)) {
+        var promises = [Promise<Void>]()
+        promises.append(self.deleteItem(at: path))
+        if wasSigned {
+            promises.append(self.deleteItem(at: "\(path)\(signatureFileSuffix)"))
+        }
+        all(promises).then({ _ in
+            completion(nil)
+        }).catch { error in
+            completion(error)
+        }
+    }
+    
     // MARK: - Private
     
     private enum Content {

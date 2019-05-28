@@ -636,6 +636,28 @@ public enum BlockstackConstants {
     }
     
     /**
+     Deletes the specified file from the app's data store.
+     - parameter path: The path to the file to delete.
+     - parameter wasSigned: Set to true if the file was originally signed in order for the corresponding signature file to also be deleted.
+     - returns: Resolves when the file has been removed or rejects with an error.
+     */
+    @objc public func deleteFile(at path: String, wasSigned: Bool = false, completion: ((Error?) -> Void)? = nil) {
+        Gaia.getOrSetLocalHubConnection { session, error in
+            guard let session = session, error == nil else {
+                print("gaia connection error")
+                completion?(error)
+                return
+            }
+            session.deleteFile(at: path, wasSigned: wasSigned) { error in
+                guard error == nil else {
+                    return
+                }
+                completion?(nil)
+            }
+        }
+    }
+
+    /**
      Encrypts the data provided with the app public key.
      - parameter bytes: Bytes (Array<UInt8>) data to encrypt.
      - parameter publicKey: The hex string of the ECDSA public key to use for encryption. If not provided, will use a public key derived from user's appPrivateKey.
