@@ -10,6 +10,8 @@ import Quick
 import Nimble
 import Blockstack
 
+fileprivate let filename = "testFile"
+
 class GaiaSpec: QuickSpec {
     
     struct User {
@@ -22,13 +24,12 @@ class GaiaSpec: QuickSpec {
         let mary = User(userID: "testing5678.id.blockstack", privateKey: "73d79d4833606b173ad44a6634fd07e621cfdd1ce9f30021c7536b13910edc18")
 
         describe("Gaia") {
-            let fileName = "testFile"
             // Clear file before each test
             beforeEach {
                 Blockstack.shared.signUserOut()
                 self.signIn(bob)
                 waitUntil(timeout: 10) { done in
-                    self.testUpload(fileName: fileName, content: .text(""), encrypt: false) { _ in
+                    self.testUpload(filename: filename, content: .text(""), encrypt: false) { _ in
                         done()
                     }
                 }
@@ -41,9 +42,9 @@ class GaiaSpec: QuickSpec {
                     var result: String?
                     // MARK: - Gaia__without_encryption__for_text_content__can_upload_and_retrieve
                     it("can upload and retrieve") {
-                        self.testUpload(fileName: fileName, content: .text(textContent), encrypt: false) { _ in
+                        self.testUpload(filename: filename, content: .text(textContent), encrypt: false) { _ in
                             wasUploaded = true
-                            self.testRetrieve(from: fileName, decrypt: false) { content in
+                            self.testRetrieve(from: filename, decrypt: false) { content in
                                 result = content as? String
                             }
                         }
@@ -57,9 +58,9 @@ class GaiaSpec: QuickSpec {
                     var result: Bytes?
                     // MARK: - Gaia__without_encryption__for_bytes_content__can_upload_and_retrieve
                     it("can upload and retrieve") {
-                        self.testUpload(fileName: fileName, content: .bytes(bytesContent), encrypt: false) { _ in
+                        self.testUpload(filename: filename, content: .bytes(bytesContent), encrypt: false) { _ in
                             wasUploaded = true
-                            self.testRetrieve(from: fileName, decrypt: false) { content in
+                            self.testRetrieve(from: filename, decrypt: false) { content in
                                 result = content as? Bytes
                             }
                         }
@@ -73,8 +74,8 @@ class GaiaSpec: QuickSpec {
                 it("can upload and retrieve") {
                     let content = "Encrypted Testing Pass"
                     var result: String?
-                    self.testUpload(fileName: fileName, content: .text(content), encrypt: true) { _ in
-                        self.testRetrieve(from: fileName, decrypt: true) { content in
+                    self.testUpload(filename: filename, content: .text(content), encrypt: true) { _ in
+                        self.testRetrieve(from: filename, decrypt: true) { content in
                             result = (content as? DecryptedValue)?.plainText
                         }
                     }
@@ -85,8 +86,8 @@ class GaiaSpec: QuickSpec {
                 it("fails retrieve without decrypt") {
                     let content = "Encrypted Testing Fail"
                     waitUntil(timeout: 10) { done in
-                        self.testUpload(fileName: fileName, content: .text(content), encrypt: true) { _ in
-                            self.testRetrieve(from: fileName, decrypt: false) { response in
+                        self.testUpload(filename: filename, content: .text(content), encrypt: true) { _ in
+                            self.testRetrieve(from: filename, decrypt: false) { response in
                                 expect(response as? String).toNot(equal(content))
                                 done()
                             }
@@ -98,8 +99,8 @@ class GaiaSpec: QuickSpec {
                 it ("can sign and verify without encryption") {
                     let content = "Testing123"
                     waitUntil(timeout: 10) { done in
-                        self.testUpload(fileName: fileName, content: .text(content), encrypt: false, sign: true) { _ in
-                            self.testRetrieve(from: fileName, decrypt: false, verify: true) { response in
+                        self.testUpload(filename: filename, content: .text(content), encrypt: false, sign: true) { _ in
+                            self.testRetrieve(from: filename, decrypt: false, verify: true) { response in
                                 expect(response as? String).to(equal(content))
                                 done()
                             }
@@ -109,8 +110,8 @@ class GaiaSpec: QuickSpec {
                 it ("can sign and verify with encryption") {
                     let content = "Testing123"
                     waitUntil(timeout: 10) { done in
-                        self.testUpload(fileName: fileName, content: .text(content), encrypt: true, sign: true) { _ in
-                            self.testRetrieve(from: fileName, decrypt: true, verify: true) { response in
+                        self.testUpload(filename: filename, content: .text(content), encrypt: true, sign: true) { _ in
+                            self.testRetrieve(from: filename, decrypt: true, verify: true) { response in
                                 let result = (response as? DecryptedValue)?.plainText
                                 expect(result).to(equal(content))
                                 done()
@@ -121,12 +122,12 @@ class GaiaSpec: QuickSpec {
                 it ("can sign and verify with multiplayer") {
                     let content = "Testing123"
                     var result: String?
-                    self.testUpload(fileName: fileName, content: .text(content), encrypt: false, sign: true) { url in
+                    self.testUpload(filename: filename, content: .text(content), encrypt: false, sign: true) { url in
                         Blockstack.shared.signUserOut()
                         // Switch users
                         self.signIn(mary)
                         // Retrieve Bob's file
-                        Blockstack.shared.getFile(at: fileName, verify: true, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
+                        Blockstack.shared.getFile(at: filename, verify: true, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
                             response, _ in
                             result = response as? String
                         }
@@ -139,12 +140,12 @@ class GaiaSpec: QuickSpec {
                 it ("can retrieve") {
                     let content = "Multiplayer Hello World"
                     var result: String?
-                    self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { url in
+                    self.testUpload(filename: filename, content: .text(content), encrypt: false) { url in
                         Blockstack.shared.signUserOut()
                         // Switch users
                         self.signIn(mary)
                         // Retrieve Bob's file
-                        Blockstack.shared.getFile(at: fileName, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
+                        Blockstack.shared.getFile(at: filename, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
                             response, _ in
                             result = response as? String
                         }
@@ -174,7 +175,7 @@ class GaiaSpec: QuickSpec {
 
                     let content = "Testing upload"
                     var url: String?
-                    self.testUpload(fileName: fileName, content: .text(content), encrypt: false) { result in
+                    self.testUpload(filename: filename, content: .text(content), encrypt: false) { result in
                         url = result
                     }
                     expect(url).toEventuallyNot(beNil(), timeout: 10, pollInterval: 1)
@@ -193,7 +194,7 @@ class GaiaSpec: QuickSpec {
                 it("does encounter specific file") {
                     var fileFound = false
                     Blockstack.shared.listFiles(callback: {
-                        if $0 == fileName {
+                        if $0 == filename {
                             fileFound = true
                             return false
                         }
@@ -229,13 +230,13 @@ class GaiaSpec: QuickSpec {
     }
     
     /// Convenience funtion to fail when presented with errors for putFile
-    private func testUpload(fileName: String, content: Content, encrypt: Bool, sign: Bool = false, completion: @escaping (String) -> ()) {
+    private func testUpload(filename: String, content: Content, encrypt: Bool, sign: Bool = false, completion: @escaping (String) -> ()) {
         let put: (Content, @escaping (String?, Error?) -> ()) -> () = { content, callback in
             switch content {
             case let .text(text):
-                Blockstack.shared.putFile(to: fileName, text: text, encrypt: encrypt, sign: sign, completion: callback)
+                Blockstack.shared.putFile(to: filename, text: text, encrypt: encrypt, sign: sign, completion: callback)
             case let .bytes(bytes):
-                Blockstack.shared.putFile(to: fileName, bytes: bytes, encrypt: encrypt, sign: sign, completion: callback)
+                Blockstack.shared.putFile(to: filename, bytes: bytes, encrypt: encrypt, sign: sign, completion: callback)
             }
         }
         
