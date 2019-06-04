@@ -657,8 +657,8 @@ public enum BlockstackConstants {
                             completion?(error)
                             return
                         }
-                        session.deleteFile(at: path, wasSigned: wasSigned) {
-                            completion?($0)
+                        session.deleteFile(at: path, wasSigned: wasSigned) { error in
+                            completion?(error)
                         }
                     }
                     return
