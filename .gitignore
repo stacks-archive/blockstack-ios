@@ -68,3 +68,4 @@ fastlane/screenshots
 fastlane/test_output
 .DS_Store
 Example/Blockstack.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+Tools/Blockstack-webapp/package-lock.json
