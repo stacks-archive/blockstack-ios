@@ -641,7 +641,7 @@ public enum BlockstackConstants {
      - parameter wasSigned: Set to true if the file was originally signed in order for the corresponding signature file to also be deleted.
      - returns: Resolves when the file has been removed or rejects with an error.
      */
-    @objc public func deleteFile(at path: String, wasSigned: Bool = false, completion: ((Error?) -> Void)? = nil) {
+    @objc public func deleteFile(at path: String, wasSigned: Bool, completion: ((Error?) -> Void)? = nil) {
         Gaia.getOrSetLocalHubConnection { session, error in
             guard let session = session, error == nil else {
                 print("gaia connection error")
