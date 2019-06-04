@@ -11,6 +11,16 @@ import Foundation
  A helper class for Profile related operations.
  */
 public class ProfileHelper {
+    
+    public static func fetchCurrentUserProfile(completion: @escaping (Profile?, Error?) -> Void) {
+        guard let urlString = Blockstack.shared.loadUserData()?.profileURL,
+            let url = URL(string: urlString) else {
+                completion(nil, NSError(domain: "blockstack", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not load authenticated user data."]))
+                return
+        }
+        self.fetch(profileURL: url, completion: completion)
+    }
+    
     /**
      Fetch a Profile object from the specified URL.
      - parameter profileURL: The profile URL.
