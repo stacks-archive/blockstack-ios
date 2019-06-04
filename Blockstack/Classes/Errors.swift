@@ -18,4 +18,5 @@ public enum AuthError: Error {
     case configurationError
     case signatureVerificationError
     case fileNotFoundError
+    case serverError
 }

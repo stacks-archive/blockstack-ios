@@ -289,11 +289,15 @@ class GaiaHubSession {
                             reject(GaiaError.requestError)
                             return
                     }
-                    if httpResponse.statusCode == 404 {
+                    switch httpResponse.statusCode {
+                    case 200:
+                        let contentType = httpResponse.allHeaderFields["Content-Type"] as? String ?? "application/json"
+                        resolve((data, contentType))
+                    case 404:
                         reject(GaiaError.fileNotFoundError)
+                    default:
+                        reject(GaiaError.serverError)
                     }
-                    let contentType = httpResponse.allHeaderFields["Content-Type"] as? String ?? "application/json"
-                    resolve((data, contentType))
                 }
                 task.resume()
             }).catch { error in
