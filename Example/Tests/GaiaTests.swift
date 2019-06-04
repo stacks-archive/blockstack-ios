@@ -99,14 +99,19 @@ class GaiaSpec: QuickSpec {
                     let content = "Testing123"
                     waitUntil(timeout: 20) { done in
                         self.testUpload(filename: filename, content: .text(content), encrypt: true, sign: false) { _ in
-                            Blockstack.shared.deleteFile(at: filename) { error in
+                            Blockstack.shared.deleteFile(at: filename, wasSigned: false) { error in
                                 guard error == nil else {
                                     fail()
                                     return
                                 }
                                 // If it was really deleted, this should fail.
-                                self.testRetrieve(from: filename, decrypt: true, verify: false) { response in
-                                    expect(response as? String).to(beNil())
+                                Blockstack.shared.getFile(at: filename, decrypt: true, verify: false) { _, error in
+                                    guard let gaiaError = error as? GaiaError else {
+                                        fail("Expected file not found error.")
+                                        return
+                                    }
+                                    expect(gaiaError == .fileNotFoundError).to(beTrue())
+                                    done()
                                 }
                             }
                         }
@@ -157,14 +162,18 @@ class GaiaSpec: QuickSpec {
                     let content = "Testing123"
                     waitUntil(timeout: 20) { done in
                         self.testUpload(filename: filename, content: .text(content), encrypt: false, sign: true) { _ in
-                            Blockstack.shared.deleteFile(at: filename) { error in
+                            Blockstack.shared.deleteFile(at: filename, wasSigned: false) { error in
                                 guard error == nil else {
                                     fail()
                                     return
                                 }
                                 // The signature file should be deleted as well.
-                                self.testRetrieve(from: "\(filename).sig)", decrypt: false, verify: false) { response in
-                                    expect(response as? String).to(beNil())
+                                Blockstack.shared.getFile(at: "\(filename).sig)", decrypt: true, verify: false) { _, error in
+                                    guard let gaiaError = error as? GaiaError else {
+                                        return
+                                    }
+                                    expect(gaiaError == .fileNotFoundError).to(beTrue())
+                                    done()
                                 }
                             }
                         }
