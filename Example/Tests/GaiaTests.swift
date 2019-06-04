@@ -29,7 +29,7 @@ class GaiaSpec: QuickSpec {
                 Blockstack.shared.signUserOut()
                 self.signIn(bob)
                 waitUntil(timeout: 10) { done in
-                    self.testUpload(filename: filename, content: .text(""), encrypt: false) { _ in
+                    self.testUpload(filename: filename, content: .text("Invalid Content"), encrypt: false) { _ in
                         done()
                     }
                 }
