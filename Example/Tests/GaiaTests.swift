@@ -146,7 +146,7 @@ class GaiaSpec: QuickSpec {
                         // Switch users
                         self.signIn(mary)
                         // Retrieve Bob's file
-                        Blockstack.shared.getFile(at: filename, verify: true, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
+                        Blockstack.shared.getFile(at: filename, decrypt: false, verify: true, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
                             response, _ in
                             result = response as? String
                         }
@@ -181,7 +181,7 @@ class GaiaSpec: QuickSpec {
                         // Switch users
                         self.signIn(mary)
                         // Retrieve Bob's file
-                        Blockstack.shared.getFile(at: filename, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
+                        Blockstack.shared.getFile(at: filename, decrypt: false, username: bob.userID, app: "https://pedantic-mahavira-f15d04.netlify.com") {
                             response, _ in
                             result = response as? String
                         }
