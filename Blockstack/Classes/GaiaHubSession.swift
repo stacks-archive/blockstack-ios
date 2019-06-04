@@ -283,12 +283,16 @@ class GaiaHubSession {
             getReadURL.then({ url in
                 let task = URLSession.shared.dataTask(with: url) { data, response, error in
                     guard error == nil,
+                        let httpResponse = response as? HTTPURLResponse,
                         let data = data else {
                             print("Gaia hub store request error")
                             reject(GaiaError.requestError)
                             return
                     }
-                    let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
+                    if httpResponse.statusCode == 404 {
+                        reject(GaiaError.fileNotFoundError)
+                    }
+                    let contentType = httpResponse.allHeaderFields["Content-Type"] as? String ?? "application/json"
                     resolve((data, contentType))
                 }
                 task.resume()
