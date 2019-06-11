@@ -50,11 +50,7 @@ public enum BlockstackConstants {
             UserDefaults.standard.set(self.isBetaBrowserEnabled, forKey: betaBrowserDefaultsKey)
         }
     }
-    
-    @objc public var hasSession: Bool {
-        return self.loadUserData() != nil
-    }
-    
+        
     // - MARK: Authentication
     
     /**
