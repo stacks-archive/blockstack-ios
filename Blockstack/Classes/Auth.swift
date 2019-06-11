@@ -75,7 +75,9 @@ class Auth {
                     }
                     userData.profile = profile
                     ProfileHelper.storeProfile(profileData: userData)
-                    completion(AuthResult.success(userData: userData))
+                    DispatchQueue.main.async {
+                        completion(AuthResult.success(userData: userData))
+                    }
                 }
             } else {
                 completion(AuthResult.failed(AuthError.invalidResponse))
