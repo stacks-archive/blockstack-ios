@@ -557,7 +557,7 @@ public enum BlockstackConstants {
             session.putFile(to: path, content: bytes, encrypt: encrypt, encryptionKey: nil, sign: sign, signingKey: signingKey) { url, error in
                 guard error != .configurationError else {
                     // Retry with a new config
-                    Gaia.setLocalGaiaHubConnection() { session, error in
+                    Gaia.setLocalGaiaHubConnection { session, error in
                         guard let session = session, error == nil else {
                             print("gaia connection error upon retry")
                             completion(nil, error)
@@ -635,6 +635,39 @@ public enum BlockstackConstants {
         }
     }
     
+    /**
+     Deletes the specified file from the app's data store.
+     - parameter path: The path to the file to delete.
+     - parameter wasSigned: Set to true if the file was originally signed in order for the corresponding signature file to also be deleted.
+     - returns: Resolves when the file has been removed or rejects with an error.
+     */
+    @objc public func deleteFile(at path: String, wasSigned: Bool, completion: ((Error?) -> Void)? = nil) {
+        Gaia.getOrSetLocalHubConnection { session, error in
+            guard let session = session, error == nil else {
+                print("gaia connection error")
+                completion?(error)
+                return
+            }
+            session.deleteFile(at: path, wasSigned: wasSigned) { error in
+                guard error == nil else {
+                    // Retry with a new config
+                    Gaia.getOrSetLocalHubConnection { session, error in
+                        guard let session = session, error == nil else {
+                            print("gaia connection error")
+                            completion?(error)
+                            return
+                        }
+                        session.deleteFile(at: path, wasSigned: wasSigned) { error in
+                            completion?(error)
+                        }
+                    }
+                    return
+                }
+                completion?(nil)
+            }
+        }
+    }
+
     /**
      Encrypts the data provided with the app public key.
      - parameter bytes: Bytes (Array<UInt8>) data to encrypt.

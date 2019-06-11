@@ -9,6 +9,8 @@ import UIKit
 import Blockstack
 import SafariServices
 
+fileprivate let filename = "testFile"
+
 class ViewController: UIViewController {
 
     @IBOutlet var nameLabel: UILabel!
@@ -18,7 +20,6 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         self.updateUI()
-
         Blockstack.shared.isBetaBrowserEnabled = true
     }
     
@@ -71,7 +72,7 @@ class ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
             let text: String = alert.textFields?.first?.text ?? "Default Text"
-            Blockstack.shared.putFile(to: "testFile", text: text, encrypt: false, sign: true, signingKey: nil) { (publicURL, error) in
+            Blockstack.shared.putFile(to: filename, text: text, sign: true, signingKey: nil) { (publicURL, error) in
                 if error != nil {
                     print("put file error")
                 } else {
@@ -83,19 +84,18 @@ class ViewController: UIViewController {
     
     @IBAction func getFileTapped(_ sender: Any) {                
         // Read data from Gaia
-        Blockstack.shared.getFile(at: "testFile", decrypt: false, verify: true) { response, error in
+        Blockstack.shared.getFile(at: filename, verify: true) { response, error in
+            var text: String?
             if error != nil {
                 print("get file error")
+                text = "Could not get file. Try putting something first!"
             } else {
                 print("get file success")
-                guard response != nil else {
-                    let text = (response as? DecryptedValue)?.plainText ?? "Invalid Content: Try putting something first!"
-                    let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-                    return
-                }
+                text = (response as? DecryptedValue)?.plainText ?? "Invalid content"
             }
+            let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -112,7 +112,7 @@ class ViewController: UIViewController {
                 return
             }
             // Read data from Gaia
-            Blockstack.shared.getFile(at: "testFile", username: userID) { response, error in
+            Blockstack.shared.getFile(at: filename, username: userID) { response, error in
                 if error != nil {
                     print("get file error")
                 } else {
@@ -128,6 +128,25 @@ class ViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
+    @IBAction func deleteFile(_ sender: Any) {
+        Blockstack.shared.deleteFile(at: filename, wasSigned: false) { error in
+            var message: String?
+            if let gaiaError = error as? GaiaError {
+                switch gaiaError {
+                case .fileNotFoundError:
+                    message = "'\(filename)' was not found."
+                default:
+                    message = "Something went wrong, could not delete file."
+                }
+            } else {
+                message = "Success! '\(filename)' was deleted."
+            }
+            let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
     @IBAction func listFiles(_ sender: Any) {
         let sheet = UIAlertController(title: "List Files", message: "List all of your files in this application's Gaia storage bucket?", preferredStyle: .actionSheet)
         sheet.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
@@ -154,6 +173,8 @@ class ViewController: UIViewController {
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         self.present(sheet, animated: true, completion: nil)
     }
+
+    // MARK: - Private
     
     private func saveInvalidGaiaConfig() -> Bool {
         // Ensure existing hub connection
@@ -198,7 +219,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func checkIfSignedIn() {
+    private func checkIfSignedIn() {
         Blockstack.shared.isUserSignedIn() ? print("currently signed in") : print("not signed in")
     }
 }

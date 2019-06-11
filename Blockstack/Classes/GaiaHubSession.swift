@@ -216,6 +216,19 @@ class GaiaHubSession {
         self.signAndPutData(to: path, content: data, originalContentType: "text/plain", encrypted: encrypt, sign: sign, signingKey: signingKey, completion: completion)
     }
     
+    func deleteFile(at path: String, wasSigned: Bool, completion: @escaping ((Error?) -> Void)) {
+        var promises = [Promise<Void>]()
+        promises.append(self.deleteItem(at: path))
+        if wasSigned {
+            promises.append(self.deleteItem(at: "\(path)\(signatureFileSuffix)"))
+        }
+        all(promises).then({ _ in
+            completion(nil)
+        }).catch { error in
+            completion(error)
+        }
+    }
+    
     // MARK: - Private
     
     private enum Content {
@@ -270,13 +283,21 @@ class GaiaHubSession {
             getReadURL.then({ url in
                 let task = URLSession.shared.dataTask(with: url) { data, response, error in
                     guard error == nil,
+                        let httpResponse = response as? HTTPURLResponse,
                         let data = data else {
                             print("Gaia hub store request error")
                             reject(GaiaError.requestError)
                             return
                     }
-                    let contentType = (response as? HTTPURLResponse)?.allHeaderFields["Content-Type"] as? String ?? "application/json"
-                    resolve((data, contentType))
+                    switch httpResponse.statusCode {
+                    case 200:
+                        let contentType = httpResponse.allHeaderFields["Content-Type"] as? String ?? "application/json"
+                        resolve((data, contentType))
+                    case 404:
+                        reject(GaiaError.fileNotFoundError)
+                    default:
+                        reject(GaiaError.serverError)
+                    }
                 }
                 task.resume()
             }).catch { error in
@@ -309,6 +330,36 @@ class GaiaHubSession {
                 }
                 resolve(gaiaAddress)
             }
+        }
+    }
+    
+    private func deleteItem(at path: String) -> Promise<Void> {
+        return Promise<Void>() { resolve, reject in
+            guard let url = URL(string:"\(self.config.server!)/delete/\(self.config.address!)/\(path)") else {
+                reject(GaiaError.configurationError)
+                return
+            }
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            request.addValue("bearer \(self.config.token!)", forHTTPHeaderField: "Authorization")
+            let task = URLSession.shared.dataTask(with: request) { _, response, error in
+                guard error == nil else {
+                    print("Gaia hub store request error")
+                    reject(GaiaError.requestError)
+                    return
+                }
+                if let code = (response as? HTTPURLResponse)?.statusCode {
+                    if code == 404 {
+                        reject(GaiaError.fileNotFoundError)
+                        return
+                    } else if code < 200 || code > 299 {
+                        reject(GaiaError.requestError)
+                        return
+                    }
+                }
+                resolve(())
+            }
+            task.resume()
         }
     }
     
@@ -384,7 +435,11 @@ class GaiaHubSession {
             do {
                 let jsonDecoder = JSONDecoder()
                 let putfileResponse = try jsonDecoder.decode(PutFileResponse.self, from: data)
-                completion(putfileResponse.publicURL!, nil)
+                if let url = putfileResponse.publicURL {
+                    completion(url, nil)
+                } else {
+                    completion(nil, GaiaError.invalidResponse)
+                }
             } catch {
                 completion(nil, GaiaError.invalidResponse)
             }

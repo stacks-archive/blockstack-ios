@@ -4,7 +4,7 @@ jobs:
 
     # Specify the Xcode version to use
     macos:
-      xcode: "9.4.1"
+      xcode: "10.2.1"
 
     steps:
       - checkout
@@ -21,7 +21,7 @@ jobs:
           command: fastlane scan
           working_directory: Example
           environment:
-            SCAN_DEVICE: iPhone 6
+            SCAN_DEVICE: iPhone 8
             SCAN_SCHEME: Blockstack-Example
             SCAN_OUTPUT_DIRECTORY: ./test_output
             SCAN_OUTPUT_TYPES: junit
