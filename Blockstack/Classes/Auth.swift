@@ -35,7 +35,7 @@ public enum AuthScope: String {
 class Auth {
 
     static func makeRequest(transitPrivateKey: String,
-                            redirectURLScheme: String,
+                            redirectURI: URL,
                             manifestURI: URL,
                             appDomain: URL,
                             appBundleID: String,
@@ -55,7 +55,7 @@ class Auth {
             "domain_name": appDomain.absoluteString,
             "app_bundle_id": appBundleID,
             "manifest_uri": manifestURI.absoluteString,
-            "redirect_uri": redirectURLScheme,
+            "redirect_uri": redirectURI.absoluteString,
             "version": BlockstackConstants.AuthProtocolVersion,
             "do_not_include_profile": true,
             "supports_hub_url": true,

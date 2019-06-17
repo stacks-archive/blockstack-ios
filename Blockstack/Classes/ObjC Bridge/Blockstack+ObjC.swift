@@ -57,7 +57,7 @@ extension Blockstack {
      - parameter completion: Callback with an AuthResult object.
      */
     @objc(signInWithRedirectURI:appDomain:manifestURI:scopes:completion:)
-    public func objc_signIn(redirectURI: String, appDomain: URL, manifestURI: URL? = nil, scopes: Array<String> = ["store_write"], completion: @escaping (ObjCAuthResult) -> ()) {
+    public func objc_signIn(redirectURI: URL, appDomain: URL, manifestURI: URL? = nil, scopes: Array<String> = ["store_write"], completion: @escaping (ObjCAuthResult) -> ()) {
         let enumScopes = scopes.compactMap { AuthScope.fromString($0) }
         self.signIn(redirectURI: redirectURI, appDomain: appDomain, manifestURI: manifestURI, scopes: enumScopes) {
             completion(ObjCAuthResult($0))

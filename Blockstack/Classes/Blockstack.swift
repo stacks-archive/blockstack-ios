@@ -61,7 +61,7 @@ public enum BlockstackConstants {
      - parameter scopes: An array of strings indicating which permissions this app is requesting; defaults to requesting write access to this app's data store ("store_write")/
      - parameter completion: Callback with an AuthResult object.
      */
-    public func signIn(redirectURI: String,
+    public func signIn(redirectURI: URL,
                        appDomain: URL,
                        manifestURI: URL? = nil,
                        scopes: [AuthScope] = [.storeWrite],
@@ -78,7 +78,7 @@ public enum BlockstackConstants {
         
         let authRequest = self.makeAuthRequest(
             transitPrivateKey: transitKey,
-            redirectURLScheme: redirectURI,
+            redirectURI: redirectURI,
             manifestURI: _manifestURI!,
             appDomain: appDomain,
             appBundleID: appBundleID,
@@ -113,12 +113,12 @@ public enum BlockstackConstants {
         }
         
         if #available(iOS 12.0, *) {
-            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: redirectURI, completionHandler: completion)
+            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: redirectURI.absoluteString, completionHandler: completion)
             authSession.start()
             self.asWebAuthSession = authSession
         } else {
             // Fallback on earlier versions
-            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI, completionHandler: completion)
+            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: redirectURI.absoluteString, completionHandler: completion)
             self.sfAuthSession?.start()
         }
     }
@@ -133,7 +133,7 @@ public enum BlockstackConstants {
      flow. Typically you'd use `redirectToSignIn` which takes care of this
      under the hood.*
      
-     - parameter transitPrivateKey - hex encoded transit private key
+     - parameter transitPrivateKey: hex encoded transit private key
      - parameter redirectURI: Location to redirect user to after sign in approval
      - parameter manifestURI: Location of this app's manifest file
      - parameter scopes: The permissions this app is requesting
@@ -142,14 +142,14 @@ public enum BlockstackConstants {
      - returns: The authentication request
      */
     public func makeAuthRequest(transitPrivateKey: String,
-                    redirectURLScheme: String,
+                    redirectURI: URL,
                     manifestURI: URL,
                     appDomain: URL,
                     appBundleID: String,
                     scopes: [AuthScope],
                     expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String? {
         return Auth.makeRequest(transitPrivateKey: transitPrivateKey,
-                                redirectURLScheme: redirectURLScheme,
+                                redirectURI: redirectURI,
                                 manifestURI: manifestURI,
                                 appDomain: appDomain,
                                 appBundleID: appBundleID,
