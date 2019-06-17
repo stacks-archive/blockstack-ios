@@ -23,10 +23,7 @@ iOS 11.0+
 
 ## Getting started
 
-Use the [detailed tutorial](docs/tutorial.md) and to build your first Blockstack
-iOS application with React. You can also work through two example apps in
-module ([`/Example`](Example/)) and
-([`/example-multi-activity`](example-multi-activity/))
+Clone this repo and play around with the included sample app, available at ([`/Example`](Example/)). To add Blockstack functionality to your own project, read below.
 
 ## Adding the SDK to a project
 
