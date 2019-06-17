@@ -13,13 +13,33 @@ public enum AuthResult {
     case failed(Error?)
 }
 
+public enum AuthScope: String {
+    case storeWrite = "store_write"
+    case publishData = "publish_data"
+    case email = "email"
+    
+    static func fromString(_ value: String) -> AuthScope? {
+        switch value {
+        case AuthScope.storeWrite.rawValue:
+            return .storeWrite
+        case AuthScope.publishData.rawValue:
+            return .publishData
+        case AuthScope.email.rawValue:
+            return .email
+        default:
+            return nil
+        }
+    }
+}
+
 class Auth {
+
     static func makeRequest(transitPrivateKey: String,
                             redirectURLScheme: String,
                             manifestURI: URL,
                             appDomain: URL,
                             appBundleID: String,
-                            scopes: Array<String>,
+                            scopes: [AuthScope],
                             expiresAt: Date) -> String {
         var request: String
         
@@ -39,7 +59,7 @@ class Auth {
             "version": BlockstackConstants.AuthProtocolVersion,
             "do_not_include_profile": true,
             "supports_hub_url": true,
-            "scopes": scopes
+            "scopes": scopes.compactMap { $0.rawValue }
         ]
         
         request = JSONTokensJS().signToken(payload: payload, privateKey: transitPrivateKey)!

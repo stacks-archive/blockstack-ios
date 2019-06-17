@@ -50,7 +50,7 @@ public enum BlockstackConstants {
             UserDefaults.standard.set(self.isBetaBrowserEnabled, forKey: betaBrowserDefaultsKey)
         }
     }
-        
+    
     // - MARK: Authentication
     
     /**
@@ -64,7 +64,7 @@ public enum BlockstackConstants {
     public func signIn(redirectURI: String,
                        appDomain: URL,
                        manifestURI: URL? = nil,
-                       scopes: Array<String> = ["store_write"],
+                       scopes: [AuthScope] = [.storeWrite],
                        completion: @escaping (AuthResult) -> ()) {
         print("signing in")
         
@@ -146,7 +146,7 @@ public enum BlockstackConstants {
                     manifestURI: URL,
                     appDomain: URL,
                     appBundleID: String,
-                    scopes: Array<String>,
+                    scopes: [AuthScope],
                     expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String? {
         return Auth.makeRequest(transitPrivateKey: transitPrivateKey,
                                 redirectURLScheme: redirectURLScheme,

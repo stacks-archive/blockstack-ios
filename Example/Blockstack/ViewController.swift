@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     @IBAction func signIn() {
         // Address of deployed example web app
         Blockstack.shared.signIn(redirectURI: "https://pedantic-mahavira-f15d04.netlify.com/redirect.html",
-                                 appDomain: URL(string: "https://pedantic-mahavira-f15d04.netlify.com")!, scopes: ["store_write", "publish_data"]) { authResult in
+                                 appDomain: URL(string: "https://pedantic-mahavira-f15d04.netlify.com")!, scopes: [.storeWrite, .publishData]) { authResult in
             switch authResult {
                 case .success(let userData):
                     print("sign in success")
