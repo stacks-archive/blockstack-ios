@@ -103,7 +103,7 @@ class ProfileSpec: QuickSpec {
             it("can validateProofs") {
                 var didValidateProofs = false
                 let userProfileUrl = "https://gaia.blockstack.org/hub/1N3f4aEKpovQWGZ88kF91499A23TYm1GeP/profile.json"
-                let userOwnerAddress = "15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx"
+                let userOwnerAddress = "1N3f4aEKpovQWGZ88kF91499A23TYm1GeP"
                 ProfileHelper.fetch(profileURL: URL(string: userProfileUrl)!) { profile, error in
                     Blockstack.shared.validateProofs(profile: profile!, ownerAddress: userOwnerAddress) { proofs in
                         expect(proofs).toNot(beNil())
