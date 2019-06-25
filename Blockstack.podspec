@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Blockstack'
-  s.version          = '0.7.0'
+  s.version          = '0.7.1'
   s.summary          = 'The Blockstack iOS SDK'
   s.swift_version    = '4.0'
 
