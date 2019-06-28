@@ -35,8 +35,8 @@ public enum BlockstackConstants {
 /**
  A class that contains the native swift implementations of Blockstack.js methods and Blockstack network operations.
  */
-@objc open class Blockstack: NSObject, ASWebAuthenticationPresentationContextProviding {
-    
+@objc open class Blockstack: NSObject {
+
     /**
      A shared instance of Blockstack that exists for the lifetime of your app. Use this instance instead of creating your own.
      */
@@ -114,9 +114,6 @@ public enum BlockstackConstants {
         
         if #available(iOS 12.0, *) {
             let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: redirectURI.absoluteString, completionHandler: completion)
-            if #available(iOS 13.0, *) {
-                authSession.presentationContextProvider = self
-            }
             authSession.start()
             self.asWebAuthSession = authSession
         } else {
@@ -718,14 +715,8 @@ public enum BlockstackConstants {
         return Encryption.decryptECIES(cipherObjectJSONString: content, privateKey: key)
     }
 
-    // MARK: - ASWebAuthenticationPresentationContextProviding
-    
-    @available(iOS 12.0, *)
-    public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
-        return UIApplication.shared.keyWindow!
-    }
-
     // MARK: - Private
+    
     
     private var asWebAuthSession: Any? // ASWebAuthenticationSession
     private var sfAuthSession : SFAuthenticationSession?
