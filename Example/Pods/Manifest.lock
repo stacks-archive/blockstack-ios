@@ -1,5 +1,5 @@
 PODS:
-  - Blockstack (0.7.1):
+  - Blockstack (0.7.2):
     - CryptoSwift (= 0.15.0)
     - PromisesSwift
     - STRegex
@@ -30,7 +30,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Blockstack: 457a9a0e232baeb27ccff4dd6692fc007abb4957
+  Blockstack: e8bc8f2c871cf5349d543f8594febb04391a2adb
   CryptoSwift: 769f58a9e89f64e8796c2e59ce5f002dc81a2438
   Nimble: 622629381bda1dd5678162f21f1368cec7cbba60
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
@@ -40,4 +40,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1d2d7656aa128511a226291cbed4b48588571614
 
-COCOAPODS: 1.7.0
+COCOAPODS: 1.7.2
