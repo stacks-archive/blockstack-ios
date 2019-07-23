@@ -64,9 +64,6 @@ open class BitcoinJS {
         return context
     }()
     
-    init() {
-    }
-    
     public func signChallenge(privateKey: String, challengeText: String) -> String? {
         guard let context = context else {
             print("JSContext not found.")
@@ -79,6 +76,22 @@ open class BitcoinJS {
         let signature = context.evaluateScript("challengeSigner.sign(digest).toDER().toString('hex')")
         return signature?.toString()
     }
+
+    public func fromBase58Check(address: String) -> (version: String, hash: String)? {
+        guard let context = self.context else {
+            return nil
+        }
+        let value = context.evaluateScript("bitcoinjs.address.fromBase58Check('\(address)')")
+        // TODO: Cast properly
+        return value as? (String, String)
+    }
     
+    public func toBase58Check(hash: String, version: String) -> String? {
+        guard let context = self.context else {
+            return nil
+        }
+        let value = context.evaluateScript("bitcoinjs.address.toBase58Check('\(hash)', '\(version)')")
+        return value?.toString()
+    }
     
 }
