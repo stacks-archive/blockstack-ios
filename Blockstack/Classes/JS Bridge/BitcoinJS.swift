@@ -94,4 +94,29 @@ open class BitcoinJS {
         return value?.toString()
     }
     
+    public func coerceAddress(address: String) -> String? {
+        guard let context = self.context else {
+            return nil
+        }
+        context.evaluateScript("""
+            function coerceAddress(address) {
+                const layer1 = bitcoinjs.networks.bitcoin;
+                const { hash, version } = bitcoinjs.address.fromBase58Check(address);
+                const scriptHashes = [bitcoinjs.networks.bitcoin.scriptHash,
+                    bitcoinjs.networks.testnet.scriptHash];
+                const pubKeyHashes = [bitcoinjs.networks.bitcoin.pubKeyHash,
+                    bitcoinjs.networks.testnet.pubKeyHash];
+                let coercedVersion;
+                if (scriptHashes.indexOf(version) >= 0) {
+                    coercedVersion = layer1.scriptHash;
+                } else if (pubKeyHashes.indexOf(version) >= 0) {
+                    coercedVersion = layer1.pubKeyHash;
+                } else {
+                    throw new Error(`Unrecognized address version number ${version} in ${address}`);
+                }
+                return bitcoinjs.address.toBase58Check(hash, coercedVersion);
+            }
+        """)
+        return context.evaluateScript("coerceAddress('\(address)')")?.toString()
+    }
 }
