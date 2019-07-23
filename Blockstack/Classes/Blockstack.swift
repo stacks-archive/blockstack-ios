@@ -723,7 +723,7 @@ public enum BlockstackConstants {
      - parameter fullyQualifiedName: the name to query.  Can be on-chain of off-chain.
      - parameter completion: a callback that includes a dictionary of the WHOIS-like information
      */
-    public func getNameInfo(fullyQualifiedName: String, completion: @escaping ([String: Any]?, Error?) -> ()) {
+     @objc public func getNameInfo(fullyQualifiedName: String, completion: @escaping ([String: Any]?, Error?) -> ()) {
         let fetchNameInfo = Promise<[String: Any]>() { resolve, reject in
             let task = URLSession.shared.dataTask(with: URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/names/\(fullyQualifiedName)")!) {data, response, error in
                 guard error == nil,
@@ -764,7 +764,7 @@ public enum BlockstackConstants {
      - parameter namespaceID: the namespace to query.
      - parameter completion: a callback containing the namespace information.
      */
-    public func getNamespaceInfo(namespaceID: String, completion: @escaping ([String: Any]?, Error?) -> ()) {
+    @objc public func getNamespaceInfo(namespaceID: String, completion: @escaping ([String: Any]?, Error?) -> ()) {
         let fetchNamespaceInfo = Promise<[String: Any]>() { resolve, reject in
             let task = URLSession.shared.dataTask(with: URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/namespaces/\(namespaceID)")!) {data, response, error in
                 guard error == nil,
@@ -810,6 +810,23 @@ public enum BlockstackConstants {
      - returns: a promise that resolves to a list of names (Strings)
      */
     public func getNamesOwned() {
+        // TODO
+    }
+    
+    /**
+     Get the price of a name.
+     - parameter fullyQualifiedName: the name to query
+     - parameter completion: calback that contains price information as { units: String, amount: BigInteger }, where .units encodes the cryptocurrency units to pay (e.g. BTC, STACKS), and .amount encodes the number of units, in the smallest denominiated amount (e.g. if .units is BTC, .amount will be satoshis; if .units is STACKS, .amount will be microStacks)
+     */
+    public func getNamePrice() {
+    }
+    
+    /**
+     Get the price of a namespace via the /v2/prices API endpoint.
+     - parameter namespaceID: the namespace to query
+     - parameter completion: callback that contains price information as { units: String, amount: BigInteger }
+     */
+    public func getNamespacePrice() {
         
     }
     
