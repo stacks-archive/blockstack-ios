@@ -9,6 +9,7 @@ import Foundation
 import AuthenticationServices
 import SafariServices
 import JavaScriptCore
+import Promises
 
 public typealias Bytes = Array<UInt8>
 
@@ -715,6 +716,48 @@ public enum BlockstackConstants {
         return Encryption.decryptECIES(cipherObjectJSONString: content, privateKey: key)
     }
 
+    // MARK: - Network
+    
+    /**
+     Get WHOIS-like information for a name, including the address that owns it, the block at which it expires, and the zone file anchored to it (if available).
+     - parameter fullyQualifiedName: the name to query.  Can be on-chain of off-chain.
+     - parameter completion: a callback that includes a dictionary of the WHOIS-like information
+     */
+    public func getNameInfo(fullyQualifiedName: String, completion: @escaping ([String: Any]?, Error?) -> ()) {
+        let fetchNameInfo = Promise<[String: Any]>() { resolve, reject in
+            let task = URLSession.shared.dataTask(with: URL(string: "https://core.blockstack.org/v1/names/\(fullyQualifiedName)")!) {data, response, error in
+                guard error == nil,
+                    let data = data,
+                    let httpResponse = response as? HTTPURLResponse else {
+                        completion(nil, GaiaError.requestError)
+                        return
+                }
+                switch httpResponse.statusCode {
+                case 200:
+                    guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                        let json = object  as? [String: Any] else {
+                            reject(GaiaError.invalidResponse)
+                            return
+                    }
+                    resolve(json)
+                case 404:
+                    reject(GaiaError.nameNotFoundError)
+                default:
+                    reject(GaiaError.serverError)
+                }
+            }
+            task.resume()
+        }
+        fetchNameInfo.then({ json in
+            var info = json
+            if let address = json["address"] as? String {
+                info["address"] = BitcoinJS().coerceAddress(address: address)
+            }
+            completion(info, nil)
+        }).catch { error in
+            completion(nil, error)
+        }
+    }
     // MARK: - Private
     
     
