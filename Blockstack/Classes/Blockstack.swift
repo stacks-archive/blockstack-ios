@@ -725,7 +725,7 @@ public enum BlockstackConstants {
      */
     public func getNameInfo(fullyQualifiedName: String, completion: @escaping ([String: Any]?, Error?) -> ()) {
         let fetchNameInfo = Promise<[String: Any]>() { resolve, reject in
-            let task = URLSession.shared.dataTask(with: URL(string: "https://core.blockstack.org/v1/names/\(fullyQualifiedName)")!) {data, response, error in
+            let task = URLSession.shared.dataTask(with: URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/names/\(fullyQualifiedName)")!) {data, response, error in
                 guard error == nil,
                     let data = data,
                     let httpResponse = response as? HTTPURLResponse else {
@@ -741,7 +741,7 @@ public enum BlockstackConstants {
                     }
                     resolve(json)
                 case 404:
-                    reject(GaiaError.nameNotFoundError)
+                    reject(GaiaError.itemNotFoundError)
                 default:
                     reject(GaiaError.serverError)
                 }
@@ -758,6 +758,61 @@ public enum BlockstackConstants {
             completion(nil, error)
         }
     }
+    
+    /**
+     Get the pricing parameters and creation history of a namespace.
+     - parameter namespaceID: the namespace to query.
+     - parameter completion: a callback containing the namespace information.
+     */
+    public func getNamespaceInfo(namespaceID: String, completion: @escaping ([String: Any]?, Error?) -> ()) {
+        let fetchNamespaceInfo = Promise<[String: Any]>() { resolve, reject in
+            let task = URLSession.shared.dataTask(with: URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/namespaces/\(namespaceID)")!) {data, response, error in
+                guard error == nil,
+                    let data = data,
+                    let httpResponse = response as? HTTPURLResponse else {
+                        completion(nil, GaiaError.requestError)
+                        return
+                }
+                switch httpResponse.statusCode {
+                case 200:
+                    guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                        let json = object  as? [String: Any] else {
+                            reject(GaiaError.invalidResponse)
+                            return
+                    }
+                    resolve(json)
+                case 404:
+                    reject(GaiaError.itemNotFoundError)
+                default:
+                    reject(GaiaError.serverError)
+                }
+            }
+            task.resume()
+        }
+        fetchNamespaceInfo.then({ json in
+            var info = json
+            let bitcoinJS = BitcoinJS()
+            if let address = json["address"] as? String {
+                info["address"] = bitcoinJS.coerceAddress(address: address)
+            }
+            if let recipientAddress = json["recipient_address"] as? String {
+                info["recipient_address"] = bitcoinJS.coerceAddress(address: recipientAddress)
+            }
+            completion(info, nil)
+        }).catch { error in
+            completion(nil, error)
+        }
+    }
+    
+    /**
+     Get the names -- both on-chain and off-chain -- owned by an address.
+     - parameter address: the blockchain address (the hash of the owner public key)
+     - returns: a promise that resolves to a list of names (Strings)
+     */
+    public func getNamesOwned() {
+        
+    }
+    
     // MARK: - Private
     
     
