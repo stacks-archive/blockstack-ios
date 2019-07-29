@@ -133,7 +133,7 @@ class ViewController: UIViewController {
             var message: String?
             if let gaiaError = error as? GaiaError {
                 switch gaiaError {
-                case .fileNotFoundError:
+                case .itemNotFoundError:
                     message = "'\(filename)' was not found."
                 default:
                     message = "Something went wrong, could not delete file."
