@@ -729,7 +729,7 @@ public enum BlockstackConstants {
                 guard error == nil,
                     let data = data,
                     let httpResponse = response as? HTTPURLResponse else {
-                        completion(nil, GaiaError.requestError)
+                        reject(GaiaError.requestError)
                         return
                 }
                 switch httpResponse.statusCode {
@@ -770,7 +770,7 @@ public enum BlockstackConstants {
                 guard error == nil,
                     let data = data,
                     let httpResponse = response as? HTTPURLResponse else {
-                        completion(nil, GaiaError.requestError)
+                        reject(GaiaError.requestError)
                         return
                 }
                 switch httpResponse.statusCode {
