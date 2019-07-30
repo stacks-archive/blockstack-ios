@@ -827,6 +827,12 @@ public enum BlockstackConstants {
             completion((data.0, data.1), nil)
         }
     }
+        
+    // MARK: - Private
+    
+    private var asWebAuthSession: Any? // ASWebAuthenticationSession
+    private let dustMinimum = 5500
+    private var sfAuthSession : SFAuthenticationSession?
     
     private func getNamePriceV1(_ fullyQualifiedName: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
         let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
@@ -894,19 +900,4 @@ public enum BlockstackConstants {
             completion(nil, error)
         }
     }
-    
-    /**
-     Get the price of a namespace via the /v2/prices API endpoint.
-     - parameter namespaceID: the namespace to query
-     - parameter completion: callback that contains price information as { units: String, amount: BigInteger }
-     */
-    public func getNamespacePrice() {
-        
-    }
-    
-    // MARK: - Private
-    
-    private var asWebAuthSession: Any? // ASWebAuthenticationSession
-    private let dustMinimum = 5500
-    private var sfAuthSession : SFAuthenticationSession?
 }
