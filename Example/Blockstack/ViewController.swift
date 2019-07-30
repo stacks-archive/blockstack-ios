@@ -82,21 +82,79 @@ class ViewController: UIViewController {
         })
     }
     
-    @IBAction func getFileTapped(_ sender: Any) {                
-        // Read data from Gaia
-        Blockstack.shared.getFile(at: filename, verify: true) { response, error in
-            var text: String?
-            if error != nil {
-                print("get file error")
-                text = "Could not get file. Try putting something first!"
-            } else {
-                print("get file success")
-                text = (response as? DecryptedValue)?.plainText ?? "Invalid content"
-            }
-            let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+    @IBAction func getNameInfo(_ sender: Any) {
+        let alert = UIAlertController(title: "Type Name", message: "Type a name to get WHOIS-like info about it.", preferredStyle: .alert)
+        alert.addTextField { field in
+            field.placeholder = "helloworld.id"
         }
+        self.present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+            guard let name = alert.textFields?.first?.text else {
+                return
+            }
+            Blockstack.shared.getNameInfo(fullyQualifiedName: name) { data, error in
+                guard error == nil, let json = data else {
+                    let alert = UIAlertController(title: "Oops", message: "Something went wrong. Are you sure that name exists?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                let alert = UIAlertController(title: "Get Name Info", message: (json as NSDictionary).description, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
+    }
+    
+    @IBAction func getNamePriceTapped(_ sender: Any) {
+        let alert = UIAlertController(title: "Type Name", message: "Type a name to get its price.", preferredStyle: .alert)
+        alert.addTextField { field in
+            field.placeholder = "helloworld.id"
+        }
+        self.present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+            guard let name = alert.textFields?.first?.text else {
+                return
+            }
+            Blockstack.shared.getNamePrice(fullyQualifiedName: name) { data, error in
+                guard error == nil, let amount = data?.amount, let units = data?.units else {
+                    let alert = UIAlertController(title: "Oops", message: "Something went wrong. Are you sure that name exists?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                let alert = UIAlertController(title: "Get Name Price", message: "\(amount) \(units)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
+    }
+    
+    @IBAction func getFileTapped(_ sender: Any) {
+        Blockstack.shared.getNamePrice(fullyQualifiedName: "shreyzod.id") { data, error in
+            print(data?.amount)
+        }
+//        Blockstack.shared.getNameInfo(fullyQualifiedName: "shrey.id") { result, error in
+//            print(result)
+//        }
+//        // Read data from Gaia
+//        Blockstack.shared.getFile(at: filename, verify: true) { response, error in
+//            var text: String?
+//            if error != nil {
+//                print("get file error")
+//                text = "Could not get file. Try putting something first!"
+//            } else {
+//                print("get file success")
+//                text = (response as? DecryptedValue)?.plainText ?? "Invalid content"
+//            }
+//            let alert = UIAlertController(title: "Get File", message: text, preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
+//        }
     }
     
     @IBAction func multiplayerGetFileTapped(_ sender: Any) {
