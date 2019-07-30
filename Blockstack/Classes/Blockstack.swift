@@ -847,7 +847,7 @@ public enum BlockstackConstants {
         }
         fetchNamePrice.then({ json in
             guard let namePrice = json["name_price"] as? [String: Any],
-                let satoshisString = namePrice["satoshis"] as? Int,
+                let satoshisString = namePrice["satoshis"] as? String,
                 var satoshis = Int(satoshisString) else {
                     completion(nil, GaiaError.invalidResponse)
                     return
