@@ -807,10 +807,35 @@ public enum BlockstackConstants {
     /**
      Get the names -- both on-chain and off-chain -- owned by an address.
      - parameter address: the blockchain address (the hash of the owner public key)
-     - returns: a promise that resolves to a list of names (Strings)
+     - parameter completion: a callback that contains a list of names
      */
-    public func getNamesOwned() {
-        // TODO
+    public func getNamesOwned(address: String, completion: @escaping ([String]?, Error?) -> ()) {
+        guard let networkAddress = BitcoinJS().coerceAddress(address: address) else {
+            completion(nil, GaiaError.itemNotFoundError)
+            return
+        }
+        let fetchNamesOwned = Promise<[String]>() { resolve, reject in
+            let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/addresses/bitcoin/\(networkAddress)")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any],
+                    let names = json["names"] as? [String] else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(names)
+            }
+            task.resume()
+        }
+        fetchNamesOwned.then({ names in
+            completion(names, nil)
+        }).catch { error in
+            completion(nil, error)
+        }
     }
     
     /**
