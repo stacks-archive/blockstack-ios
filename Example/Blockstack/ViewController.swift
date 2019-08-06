@@ -110,7 +110,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func getNamePriceTapped(_ sender: Any) {
-        let alert = UIAlertController(title: "Type Name", message: "Type a name to get its price.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Get Name Price", message: "Type a name to get its price.", preferredStyle: .alert)
         alert.addTextField { field in
             field.placeholder = "helloworld.id"
         }
@@ -128,7 +128,13 @@ class ViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                     return
                 }
-                let alert = UIAlertController(title: "Get Name Price", message: "\(amount) \(units)", preferredStyle: .alert)
+                let measurement = units == "BTC" ? "satoshis" : "microstacks"
+                let alert = UIAlertController(title: "Get Name Price", message: "\(amount) \(measurement) (\(units))", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
+    }
                 alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
