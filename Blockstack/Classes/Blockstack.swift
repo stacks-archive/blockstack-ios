@@ -816,7 +816,7 @@ public enum BlockstackConstants {
     /**
      Get the price of a name.
      - parameter fullyQualifiedName: the name to query
-     - parameter completion: calback that contains price information as { unit: String, amount: Int }, where .units encodes the cryptocurrency units to pay (e.g. BTC, STACKS), and .amount encodes the number of units, in the smallest denominiated amount (e.g. if .units is BTC, .amount will be satoshis; if .units is STACKS, .amount will be microStacks)
+     - parameter completion: callback that contains price information as { unit: String, amount: Int }, where .units encodes the cryptocurrency units to pay (e.g. BTC, STACKS), and .amount encodes the number of units, in the smallest denominiated amount (e.g. if .units is BTC, .amount will be satoshis; if .units is STACKS, .amount will be microStacks)
      */
     public func getNamePrice(fullyQualifiedName: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
         self.getNamePriceV2(fullyQualifiedName) { (data, error) in
