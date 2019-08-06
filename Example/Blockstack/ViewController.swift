@@ -90,7 +90,7 @@ class ViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "Next", style: .default) { _ in
             guard let name = alert.textFields?.first?.text else {
                 return
             }
@@ -117,7 +117,7 @@ class ViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "Next", style: .default) { _ in
             guard let name = alert.textFields?.first?.text else {
                 return
             }
@@ -144,7 +144,7 @@ class ViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "Next", style: .default) { _ in
             guard let name = alert.textFields?.first?.text else {
                 return
             }
