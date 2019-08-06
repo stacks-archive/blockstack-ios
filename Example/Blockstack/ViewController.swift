@@ -101,7 +101,8 @@ class ViewController: UIViewController {
                     self.present(alert, animated: true, completion: nil)
                     return
                 }
-                let alert = UIAlertController(title: "Get Name Info", message: (json as NSDictionary).description, preferredStyle: .alert)
+                let nameInfoDescription = json.reduce("", { return String(describing: "\($0)\n\n\"\($1.key)\": \"\($1)\"")})
+                let alert = UIAlertController(title: "Get Name Info", message: nameInfoDescription, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
