@@ -868,7 +868,22 @@ public enum BlockstackConstants {
         }
     }
 
-        
+    /**
+     How many blocks can pass between a name expiring and the name being able to be re-registered by a different owner?
+     - returns: The number of blocks before name expires.
+     */
+    public func getGracePeriod() -> Int {
+        return 5000
+    }
+    
+    /**
+     Get the blockchain address to which a name's registration fee must be sent (the address will depend on the namespace in which it is registered)
+     - parameter namespace: the namespace ID
+     - parameter completion: a callback that contains an address
+     */
+    public func getNamespaceBurnAddress() {
+    }
+    
     // MARK: - Private
     
     private var asWebAuthSession: Any? // ASWebAuthenticationSession
