@@ -135,6 +135,28 @@ class ViewController: UIViewController {
             }
         })
     }
+    
+    @IBAction func getNamespacePriceTapped(_ sender: Any) {
+        let alert = UIAlertController(title: "Get Namespace Price", message: "Type a namespace to get its price.", preferredStyle: .alert)
+        alert.addTextField { field in
+            field.placeholder = "id"
+        }
+        self.present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Send", style: .default) { _ in
+            guard let name = alert.textFields?.first?.text else {
+                return
+            }
+            Blockstack.shared.getNamespacePrice(namespaceId: name) { data, error in
+                guard error == nil, let amount = data?.amount, let units = data?.units else {
+                    let alert = UIAlertController(title: "Oops", message: "Something went wrong. Are you sure that name exists?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                let measurement = units == "BTC" ? "satoshis" : "microstacks"
+                let alert = UIAlertController(title: "Get Namespace Price", message: "\(amount) \(measurement) (\(units))", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
