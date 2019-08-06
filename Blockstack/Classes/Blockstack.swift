@@ -827,6 +827,22 @@ public enum BlockstackConstants {
             completion((data.0, data.1), nil)
         }
     }
+    
+    /**
+     Get the price of a namespace
+     - parameter namespaceId: the namespace to query
+     - parameter completion: callback that contains price information as { unit: String, amount: Int }, where .units encodes the cryptocurrency units to pay (e.g. BTC, STACKS), and .amount encodes the number of units, in the smallest denominiated amount (e.g. if .units is BTC, .amount will be satoshis; if .units is STACKS, .amount will be microStacks)
+     */
+    public func getNamespacePrice(namespaceId: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
+        self.getNamespacePriceV2(namespaceId) { (data, error) in
+            guard let data = data, error == nil else {
+                self.getNamespacePriceV1(namespaceId, completion: completion)
+                return
+            }
+            completion((data.0, data.1), nil)
+        }
+    }
+
         
     // MARK: - Private
     
@@ -870,6 +886,73 @@ public enum BlockstackConstants {
     private func getNamePriceV2(_ fullyQualifiedName: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
         let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
             let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v2/prices/names/\(fullyQualifiedName)")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any] else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(json)
+            }
+            task.resume()
+        }
+        fetchNamePrice.then({ json in
+            guard let namePrice = json["name_price"] as? [String: Any],
+                let units = namePrice["units"] as? String,
+                let amountString = namePrice["amount"] as? String,
+                var amount = Int(amountString) else {
+                    completion(nil, GaiaError.invalidResponse)
+                    return
+            }
+            if units == "BTC" && amount < self.dustMinimum {
+                amount = self.dustMinimum
+            }
+            completion((units, amount), nil)
+        }).catch { error in
+            completion(nil, error)
+        }
+    }
+    
+    private func getNamespacePriceV1(_ namespaceId: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
+        let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
+            let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/prices/namespaces/\(namespaceId)")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any] else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(json)
+            }
+            task.resume()
+        }
+        fetchNamePrice.then({ json in
+            guard let namePrice = json["name_price"] as? [String: Any],
+                let satoshisString = namePrice["satoshis"] as? String,
+                var satoshis = Int(satoshisString) else {
+                    completion(nil, GaiaError.invalidResponse)
+                    return
+            }
+            if satoshis < self.dustMinimum {
+                satoshis = self.dustMinimum
+            }
+            completion(("BTC", satoshis), nil)
+        }).catch { error in
+            completion(nil, error)
+        }
+    }
+    
+    private func getNamespacePriceV2(_ namespaceId: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
+        let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
+            let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v2/prices/namespaces/\(namespaceId)")!
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard error == nil, let data = data else {
                     reject(GaiaError.requestError)
