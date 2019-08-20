@@ -881,15 +881,67 @@ public enum BlockstackConstants {
      - parameter namespace: the namespace ID
      - parameter completion: a callback that contains an address
      */
-    public func getNamespaceBurnAddress() {
+    public func getNamespaceBurnAddress(namespace: String, completion: @escaping ((String?, Error?) -> ())) {
+        let fetchNamespace = Promise<[String: Any]>() { resolve, reject in
+            let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/namespaces/\(namespace)")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any] else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(json)
+            }
+            task.resume()
+        }
+
+        let fetchBlockHeight = Promise<Int>() { resolve, reject in
+            let url = URL(string: "https://blockchain.info/latestblock?cors=true")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any],
+                    let height = json["height"] as? Int else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(height)
+            }
+            task.resume()
+        }
+
+        all(fetchNamespace, fetchBlockHeight).then { (json, blockHeight) in
+            guard let version = json["version"] as? Int,
+                let revealBlock = json["reveal_block"] as? Int,
+                let creatorAddress = json["address"] as? String,
+                let defaultAddress = self.getDefaultBurnAddress() else {
+                    return
+            }
+            var address: String
+            // pay-to-namespace-creator if this namespace is less than 1 year old
+            address = (version == 2 && (revealBlock + 52595 >= blockHeight)) ?
+                creatorAddress : defaultAddress
+            completion(BitcoinJS().coerceAddress(address: address), nil)
+        }
     }
-    
+
     // MARK: - Private
     
     private var asWebAuthSession: Any? // ASWebAuthenticationSession
     private let dustMinimum = 5500
     private var sfAuthSession : SFAuthenticationSession?
-    
+
+    private func getDefaultBurnAddress() -> String? {
+        return BitcoinJS().coerceAddress(address: "1111111111111111111114oLvT2")
+    }
+
     private func getNamePriceV1(_ fullyQualifiedName: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
         let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
             let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/prices/names/\(fullyQualifiedName)")!
