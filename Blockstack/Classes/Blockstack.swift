@@ -918,7 +918,7 @@ public enum BlockstackConstants {
     }
     
     private func getNamespacePriceV1(_ namespaceId: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
-        let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
+        let fetchNamespacePrice = Promise<[String: Any]>() { resolve, reject in
             let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/prices/namespaces/\(namespaceId)")!
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard error == nil, let data = data else {
@@ -934,9 +934,8 @@ public enum BlockstackConstants {
             }
             task.resume()
         }
-        fetchNamePrice.then({ json in
-            guard let namePrice = json["name_price"] as? [String: Any],
-                let satoshisString = namePrice["satoshis"] as? String,
+        fetchNamespacePrice.then({ json in
+            guard let satoshisString = json["satoshis"] as? String,
                 var satoshis = Int(satoshisString) else {
                     completion(nil, GaiaError.invalidResponse)
                     return
@@ -951,7 +950,7 @@ public enum BlockstackConstants {
     }
     
     private func getNamespacePriceV2(_ namespaceId: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
-        let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
+        let fetchNamespacePrice = Promise<[String: Any]>() { resolve, reject in
             let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v2/prices/namespaces/\(namespaceId)")!
             let task = URLSession.shared.dataTask(with: url) { data, response, error in
                 guard error == nil, let data = data else {
@@ -967,11 +966,10 @@ public enum BlockstackConstants {
             }
             task.resume()
         }
-        fetchNamePrice.then({ json in
-            guard let namePrice = json["name_price"] as? [String: Any],
-                let units = namePrice["units"] as? String,
-                let amountString = namePrice["amount"] as? String,
-                var amount = Int(amountString) else {
+        fetchNamespacePrice.then({ json in
+            guard let namespacePrice = json["amount"] as? String,
+                let units = json["units"] as? String,
+                var amount = Int(namespacePrice) else {
                     completion(nil, GaiaError.invalidResponse)
                     return
             }
