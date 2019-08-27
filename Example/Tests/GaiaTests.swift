@@ -110,7 +110,7 @@ class GaiaSpec: QuickSpec {
                                         fail("Expected file not found error.")
                                         return
                                     }
-                                    expect(gaiaError == .fileNotFoundError).to(beTrue())
+                                    expect(gaiaError == .itemNotFoundError).to(beTrue())
                                     done()
                                 }
                             }
@@ -172,7 +172,7 @@ class GaiaSpec: QuickSpec {
                                     guard let gaiaError = error as? GaiaError else {
                                         return
                                     }
-                                    expect(gaiaError == .fileNotFoundError).to(beTrue())
+                                    expect(gaiaError == .itemNotFoundError).to(beTrue())
                                     done()
                                 }
                             }

@@ -64,9 +64,6 @@ open class BitcoinJS {
         return context
     }()
     
-    init() {
-    }
-    
     public func signChallenge(privateKey: String, challengeText: String) -> String? {
         guard let context = context else {
             print("JSContext not found.")
@@ -79,6 +76,47 @@ open class BitcoinJS {
         let signature = context.evaluateScript("challengeSigner.sign(digest).toDER().toString('hex')")
         return signature?.toString()
     }
+
+    public func fromBase58Check(address: String) -> (version: String, hash: String)? {
+        guard let context = self.context else {
+            return nil
+        }
+        let value = context.evaluateScript("bitcoinjs.address.fromBase58Check('\(address)')")
+        // TODO: Cast properly
+        return value as? (String, String)
+    }
     
+    public func toBase58Check(hash: String, version: String) -> String? {
+        guard let context = self.context else {
+            return nil
+        }
+        let value = context.evaluateScript("bitcoinjs.address.toBase58Check('\(hash)', '\(version)')")
+        return value?.toString()
+    }
     
+    public func coerceAddress(address: String) -> String? {
+        guard let context = self.context else {
+            return nil
+        }
+        context.evaluateScript("""
+            function coerceAddress(address) {
+                const layer1 = bitcoinjs.networks.bitcoin;
+                const { hash, version } = bitcoinjs.address.fromBase58Check(address);
+                const scriptHashes = [bitcoinjs.networks.bitcoin.scriptHash,
+                    bitcoinjs.networks.testnet.scriptHash];
+                const pubKeyHashes = [bitcoinjs.networks.bitcoin.pubKeyHash,
+                    bitcoinjs.networks.testnet.pubKeyHash];
+                let coercedVersion;
+                if (scriptHashes.indexOf(version) >= 0) {
+                    coercedVersion = layer1.scriptHash;
+                } else if (pubKeyHashes.indexOf(version) >= 0) {
+                    coercedVersion = layer1.pubKeyHash;
+                } else {
+                    throw new Error(`Unrecognized address version number ${version} in ${address}`);
+                }
+                return bitcoinjs.address.toBase58Check(hash, coercedVersion);
+            }
+        """)
+        return context.evaluateScript("coerceAddress('\(address)')")?.toString()
+    }
 }
