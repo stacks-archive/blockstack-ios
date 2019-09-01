@@ -917,11 +917,12 @@ public enum BlockstackConstants {
             task.resume()
         }
 
-        all(fetchNamespace, fetchBlockHeight).then { (json, blockHeight) in
+        all(fetchNamespace, fetchBlockHeight).then({ (json, blockHeight) in
             guard let version = json["version"] as? Int,
                 let revealBlock = json["reveal_block"] as? Int,
                 let creatorAddress = json["address"] as? String,
                 let defaultAddress = self.getDefaultBurnAddress() else {
+                    completion(nil, GaiaError.itemNotFoundError)
                     return
             }
             var address: String
@@ -929,6 +930,8 @@ public enum BlockstackConstants {
             address = (version == 2 && (revealBlock + 52595 >= blockHeight)) ?
                 creatorAddress : defaultAddress
             completion(BitcoinJS().coerceAddress(address: address), nil)
+        }).catch { error in
+            completion(nil, error)
         }
     }
 
