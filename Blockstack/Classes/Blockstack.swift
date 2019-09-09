@@ -807,10 +807,35 @@ public enum BlockstackConstants {
     /**
      Get the names -- both on-chain and off-chain -- owned by an address.
      - parameter address: the blockchain address (the hash of the owner public key)
-     - returns: a promise that resolves to a list of names (Strings)
+     - parameter completion: a callback that contains a list of names
      */
-    public func getNamesOwned() {
-        // TODO
+    public func getNamesOwned(address: String, completion: @escaping ([String]?, Error?) -> ()) {
+        guard let networkAddress = BitcoinJS().coerceAddress(address: address) else {
+            completion(nil, GaiaError.itemNotFoundError)
+            return
+        }
+        let fetchNamesOwned = Promise<[String]>() { resolve, reject in
+            let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/addresses/bitcoin/\(networkAddress)")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any],
+                    let names = json["names"] as? [String] else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(names)
+            }
+            task.resume()
+        }
+        fetchNamesOwned.then({ names in
+            completion(names, nil)
+        }).catch { error in
+            completion(nil, error)
+        }
     }
     
     /**
@@ -843,13 +868,83 @@ public enum BlockstackConstants {
         }
     }
 
-        
+    /**
+     How many blocks can pass between a name expiring and the name being able to be re-registered by a different owner?
+     - returns: The number of blocks before name expires.
+     */
+    public func getGracePeriod() -> Int {
+        return 5000
+    }
+    
+    /**
+     Get the blockchain address to which a name's registration fee must be sent (the address will depend on the namespace in which it is registered)
+     - parameter namespace: the namespace ID
+     - parameter completion: a callback that contains an address
+     */
+    public func getNamespaceBurnAddress(namespace: String, completion: @escaping ((String?, Error?) -> ())) {
+        let fetchNamespace = Promise<[String: Any]>() { resolve, reject in
+            let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/namespaces/\(namespace)")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any] else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(json)
+            }
+            task.resume()
+        }
+
+        let fetchBlockHeight = Promise<Int>() { resolve, reject in
+            let url = URL(string: "https://blockchain.info/latestblock?cors=true")!
+            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil, let data = data else {
+                    reject(GaiaError.requestError)
+                    return
+                }
+                guard let object = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                    let json = object  as? [String: Any],
+                    let height = json["height"] as? Int else {
+                        reject(GaiaError.invalidResponse)
+                        return
+                }
+                resolve(height)
+            }
+            task.resume()
+        }
+
+        all(fetchNamespace, fetchBlockHeight).then({ (json, blockHeight) in
+            guard let version = json["version"] as? Int,
+                let revealBlock = json["reveal_block"] as? Int,
+                let creatorAddress = json["address"] as? String,
+                let defaultAddress = self.getDefaultBurnAddress() else {
+                    completion(nil, GaiaError.itemNotFoundError)
+                    return
+            }
+            var address: String
+            // pay-to-namespace-creator if this namespace is less than 1 year old
+            address = (version == 2 && (revealBlock + 52595 >= blockHeight)) ?
+                creatorAddress : defaultAddress
+            completion(BitcoinJS().coerceAddress(address: address), nil)
+        }).catch { error in
+            completion(nil, error)
+        }
+    }
+
     // MARK: - Private
     
     private var asWebAuthSession: Any? // ASWebAuthenticationSession
     private let dustMinimum = 5500
     private var sfAuthSession : SFAuthenticationSession?
-    
+
+    private func getDefaultBurnAddress() -> String? {
+        return BitcoinJS().coerceAddress(address: "1111111111111111111114oLvT2")
+    }
+
     private func getNamePriceV1(_ fullyQualifiedName: String, completion: @escaping ((units: String, amount: Int)?, Error?) -> ()) {
         let fetchNamePrice = Promise<[String: Any]>() { resolve, reject in
             let url = URL(string: "\(BlockstackConstants.DefaultCoreAPIURL)/v1/prices/names/\(fullyQualifiedName)")!

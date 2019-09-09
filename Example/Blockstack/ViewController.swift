@@ -163,6 +163,56 @@ class ViewController: UIViewController {
         })
     }
     
+    @IBAction func getNamesOwned(_ sender: Any) {
+        let alert = UIAlertController(title: "Get Names Owned", message: "Type an address to get names owned by it.", preferredStyle: .alert)
+        alert.addTextField { _ in
+        }
+        self.present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Next", style: .default) { _ in
+            guard let address = alert.textFields?.first?.text else {
+                return
+            }
+            Blockstack.shared.getNamesOwned(address: address) { names, error in
+                guard error == nil, let names = names else {
+                    let alert = UIAlertController(title: "Oops", message: "Something went wrong. Are you sure that is a valid address?", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                let alert = UIAlertController(title: "Get Names Owned", message: String(describing: names.reduce("", { "\($0)\n\($1)" })), preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
+    }
+    
+    @IBAction func getNamespaceBurnAddress(_ sender: Any) {
+        let alert = UIAlertController(title: "Get Namespace Burn Address", message: "Type a namespace to get the the blockchain address to which a name's registration fee must be sent.", preferredStyle: .alert)
+        alert.addTextField { _ in
+        }
+        self.present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Next", style: .default) { _ in
+            guard let namespace = alert.textFields?.first?.text else {
+                return
+            }
+            Blockstack.shared.getNamespaceBurnAddress(namespace: namespace) { address, error in
+                guard error == nil, let address = address else {
+                    let alert = UIAlertController(title: "Oops", message: "Please enter a valid namespace!", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    return
+                }
+                let alert = UIAlertController(title: "\"\(namespace)\" burn address", message: address, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Done", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
+    }
+    
     @IBAction func getFileTapped(_ sender: Any) {
         // Read data from Gaia
         Blockstack.shared.getFile(at: filename, verify: true) { response, error in
