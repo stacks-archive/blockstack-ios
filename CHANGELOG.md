@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2019-10-11
+
+### Added
+- `Blockstack.getNameInfo`
+- `Blockstack.getNamespaceInfo`
+- `Blockstack.getNamePrice`
+- `Blockstack.getNamespacePrice`
+- `Blockstack.getNamesOwned`
+- `Blockstack.getGracePeriod`
+- `Blockstack.getNamespaceBurnAddress`
+
+### Changed
+- `FileNotFoundError` -> `ItemNotFoundError`
+- Fixes iOS 13 auth issue (ASWebAuthenticationSession, no provided presentation context)
+
+## [0.7.0] - 2019-06-18
+
+### Added
+- `Blockstack.deleteFile`
+-  `FileNotFoundError` for storage operations.
+- `ProfileHelper.fetchCurrentUserProfile` to fetch the user's profile data at their profileURL.
+
+### Changed
+- `Blockstack.signIn` calls back on the main queue.
+- Enums instead of strings for permission scopes provided at auth.
+
 ## [0.6.0] - 2019-05-25
 
 ### Added
