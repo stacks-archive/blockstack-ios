@@ -25,6 +25,8 @@ iOS 11.0+
 
 Clone this repo and play around with the included sample app, available at ([`/Example`](Example/)). To add Blockstack functionality to your own project, read below.
 
+Note: [PhotoBlock](https://github.com/blockstack/photoblock-demo) is a fully functional, app-store ready demo app that serves as a fast way to get started with sample code. The app integrates login and storage features, and is a good way to play with Blockstack features immediately.
+
 ## Adding the SDK to a project
 
 Blockstack is available through [CocoaPods](http://cocoapods.org). To install
