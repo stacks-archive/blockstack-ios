@@ -18,7 +18,7 @@ public enum AuthScope: String {
     case publishData = "publish_data"
     case email = "email"
     
-    static func fromString(_ value: String) -> AuthScope? {
+    public static func fromString(_ value: String) -> AuthScope? {
         switch value {
         case AuthScope.storeWrite.rawValue:
             return .storeWrite
