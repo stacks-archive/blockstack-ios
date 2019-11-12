@@ -7,7 +7,7 @@
   "homepage": "https://github.com/blockstack/blockstack-ios",
   "license": {
     "type": "MIT",
-    "file": "LICENSE"
+    "file": "LICENSE.md"
   },
   "authors": {
     "yknl": "yukanliao@gmail.com"

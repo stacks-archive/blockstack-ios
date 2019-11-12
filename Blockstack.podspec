@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
 
   s.homepage         = 'https://github.com/blockstack/blockstack-ios'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.license          = { :type => 'MIT', :file => 'LICENSE.md' }
   s.author           = { 'yknl' => 'yukanliao@gmail.com' }
   s.source           = { :git => 'https://github.com/blockstack/blockstack-ios.git', :tag => "v#{s.version.to_s}" }
   
