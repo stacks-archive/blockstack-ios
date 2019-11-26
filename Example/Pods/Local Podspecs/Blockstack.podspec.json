@@ -1,6 +1,6 @@
 {
   "name": "Blockstack",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "summary": "The Blockstack iOS SDK",
   "swift_versions": "4.0",
   "description": "The Blockstack iOS library for authentication, encryption, and storage.",
@@ -14,7 +14,7 @@
   },
   "source": {
     "git": "https://github.com/blockstack/blockstack-ios.git",
-    "tag": "v1.0.1"
+    "tag": "v1.0.2"
   },
   "social_media_url": "https://twitter.com/blockstack",
   "platforms": {
