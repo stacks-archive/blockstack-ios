@@ -20,13 +20,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         self.updateUI()
-        Blockstack.shared.isBetaBrowserEnabled = true
+        Blockstack.shared.isBetaBrowserEnabled = false
     }
     
     @IBAction func signIn() {
         // Address of deployed example web app
-        Blockstack.shared.signIn(redirectURI: URL(string: "https://pedantic-mahavira-f15d04.netlify.com/redirect.html")!,
-                                 appDomain: URL(string: "https://pedantic-mahavira-f15d04.netlify.com")!, scopes: [.storeWrite, .publishData]) { authResult in
+        Blockstack.shared.signIn(redirectURI: URL(string: "https://pedantic-mahavira-f15d04.netlify.app/redirect.html")!,
+                                 appDomain: URL(string: "https://pedantic-mahavira-f15d04.netlify.app")!, scopes: [.storeWrite, .publishData]) { authResult in
             switch authResult {
                 case .success(let userData):
                     print("sign in success")
@@ -55,7 +55,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func resetDeviceKeychain(_ sender: Any) {
-        Blockstack.shared.promptClearDeviceKeychain()
+//        Blockstack.shared.promptClearDeviceKeychain()
     }
     
     @IBAction func putFileTapped(_ sender: Any) {
@@ -345,7 +345,7 @@ class ViewController: UIViewController {
             } else {
                 self.optionsContainerView.isHidden = true
                 self.signInButton.isHidden = false
-                self.resetKeychainButton.isHidden = false
+                self.resetKeychainButton.isHidden = true
             }
         }
     }

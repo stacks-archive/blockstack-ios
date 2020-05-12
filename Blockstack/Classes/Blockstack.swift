@@ -18,12 +18,12 @@ fileprivate var betaBrowserDefaultsKey = "isBetaBrowserEnabled"
 public enum BlockstackConstants {
     public static var BrowserWebAppURL: String {
         return UserDefaults.standard.bool(forKey: betaBrowserDefaultsKey) ?
-            "https://beta.browser.blockstack.org" :
-        "https://browser.blockstack.org"
+            "https://app.blockstack.org" :
+        "https://app.blockstack.org"
     }
 
     public static let DefaultCoreAPIURL = "https://core.blockstack.org"
-    public static let BrowserWebAppAuthEndpoint = "\(BrowserWebAppURL)/auth"
+    public static let BrowserWebAppAuthEndpoint = "\(BrowserWebAppURL)/#/sign-in"
     public static let BrowserWebClearAuthEndpoint = "\(BrowserWebAppURL)/clear-auth"
     public static let NameLookupEndpoint = "https://core.blockstack.org/v1/names/"
     public static let AuthProtocolVersion = "1.1.0"
@@ -36,7 +36,8 @@ public enum BlockstackConstants {
 /**
  A class that contains the native swift implementations of Blockstack.js methods and Blockstack network operations.
  */
-@objc open class Blockstack: NSObject, ASWebAuthenticationPresentationContextProviding {
+@objc open class Blockstack: NSObject {
+//@objc open class Blockstack: NSObject, ASWebAuthenticationPresentationContextProviding {
 
     /**
      A shared instance of Blockstack that exists for the lifetime of your app. Use this instance instead of creating your own.
@@ -83,12 +84,15 @@ public enum BlockstackConstants {
             manifestURI: _manifestURI!,
             appDomain: appDomain,
             appBundleID: appBundleID,
-            scopes: scopes)
-
-        var urlComps = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
-        urlComps.queryItems = [URLQueryItem(name: "authRequest", value: authRequest), URLQueryItem(name: "client", value: "ios_secure")]
-        let url = urlComps.url!
-
+            scopes: scopes,
+            extraParams: ["client": "ios"])
+        
+        var urlCompsWithQueryItems = URLComponents(string: BlockstackConstants.BrowserWebAppAuthEndpoint)!
+        urlCompsWithQueryItems.queryItems = [URLQueryItem(name: "authRequest", value: authRequest)]
+        // workaround wrong query item and # fragment positions in URL
+        let urlString = BlockstackConstants.BrowserWebAppAuthEndpoint + "?" + urlCompsWithQueryItems.query!
+        let url = URL(string:urlString)!
+        
         var didRespond = false
         let completion: (URL?, Error?) -> () = { url, error in
             guard !didRespond else {
@@ -151,13 +155,16 @@ public enum BlockstackConstants {
                     appDomain: URL,
                     appBundleID: String,
                     scopes: [AuthScope],
-                    expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0))) -> String? {
+                    expiresAt: Date = Date().addingTimeInterval(TimeInterval(60.0 * 60.0)),
+                    extraParams: [String: Any]?) -> String? {
         return Auth.makeRequest(transitPrivateKey: transitPrivateKey,
                                 redirectURI: redirectURI,
                                 manifestURI: manifestURI,
                                 appDomain: appDomain,
                                 appBundleID: appBundleID,
-                                scopes: scopes, expiresAt: expiresAt)
+                                scopes: scopes,
+                                expiresAt: expiresAt,
+                                extraParams: extraParams)
     }
     
     /**
@@ -200,22 +207,23 @@ public enum BlockstackConstants {
     /**
      Prompt web flow to clear the keychain and all settings for this device.
      WARNING: This will reset the keychain for all apps using Blockstack sign in. Apps that are already signed in will not be affected, but the user will have to reenter their 12 word seed to sign in to any new apps.
+     Not currently implemented on Blockstack authenticator https://github.com/blockstack/ux/tree/master/packages/app
      */
-    @objc public func promptClearDeviceKeychain() {
-        let url = URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!
-        if #available(iOS 12.0, *) {
-            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
-                self.asWebAuthSession = nil
-            }
-            authSession.start()
-            self.asWebAuthSession = authSession
-        } else {
-            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
-                self.sfAuthSession = nil
-            }
-            self.sfAuthSession?.start()
-        }
-    }
+//    @objc public func promptClearDeviceKeychain() {
+//        let url = URL(string: "\(BlockstackConstants.BrowserWebClearAuthEndpoint)")!
+//        if #available(iOS 12.0, *) {
+//            let authSession = ASWebAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
+//                self.asWebAuthSession = nil
+//            }
+//            authSession.start()
+//            self.asWebAuthSession = authSession
+//        } else {
+//            self.sfAuthSession = SFAuthenticationSession(url: url, callbackURLScheme: nil) { _, _ in
+//                self.sfAuthSession = nil
+//            }
+//            self.sfAuthSession?.start()
+//        }
+//    }
     
     // - MARK: Profiles
 
