@@ -40,13 +40,14 @@ class Auth {
                             appDomain: URL,
                             appBundleID: String,
                             scopes: [AuthScope],
-                            expiresAt: Date) -> String {
+                            expiresAt: Date,
+                            extraParams: [String: Any]?) -> String {
         var request: String
         
         let publicKey = Keys.getPublicKeyFromPrivate(transitPrivateKey)
         let address = Keys.getAddressFromPublicKey(publicKey!)
         
-        let payload: [String: Any] = [
+        var payload: [String: Any] = [
             "jti": NSUUID().uuidString,
             "iat": Int(Date().timeIntervalSince1970),
             "exp": Int(expiresAt.timeIntervalSince1970),
@@ -61,6 +62,8 @@ class Auth {
             "supports_hub_url": true,
             "scopes": scopes.compactMap { $0.rawValue }
         ]
+        
+        extraParams?.forEach { (key, value) in payload[key] = value }
         
         request = JSONTokensJS().signToken(payload: payload, privateKey: transitPrivateKey)!
         return request
